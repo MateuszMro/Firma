@@ -1,0 +1,227 @@
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f5f6ff;
+}
+
+body {
+    min-height: 100vh;
+}
+.register-wrapper {
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: #f4f5fb;
+}
+
+.register-container {
+    width: 100%;
+    max-width: 1000px;
+    min-height: 650px;
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Lewa kolumna */
+
+.register-left {
+    background: linear-gradient(145deg, #6558d3, #4537a8);
+    color: white;
+    padding: 55px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.register-brand {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 70px;
+}
+
+.register-left h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.register-left p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.register-decoration {
+    position: absolute;
+    bottom: -70px;
+    right: -40px;
+    width: 230px;
+    height: 230px;
+    border: 35px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.register-decoration span {
+    position: absolute;
+    top: -35px;
+    left: 30px;
+    font-size: 65px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Prawa kolumna */
+
+.register-right {
+    padding: 45px 55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.register-right h1 {
+    color: #20243a;
+    font-size: 30px;
+    margin: 0 0 8px;
+}
+
+.register-subtitle {
+    color: #85899b;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+/* Pola formularza */
+
+.register-form .register-field {
+    margin-bottom: 17px;
+}
+
+.register-field label {
+    display: block;
+    color: #34384e;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.register-field input {
+    display: block;
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #e0e2eb;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+    box-sizing: border-box;
+}
+
+.register-field input:focus {
+    border-color: #6558d3;
+    box-shadow: 0 0 0 3px rgba(101, 88, 211, 0.1);
+}
+
+/* Zgody */
+
+.register-terms {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 20px 0;
+    font-size: 13px;
+    color: #55596b;
+}
+
+.register-terms input {
+    accent-color: #6558d3;
+    width: 16px;
+    height: 16px;
+}
+
+/* Przycisk */
+
+.register-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #6558d3;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.register-button:hover {
+    background: #5145bd;
+    transform: translateY(-1px);
+}
+
+/* Błędy */
+
+.register-error,
+.register-field ul {
+    color: #bd3030;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.register-field ul {
+    padding-left: 18px;
+}
+
+/* Stopka */
+
+.register-footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #777b8c;
+    font-size: 14px;
+}
+
+.register-footer a {
+    color: #6558d3;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.register-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsywność */
+
+@media (max-width: 750px) {
+    .register-container {
+        grid-template-columns: 1fr;
+    }
+
+    .register-left {
+        padding: 30px;
+        min-height: 220px;
+    }
+
+    .register-brand {
+        margin-bottom: 25px;
+    }
+
+    .register-left h2 {
+        font-size: 25px;
+    }
+
+    .register-right {
+        padding: 35px 25px;
+    }
+}

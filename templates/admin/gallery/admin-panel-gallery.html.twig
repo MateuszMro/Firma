@@ -1,0 +1,73 @@
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Zarządzanie galerią{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="admin-gallery-page">
+
+        <div class="admin-gallery-heading">
+            <div>
+                <h1>Zarządzanie galerią</h1>
+                <p>Edytuj i usuwaj sesje zdjęciowe.</p>
+            </div>
+
+            <a href="{{ path('admin_gallery_add') }}" class="gallery-add-button">
+                + Dodaj sesję
+            </a>
+        </div>
+
+        {% for message in app.flashes('success') %}
+            <div class="gallery-success">{{ message }}</div>
+        {% endfor %}
+
+        <div class="gallery-grid">
+            {% for session in sessions %}
+                <div class="gallery-card">
+
+                    {% if session.images|length > 0 %}
+                        <img
+                            src="{{ asset('uploads/gallery/' ~ session.images|first.filename) }}"
+                            alt="{{ session.title }}"
+                        >
+                    {% else %}
+                        <div class="gallery-no-image">Brak zdjęcia</div>
+                    {% endif %}
+
+                    <div class="gallery-card-info">
+                        <h3>{{ session.title }}</h3>
+                        <p>{{ session.description|striptags|slice(0, 100) }}</p>
+
+                        <span>{{ session.images|length }} zdjęć</span>
+
+                        <div class="gallery-admin-actions">
+                            <a href="{{ path('admin_gallery_edit', {id: session.id}) }}"
+                               class="gallery-edit-button">
+                                Edytuj
+                            </a>
+
+                            <form method="post"
+                                  action="{{ path('admin_gallery_delete', {id: session.id}) }}"
+                                  onsubmit="return confirm('Czy na pewno usunąć całą sesję?');">
+
+                                <input type="hidden" name="_token"
+                                       value="{{ csrf_token('delete_session_' ~ session.id) }}">
+
+                                <button type="submit" class="gallery-delete-button">
+                                    Usuń całość
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            {% else %}
+                <p>Nie ma jeszcze żadnych sesji zdjęciowych.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

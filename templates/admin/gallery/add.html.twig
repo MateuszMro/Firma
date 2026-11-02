@@ -1,0 +1,52 @@
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Dodaj zdjęcia{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="admin-gallery-page">
+
+        <div class="admin-gallery-heading">
+            <h1>Dodaj zdjęcia</h1>
+            <p>Dodaj tytuł, opis i zdjęcia produktu.</p>
+        </div>
+
+        {% for message in app.flashes('success') %}
+            <div class="gallery-success">{{ message }}</div>
+        {% endfor %}
+
+        {{ form_start(form, {
+            attr: {
+                class: 'admin-gallery-form',
+                enctype: 'multipart/form-data'
+            }
+        }) }}
+
+        <div class="form-field">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title) }}
+            {{ form_errors(form.title) }}
+        </div>
+
+        <div class="form-field">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div class="form-field">
+            {{ form_label(form.images) }}
+            {{ form_widget(form.images) }}
+            {{ form_errors(form.images) }}
+            <small>Możesz zaznaczyć kilka zdjęć jednocześnie. JPG, PNG lub WEBP, maksymalnie 8 MB na zdjęcie.</small>
+        </div>
+
+        <button type="submit" class="gallery-submit-button">
+            Zapisz sesję
+        </button>
+
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}

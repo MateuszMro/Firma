@@ -2,7 +2,7 @@
 
 namespace App\Controller\RegisterController;
 
-use App\Entity\Clients;
+use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('homepage');
         }
 
-        $user = new Clients();
+        $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -35,11 +35,11 @@ class RegistrationController extends AbstractController
             $password = $form->get('plainPassword')->getData();
             $passwordRepeat = $form->get('confirmPassword')->getData();
             // Sprawdzenie, czy użytkownik o podanym loginie lub emailu już istnieje
-            $existingUserLogin = $entityManager->getRepository(Clients::class)->findOneBy([
+            $existingUserLogin = $entityManager->getRepository(User::class)->findOneBy([
                 'login' => $login,
             ]);
 
-            $existingUserEmail = $entityManager->getRepository(Clients::class)->findOneBy([
+            $existingUserEmail = $entityManager->getRepository(User::class)->findOneBy([
                 'email' => $email,
             ]);
 
@@ -55,8 +55,8 @@ class RegistrationController extends AbstractController
                 $registerIP = $request->getClientIp();
                 $user->setEmail($email);
                 $user->setLogin($login);
-                $user->setConfirmCode(bin2hex(random_bytes(16)));
-                $user->setConfirmAccount('Nieaktywne');
+                //$user->setConfirmCode(bin2hex(random_bytes(16)));
+                $user->setConfirmAccount('Aktywne');
                 $user->setIP($registerIP);
                 // Encode the plain password
                 $user->setPassword(
@@ -77,56 +77,58 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                try {
-                    $mail = new PHPMailer();
-                    //Konfiguracja serwera SMTP
-                    $mail->isSMTP();
-                    $mail->Host = 'smtp.gmail.com';
-                    $mail->Port = 465;
-                    $mail->CharSet = 'UTF-8';
-                    $mail->SMTPSecure = 'ssl';
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'melbe.na.zamowienie@gmail.com';
-                    $mail->Password = 'wrowloijuocfypel';
-
-                    //Ustawienia wiadomości
-                    $mail->setFrom('melbe.na.zamowienie@gmail.com', 'Kuchnie');
-                    $mail->addReplyTo('melbe.na.zamowienie@gmail.com', 'Rejestracja');
-                    $mail->addAddress($user->getEmail());
-
-                    //Treść wiadomości
-                    $confirmLink = $this->generateUrl('app_confirm_register', [
-                        'code' => $user->getConfirmCode()
-                    ], true);
-                    $mail->isHTML(true);
-                    $mail->Subject = 'Dokończ rejestrację konta';
-                    $mail->Body = "<html>
-                                         <head>
-                                         </head>
-                                         <body>
-                                             <h2 class='font-bold text-5xl'>Kliknij w poniższy link aby aktywować konto</h2>
-                                             <h3 class='font-bold text-3xl'><a href='http://52.58.230.169{$confirmLink}'>Potwierdź konto</a></h3>
-                                         </body>
-                                         </html>
-                                           ";
-
-                    //Wysłanie e-maila
-                    $mail->send();
-
-                    return $this->render('info-pages/confirm-sent.html.twig', [
-                        'email' => $user->getEmail(),
-                    ]);
-
-                } catch (Exception $exception) {
-                    return $this->render('info-pages/confirm-error.html.twig', [
-                        'error' => $exception->getMessage(),
-                    ]);
-                }
+//                try {
+//                    $mail = new PHPMailer();
+//                    //Konfiguracja serwera SMTP
+//                    $mail->isSMTP();
+//                    $mail->Host = 'smtp.gmail.com';
+//                    $mail->Port = 465;
+//                    $mail->CharSet = 'UTF-8';
+//                    $mail->SMTPSecure = 'ssl';
+//                    $mail->SMTPAuth = true;
+//                    $mail->Username = 'melbe.na.zamowienie@gmail.com';
+//                    $mail->Password = 'wrowloijuocfypel';
+//
+//                    //Ustawienia wiadomości
+//                    $mail->setFrom('melbe.na.zamowienie@gmail.com', 'Kuchnie');
+//                    $mail->addReplyTo('melbe.na.zamowienie@gmail.com', 'Rejestracja');
+//                    $mail->addAddress($user->getEmail());
+//
+//                    //Treść wiadomości
+//                    $confirmLink = $this->generateUrl('app_confirm_register', [
+//                        'code' => $user->getConfirmCode()
+//                    ], true);
+//                    $mail->isHTML(true);
+//                    $mail->Subject = 'Dokończ rejestrację konta';
+//                    $mail->Body = "<html>
+//                                         <head>
+//                                         </head>
+//                                         <body>
+//                                             <h2 class='font-bold text-5xl'>Kliknij w poniższy link aby aktywować konto</h2>
+//                                             <h3 class='font-bold text-3xl'><a href='http://52.58.230.169{$confirmLink}'>Potwierdź konto</a></h3>
+//                                         </body>
+//                                         </html>
+//                                           ";
+//
+//                    //Wysłanie e-maila
+//                    $mail->send();
+//
+//                    return $this->render('info-pages/confirm-sent.html.twig', [
+//                        'email' => $user->getEmail(),
+//                    ]);
+//
+//                } catch (Exception $exception) {
+//                    return $this->render('info-pages/confirm-error.html.twig', [
+//                        'error' => $exception->getMessage(),
+//                    ]);
+//                }
 
 
             }
-//                Dodaj komunikat sukcesu
-//                $this->addFlash('success', 'Registration successful! You can now log in.');
+            $this->addFlash('success', 'Registration successful! You can now log in.');
+            return $this->render('info-pages/success-register.html.twig', [
+
+            ]);
 
         }
 

@@ -1,0 +1,49 @@
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Galeria{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="gallery-page">
+
+        <div class="gallery-heading">
+            <div>
+                <h1>Galeria</h1>
+                <p>Sesje zdjęciowe naszych produktów</p>
+            </div>
+
+            {% if is_granted('ROLE_OWNER') %}
+                <a href="{{ path('admin_gallery_add') }}" class="gallery-add-button">
+                    + Dodaj sesję
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="gallery-grid">
+            {% for session in sessions %}
+                <a href="{{ path('app_gallery_show', {id: session.id}) }}"
+                   class="gallery-card">
+
+                    {% if session.images|length > 0 %}
+                        <img
+                            src="{{ asset('uploads/gallery/' ~ session.images|first.filename) }}"
+                            alt="{{ session.title }}"
+                        >
+                    {% else %}
+                        <div class="gallery-no-image">Brak zdjęcia</div>
+                    {% endif %}
+
+                    <div class="gallery-card-info">
+                        <h3>{{ session.title }}</h3>
+                        <p>{{ session.description|striptags|slice(0, 110) }}{% if session.description|length > 110 %}...{% endif %}</p>
+                        <span>{{ session.images|length }} zdjęć</span>
+                    </div>
+                </a>
+            {% else %}
+                <p>Galeria jest jeszcze pusta.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

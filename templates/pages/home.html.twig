@@ -1,0 +1,212 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Strona główna{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="body">
+        <div id="sidebar">
+            {% block sidebar %}
+                <nav class="navbar">
+
+                    <div class="navbar-brand">
+                        My<span>Panel</span>
+                    </div>
+
+                    <div class="navbar-menu">
+                        <a href="/" class="nav-item {{ app.request.attributes.get('_route') == 'homepage' ? 'active' : '' }}">
+                            🏠 Strona główna
+                        </a>
+
+                        <a href="/gallery" class="nav-item {{ app.request.attributes.get('_route') == 'app_gallery' ? 'active' : '' }}">
+                            🖼️ Galeria
+                        </a>
+
+
+                    </div>
+
+                    <div class="navbar-user">
+                        {% if app.user %}
+
+                            <div class="account-dropdown" id="accountDropdown">
+
+                                <button type="button"
+                                        class="account-trigger"
+                                        id="accountTrigger"
+                                        aria-expanded="false"
+                                        aria-controls="accountMenu">
+
+                                    <span class="account-avatar">
+                                        {{ app.user.email|slice(0, 1)|upper }}
+                                    </span>
+
+                                    <span class="account-info">
+                                        <strong>{{ app.user.email }}</strong>
+
+                                        <small>
+                                            {% if is_granted('ROLE_OWNER') %}
+                                                Właściciel
+                                            {% elseif is_granted('ROLE_ADMIN') %}
+                                                Administrator
+                                            {% else %}
+                                                Użytkownik
+                                            {% endif %}
+                                        </small>
+                                    </span>
+
+                                    <span class="account-arrow">⌄</span>
+                                </button>
+
+                                <div class="account-menu" id="accountMenu">
+
+                                    <a href="{{ path('app_change_password') }}">
+                                        <span>🔒</span>
+                                        Zmień hasło
+                                    </a>
+
+                                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER') %}
+                                        <a href="/admin">
+                                            <span>⚙️</span>
+                                            Panel zarządzania
+                                        </a>
+                                        {% if is_granted('ROLE_OWNER') %}
+                                            <a href="{{ path('admin_gallery_admin_panel_gallery') }}">
+                                                <span>⚙️</span>
+                                                Zarządzaj galerią
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    <div class="account-menu-divider"></div>
+
+                                    <a href="{{ path('app_logout') }}" class="account-logout">
+                                        <span>↪</span>
+                                        Wyloguj się
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        {% else %}
+
+                            <a href="{{ path('app_login') }}" class="nav-item">
+                                ⚙️ Logowanie
+                            </a>
+
+                        {% endif %}
+                    </div>
+
+                </nav>
+            {% endblock %}
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const dropdown = document.getElementById('accountDropdown');
+                const trigger = document.getElementById('accountTrigger');
+
+                if (!dropdown || !trigger) {
+                    return;
+                }
+
+                trigger.addEventListener('click', function (event) {
+                    event.stopPropagation();
+
+                    const isOpen = dropdown.classList.toggle('is-open');
+
+                    trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!dropdown.contains(event.target)) {
+                        dropdown.classList.remove('is-open');
+                        trigger.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') {
+                        dropdown.classList.remove('is-open');
+                        trigger.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        </script>
+        <div id="content">
+            {% block content %}
+                content
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+        <footer class="main-footer">
+
+            <div class="footer-container">
+
+                <div class="footer-top">
+
+                    <div class="footer-brand">
+                        <h2>My<span>Panel</span></h2>
+                        <p>
+                            Zarządzaj swoim kontem i wszystkim, co ważne,
+                            w jednym miejscu.
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <h3>Nawigacja</h3>
+                        <a href="/">Dashboard</a>
+                        <a href="#">Użytkownicy</a>
+                        <a href="#">Produkty</a>
+                        <a href="#">Statystyki</a>
+                    </div>
+
+                    <div class="footer-links">
+                        <h3>Konto</h3>
+
+                        {% if app.user %}
+                            <a href="{{ path('app_change_password') }}">
+                                Zmień hasło
+                            </a>
+                            <a href="{{ path('app_logout') }}">
+                                Wyloguj się
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}">
+                                Logowanie
+                            </a>
+                            <a href="{{ path('app_register') }}">
+                                Rejestracja
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="footer-contact">
+                        <h3>Kontakt</h3>
+                        <p>Masz pytania lub potrzebujesz pomocy?</p>
+                        <a href="mailto:support@mypanel.pl">
+                            support@mypanel.pl
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="footer-bottom">
+                    <p>
+                        © {{ "now"|date("Y") }} MyPanel. Wszelkie prawa zastrzeżone.
+                    </p>
+
+                    <span class="footer-status">
+                    <span class="status-dot"></span>
+                    System działa poprawnie
+                </span>
+                </div>
+
+            </div>
+
+        </footer>
+{% endblock %}
+

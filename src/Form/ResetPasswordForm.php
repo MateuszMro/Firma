@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Clients;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -56,7 +57,7 @@ class ResetPasswordForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Clients::class,
+            'data_class' => User::class,
         ]);
     }
 }

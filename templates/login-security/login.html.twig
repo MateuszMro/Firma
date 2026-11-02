@@ -1,0 +1,87 @@
+
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Logowanie{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+{% block content %}
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="login-icon">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h1>Logowanie</h1>
+            <p class="login-subtitle">Zaloguj się do swojego konta</p>
+
+            <form method="post">
+
+                <div class="form-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="email"
+                           id="email"
+                           value="{{ last_username }}"
+                           name="email"
+                           placeholder="Adres e-mail"
+                           autocomplete="email"
+                           autofocus
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password"
+                           name="password"
+                           placeholder="Hasło"
+                           autocomplete="current-password"
+                           required>
+                </div>
+                {% if error %}
+                    <div id="alert alert-danger">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+                <input
+                    type="hidden"
+                    name="_csrf_token"
+                    value="{{ csrf_token('authenticate') }}"
+                >
+
+                <div class="login-options">
+                    <label>
+                        <input type="checkbox" name="_remember_me">
+                        Zapamiętaj mnie
+                    </label>
+
+                    <a href="#">Nie pamiętasz hasła?</a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    Zaloguj się
+                </button>
+
+            </form>
+
+            <div class="login-divider">
+                <span>lub</span>
+            </div>
+
+            <button class="google-button" type="button">
+                Zaloguj się przez Google
+            </button>
+
+            <div class="register-link">
+                Nie masz konta?
+                <a href="/register">Zarejestruj się</a>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,124 @@
+
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}{{ session.title }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="gallery-session-page">
+
+        <a href="{{ path('app_gallery') }}" class="gallery-back">
+            ← Wróć do galerii
+        </a>
+
+        <div class="gallery-session-heading">
+            <h1>{{ session.title }}</h1>
+            <p>{{ session.description }}</p>
+        </div>
+
+        <div class="gallery-photos">
+            {% for photo in session.images %}
+                <div class="gallery-photo">
+                    <img
+                        src="{{ asset('uploads/gallery/' ~ photo.filename) }}"
+                        alt="{{ session.title }}"
+                        loading="lazy"
+                        class="gallery-slider-image"
+                        data-index="{{ loop.index0 }}"
+                    >
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    {# Podgląd zdjęć #}
+    <div id="galleryLightbox" class="gallery-lightbox">
+
+        <button type="button" class="lightbox-close">&times;</button>
+
+        <button type="button" class="lightbox-prev">&#10094;</button>
+
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="">
+            <div id="lightboxCounter" class="lightbox-counter"></div>
+        </div>
+
+        <button type="button" class="lightbox-next">&#10095;</button>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const images = Array.from(
+                document.querySelectorAll('.gallery-slider-image')
+            );
+
+            const lightbox = document.getElementById('galleryLightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const counter = document.getElementById('lightboxCounter');
+
+            const closeButton = document.querySelector('.lightbox-close');
+            const prevButton = document.querySelector('.lightbox-prev');
+            const nextButton = document.querySelector('.lightbox-next');
+
+            let currentIndex = 0;
+
+            if (!images.length) return;
+
+            function showImage(index) {
+                currentIndex = (index + images.length) % images.length;
+
+                lightboxImage.src = images[currentIndex].src;
+                lightboxImage.alt = images[currentIndex].alt;
+
+                counter.textContent =
+                    (currentIndex + 1) + ' / ' + images.length;
+            }
+
+            function openLightbox(index) {
+                showImage(index);
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            images.forEach(function (image, index) {
+                image.addEventListener('click', function () {
+                    openLightbox(index);
+                });
+            });
+
+            closeButton.addEventListener('click', closeLightbox);
+
+            prevButton.addEventListener('click', function () {
+                showImage(currentIndex - 1);
+            });
+
+            nextButton.addEventListener('click', function () {
+                showImage(currentIndex + 1);
+            });
+
+            lightbox.addEventListener('click', function (event) {
+                if (event.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (!lightbox.classList.contains('active')) return;
+
+                if (event.key === 'Escape') closeLightbox();
+                if (event.key === 'ArrowLeft') showImage(currentIndex - 1);
+                if (event.key === 'ArrowRight') showImage(currentIndex + 1);
+            });
+        });
+    </script>
+{% endblock %}

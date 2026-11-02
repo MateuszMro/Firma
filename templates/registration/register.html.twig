@@ -1,0 +1,106 @@
+
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Rejestracja{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
+{% endblock %}
+{% block content %}
+    <section class="register-wrapper">
+        <div class="register-container">
+
+            {# Lewa kolumna #}
+            <div class="register-left">
+                <div class="register-brand">MyPanel</div>
+                <h2>Dołącz do nas!</h2>
+                <p>
+                    Utwórz konto i korzystaj ze wszystkich możliwości
+                    naszego panelu.
+                </p>
+
+                <div class="register-decoration">
+                    <span>✦</span>
+                </div>
+            </div>
+
+            {# Prawa kolumna #}
+            <div class="register-right">
+                <h1>Utwórz konto</h1>
+                <p class="register-subtitle">
+                    Wypełnij formularz, aby się zarejestrować.
+                </p>
+
+                {{ form_start(registrationForm, {
+                    'attr': {'class': 'register-form'}
+                }) }}
+
+                <div class="register-field">
+                    {{ form_row(registrationForm.email, {
+                        'attr': {
+                            'placeholder': 'example@gmail.com',
+                            'autofocus': true,
+                            'class': 'register-input'
+                        },
+                        'label': 'Adres e-mail'
+                    }) }}
+                </div>
+
+                <div class="register-field">
+                    {{ form_row(registrationForm.login, {
+                        'attr': {
+                            'placeholder': 'Twoja nazwa użytkownika',
+                            'class': 'register-input'
+                        },
+                        'label': 'Login'
+                    }) }}
+                </div>
+
+                <div class="register-field">
+                    {{ form_row(registrationForm.plainPassword, {
+                        'attr': {
+                            'placeholder': '*********',
+                            'class': 'register-input'
+                        },
+                        'label': 'Hasło'
+                    }) }}
+                </div>
+
+                <div class="register-field">
+                    {{ form_row(registrationForm.confirmPassword, {
+                        'attr': {
+                            'placeholder': '*********',
+                            'class': 'register-input'
+                        },
+                        'label': 'Powtórz hasło'
+                    }) }}
+                </div>
+
+                <div class="register-terms">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    {{ form_label(registrationForm.agreeTerms) }}
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
+
+                {{ form_errors(registrationForm) }}
+
+                {% for flashMessage in app.flashes('error') %}
+                    <div class="register-error">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="register-button">
+                    Zarejestruj się
+                </button>
+
+                {{ form_end(registrationForm) }}
+
+                <div class="register-footer">
+                    Masz już konto?
+                    <a href="{{ path('app_login') }}">Zaloguj się</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

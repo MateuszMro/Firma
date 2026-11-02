@@ -1,0 +1,53 @@
+
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Rejestracja zakończona{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/success.css') }}">
+{% endblock %}
+{% block content %}
+    <section class="success-wrapper">
+        <div class="success-card">
+
+            <div class="success-icon">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="48"
+                     height="48"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+            </div>
+
+            <span class="success-brand">MyPanel</span>
+
+            <h1>Konto zostało utworzone!</h1>
+
+            <p class="success-description">
+                Gratulacje! Twoje konto zostało pomyślnie zarejestrowane.
+                Możesz teraz przejść do logowania i korzystać z naszego panelu.
+            </p>
+
+            <div class="success-info">
+                <strong>Co dalej?</strong>
+                <p>
+                    Zaloguj się za pomocą adresu e-mail i hasła,
+                    które podałeś podczas rejestracji.
+                </p>
+            </div>
+
+            <a href="{{ path('app_login') }}" class="success-button">
+                Przejdź do logowania
+            </a>
+
+            <a href="{{ path('homepage') }}" class="success-home">
+                Wróć na stronę główną
+            </a>
+
+        </div>
+    </section>
+{% endblock %}

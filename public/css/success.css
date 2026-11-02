@@ -1,0 +1,127 @@
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f5f6ff;
+}
+
+body {
+    min-height: 100vh;
+}
+.success-wrapper {
+    min-height: 80vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: #f4f5fb;
+}
+
+.success-card {
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    padding: 50px 45px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
+}
+
+.success-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9f8ef;
+    color: #35a66b;
+    border-radius: 50%;
+}
+
+.success-brand {
+    display: block;
+    color: #6558d3;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.success-card h1 {
+    color: #20243a;
+    font-size: 27px;
+    margin: 0 0 15px;
+}
+
+.success-description {
+    color: #85899b;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.success-info {
+    text-align: left;
+    background: #f6f5ff;
+    border-left: 4px solid #6558d3;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+}
+
+.success-info strong {
+    color: #34384e;
+    font-size: 14px;
+}
+
+.success-info p {
+    color: #777b8c;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 8px 0 0;
+}
+
+.success-button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #6558d3;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    transition: 0.2s;
+    box-sizing: border-box;
+}
+
+.success-button:hover {
+    background: #5145bd;
+    transform: translateY(-1px);
+}
+
+.success-home {
+    display: inline-block;
+    margin-top: 22px;
+    color: #6558d3;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.success-home:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+    .success-card {
+        padding: 35px 22px;
+    }
+
+    .success-card h1 {
+        font-size: 23px;
+    }
+}

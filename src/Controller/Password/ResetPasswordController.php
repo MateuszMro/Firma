@@ -3,6 +3,7 @@
 namespace App\Controller\Password;
 
 use App\Entity\Clients;
+use App\Entity\User;
 use App\Form\ResetPasswordForm;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -37,7 +38,7 @@ class ResetPasswordController extends AbstractController
             $login = $form->get('login')->getData();
 
             // Sprawdzenie, czy użytkownik o podanym loginie i emailu  istnieje
-            $existingUser = $entityManager->getRepository(Clients::class)->findOneBy([
+            $existingUser = $entityManager->getRepository(User::class)->findOneBy([
                 'login' => $login
             ]);
 
