@@ -41,8 +41,9 @@
                            required>
                 </div>
                 {% if error %}
-                    <div id="alert alert-danger">
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    <div class="login-error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>{{ error.messageKey|trans(error.messageData, 'security') }}</span>
                     </div>
                 {% endif %}
                 <input
@@ -57,7 +58,7 @@
                         Zapamiętaj mnie
                     </label>
 
-                    <a href="#">Nie pamiętasz hasła?</a>
+                    <a href="/reset-password">Nie pamiętasz hasła?</a>
                 </div>
 
                 <button type="submit" class="login-button">
@@ -67,13 +68,7 @@
 
             </form>
 
-            <div class="login-divider">
-                <span>lub</span>
-            </div>
 
-            <button class="google-button" type="button">
-                Zaloguj się przez Google
-            </button>
 
             <div class="register-link">
                 Nie masz konta?

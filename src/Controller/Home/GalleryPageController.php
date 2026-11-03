@@ -12,8 +12,10 @@ class GalleryPageController extends AbstractController
     #[Route('/gallery', name: 'app_gallery')]
     public function index(GallerySessionRepository $repository): Response
     {
+        $sessions = $repository->findBy([], ['id' => 'DESC']);
+
         return $this->render('pages/gallery.html.twig', [
-            'sessions' => $repository->findBy([], ['createdAt' => 'DESC']),
+            'sessions' => $sessions,
         ]);
     }
 

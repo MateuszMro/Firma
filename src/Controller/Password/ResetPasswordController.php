@@ -95,7 +95,7 @@ class ResetPasswordController extends AbstractController
 
             }
             else {
-                $this->addFlash('error', 'Podałeś zły email lub login.');
+                $this->addFlash('error', 'Podałeś zły e-mail lub login.');
                 return $this->redirectToRoute('app_reset_password');
 
             }

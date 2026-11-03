@@ -27,14 +27,14 @@ class GalleryAdminController extends AbstractController
             'sessions' => $sessions,
         ]);
     }
-    #[Route('/dodaj', name: 'admin_gallery_add')]
+    #[Route('/add', name: 'admin_gallery_add')]
     public function add(
         Request $request,
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger
     ): Response {
         $session = new GallerySession();
-
+        $session->setCreatedAt(date('d-m-Y'));
         $form = $this->createForm(GallerySessionType::class, $session);
         $form->handleRequest($request);
 
@@ -69,7 +69,7 @@ class GalleryAdminController extends AbstractController
             $entityManager->persist($session);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Sesja zdjęciowa została dodana.');
+            $this->addFlash('success', 'Zdjęcia zostały dodane.');
 
             return $this->redirectToRoute('admin_gallery_add');
         }
@@ -79,7 +79,7 @@ class GalleryAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/edytuj/{id}', name: 'admin_gallery_edit', requirements: ['id' => '\d+'])]
+    #[Route('/edit/{id}', name: 'admin_gallery_edit', requirements: ['id' => '\d+'])]
     public function edit(
         int $id,
         Request $request,
@@ -130,7 +130,7 @@ class GalleryAdminController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Sesja została zaktualizowana.');
+            $this->addFlash('success', 'Zdjęcia zostały zaktualizowane.');
 
             return $this->redirectToRoute('admin_gallery_edit', [
                 'id' => $session->getId(),
@@ -143,7 +143,7 @@ class GalleryAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/zdjecie/usun/{id}',
+    #[Route('/image/delete/{id}',
         name: 'admin_gallery_image_delete',
         requirements: ['id' => '\d+'],
         methods: ['POST']
@@ -188,7 +188,7 @@ class GalleryAdminController extends AbstractController
             'id' => $sessionId,
         ]);
     }
-    #[Route('/usun/{id}',
+    #[Route('/delete/{id}',
         name: 'admin_gallery_delete',
         requirements: ['id' => '\d+'],
         methods: ['POST']

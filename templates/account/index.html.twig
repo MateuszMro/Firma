@@ -1,0 +1,110 @@
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Moje konto{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/account.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="account-container">
+
+        <div class="account-header">
+            <div class="account-icon">
+                <i class="fa fa-user"></i>
+            </div>
+            <div>
+                <h1>Moje konto</h1>
+                <p>Zarządzaj swoimi danymi i ustawieniami konta.</p>
+            </div>
+        </div>
+
+
+        {% for message in app.flashes('danger') %}
+            <div class="account-alert danger">{{ message }}</div>
+        {% endfor %}
+
+        <section class="account-card">
+            <h2>Dane użytkownika</h2>
+
+            <div class="account-row">
+                <span>Login</span>
+                <strong>{{ account.login ?? 'Nie podano' }}</strong>
+            </div>
+
+            <div class="account-row">
+                <span>Adres e-mail</span>
+                <strong>{{ account.email }}</strong>
+            </div>
+
+            <div class="account-row">
+                <span>Hasło</span>
+                <strong>••••••••</strong>
+            </div>
+
+            <div class="account-row">
+                <span>Data utworzenia konta</span>
+                <strong>
+                    {% if account.createdDate %}
+                        {{ account.createdDate|date('d.m.Y') }}
+                    {% else %}
+                        Brak danych
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="account-row">
+                <span>Przypisana rola</span>
+                <strong>
+                    {% if 'ROLE_OWNER' in account.roles %}
+                        Właściciel
+                    {% elseif 'ROLE_ADMIN' in account.roles %}
+                        Administrator
+                    {% else %}
+                        Użytkownik
+                    {% endif %}
+                </strong>
+            </div>
+
+            <a href="/change-password" class="account-password-link">
+                <i class="fa fa-lock"></i>
+                Zmień hasło
+            </a>
+        </section>
+
+        <section class="account-card danger-card">
+            <h2>Uwaga!</h2>
+            <p>
+                Usunięcie konta jest nieodwracalne. Twoje konto zostanie
+                usunięte z serwisu.
+            </p>
+
+            <form method="post"
+                  action="{{ path('account_index') }}"
+                  onsubmit="return confirm('Czy na pewno chcesz trwale usunąć swoje konto?');">
+
+                <input type="hidden" name="_token"
+                       value="{{ csrf_token('delete_account') }}">
+
+                <label for="delete-password">
+                    Potwierdź hasłem, że chcesz usunąć konto:
+                </label>
+
+                <input
+                    type="password"
+                    id="delete-password"
+                    name="password"
+                    placeholder="Wpisz swoje aktualne hasło"
+                    required
+                    autocomplete="current-password"
+                >
+
+                <button type="submit" class="delete-account-button">
+                    <i class="fa fa-trash"></i>
+                    Usuń moje konto
+                </button>
+            </form>
+        </section>
+
+    </div>
+{% endblock %}

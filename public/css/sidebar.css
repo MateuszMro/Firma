@@ -1,7 +1,7 @@
 
-    /* =================================
-       GŁÓWNY UKŁAD
-    ================================= */
+/* =================================
+   GŁÓWNY UKŁAD
+================================= */
 
 html,
 body {
@@ -49,16 +49,43 @@ body {
     overflow: visible;
 }
 
+/* Logo */
+
 .navbar-brand {
+    position: relative;
+    z-index: 2;
+
     font-size: 25px;
     font-weight: bold;
     white-space: nowrap;
     flex-shrink: 0;
+
+    color: white;
+    text-decoration: none;
 }
 
 .navbar-brand span {
     color: #818cf8;
 }
+
+.navbar-brand:hover {
+    color: white;
+}
+
+/* Kontener linków i konta */
+
+.navbar-mobile-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    flex: 1;
+    gap: 25px;
+    min-width: 0;
+}
+
+/* Linki nawigacji */
 
 .navbar-menu {
     display: flex;
@@ -107,7 +134,7 @@ body {
     display: inline-block;
 }
 
-/* Przycisk awatara */
+/* Przycisk użytkownika */
 
 .account-trigger {
     appearance: none;
@@ -184,7 +211,7 @@ body {
 }
 
 /* =================================
-   ROZWIJANE MENU
+   ROZWIJANE MENU KONTA
 ================================= */
 
 .account-menu {
@@ -193,8 +220,13 @@ body {
     position: absolute;
     top: calc(100% + 12px);
     right: 0;
+    left: auto;
 
     width: 245px;
+    max-width: calc(100vw - 30px);
+    max-height: 70vh;
+    overflow-y: auto;
+
     padding: 8px;
 
     background: #ffffff !important;
@@ -207,13 +239,11 @@ body {
     z-index: 99999;
 }
 
-/* Otwarte menu */
-
 .account-dropdown.is-open .account-menu {
     display: block;
 }
 
-/* Linki */
+/* Linki menu konta */
 
 .account-menu a {
     display: flex;
@@ -251,172 +281,448 @@ body {
     background: #fff1f1 !important;
     color: #dc4545 !important;
 }
-           /* FOOTER */
 
-       .main-footer {
-           width: 100%;
-           margin-top: auto;
-           background: #172033;
-           color: #cbd5e1;
-       }
+.account-menu-heading {
+    padding: 10px 15px 6px;
+    color: #8b85b5;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-    .footer-container {
-        width: 100%;
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 45px 35px 20px;
-    }
-
-    .footer-top {
-        display: grid;
-        grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-        gap: 40px;
-        padding-bottom: 35px;
-    }
-
-    /* BRAND */
-
-    .footer-brand h2 {
-        margin: 0 0 12px;
-        color: #ffffff;
-        font-size: 25px;
-        font-weight: 700;
-    }
-
-    .footer-brand h2 span {
-        color: #818cf8;
-    }
-
-    .footer-brand p {
-        max-width: 280px;
-        color: #94a3b8;
-        font-size: 13px;
-        line-height: 1.7;
-    }
-
-    /* LINKS */
-
-    .footer-links,
-    .footer-contact {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 11px;
-    }
-
-    .footer-links h3,
-    .footer-contact h3 {
-        margin: 0 0 7px;
-        color: #ffffff;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .footer-links a,
-    .footer-contact a {
-        color: #94a3b8;
-        font-size: 13px;
-        text-decoration: none;
-        transition: color .2s ease;
-    }
-
-    .footer-links a:hover,
-    .footer-contact a:hover {
-        color: #818cf8;
-    }
-
-    .footer-contact p {
-        margin: 0;
-        color: #94a3b8;
-        font-size: 13px;
-        line-height: 1.6;
-    }
-
-    /* BOTTOM */
-
-    .footer-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-
-        padding-top: 20px;
-        border-top: 1px solid #2c374c;
-    }
-
-    .footer-bottom p {
-        margin: 0;
-        color: #64748b;
-        font-size: 12px;
-    }
-
-    .footer-status {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #94a3b8;
-        font-size: 12px;
-    }
-
-    .status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #22c55e;
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 900px) {
-        .footer-top {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-        }
-    }
-
-    @media (max-width: 550px) {
-        .footer-container {
-            padding: 35px 20px 20px;
-        }
-
-        .footer-top {
-            grid-template-columns: 1fr;
-            gap: 25px;
-        }
-
-        .footer-bottom {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    }
 /* =================================
-   RESPONSYWNOŚĆ
+   MENU HAMBURGEROWE
+================================= */
+
+.navbar-toggle {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+    padding: 9px;
+
+    border: none;
+    background: transparent;
+
+    cursor: pointer;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.navbar-toggle span {
+    display: block;
+    width: 24px;
+    height: 2.5px;
+
+    background: #818cf8;
+    border-radius: 5px;
+
+    transition: 0.3s ease;
+}
+
+/* Animacja hamburgera na X */
+
+.navbar-toggle.active span:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+}
+
+.navbar-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggle.active span:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+}
+
+/* =================================
+   FOOTER
+================================= */
+
+.main-footer {
+    width: 100%;
+    margin-top: auto;
+    background: #172033;
+    color: #cbd5e1;
+}
+
+.footer-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 45px 35px 20px;
+}
+
+.footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 40px;
+    padding-bottom: 35px;
+}
+
+/* BRAND */
+
+.footer-brand h2 {
+    margin: 0 0 12px;
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.footer-brand h2 span {
+    color: #818cf8;
+}
+
+.footer-brand p {
+    max-width: 280px;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* LINKS */
+
+.footer-links,
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 11px;
+}
+
+.footer-links h3,
+.footer-contact h3 {
+    margin: 0 0 7px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.footer-links a,
+.footer-contact a {
+    color: #94a3b8;
+    font-size: 13px;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover {
+    color: #818cf8;
+}
+
+.footer-contact p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* BOTTOM */
+
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding-top: 20px;
+    border-top: 1px solid #2c374c;
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.footer-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+}
+
+/* =================================
+   RESPONSYWNOŚĆ FOOTERA
 ================================= */
 
 @media (max-width: 900px) {
-    .navbar {
-        flex-wrap: wrap;
-        padding: 15px 20px;
-    }
-
-    .navbar-menu {
-        order: 3;
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .navbar-user {
-        margin-left: auto;
+    .footer-top {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
     }
 }
 
-@media (max-width: 600px) {
-    .account-info {
+@media (max-width: 550px) {
+    .footer-container {
+        padding: 35px 20px 20px;
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* =================================
+   NAVBAR - WERSJA KOMPUTEROWA
+================================= */
+
+@media (min-width: 769px) {
+
+    .navbar {
+        position: relative;
+        min-height: 75px;
+    }
+
+    .navbar-brand {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Linki dokładnie na środku ekranu */
+
+    .navbar-menu {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        width: max-content;
+    }
+
+    .navbar-user {
+        position: relative;
+        z-index: 2;
+        margin-left: auto;
+    }
+
+    .navbar-mobile-content {
+        display: contents;
+    }
+}
+
+/* =================================
+   NAVBAR - WERSJA MOBILNA
+================================= */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        position: relative;
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 10px;
+
+        min-height: 68px;
+        height: auto;
+
+        padding: 12px 20px;
+
+        overflow: visible;
+    }
+
+    /* Logo */
+
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+
+        min-height: 42px;
+        line-height: 1;
+        font-size: 23px;
+
+        transform: none;
+        transition: none;
+    }
+
+    .navbar-brand:hover,
+    .navbar-brand:focus,
+    .navbar-brand:active {
+        transform: none;
+        outline: none;
+    }
+
+    /* Hamburger */
+
+    .navbar-toggle {
+        display: flex;
+        margin-left: auto;
+
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        min-height: 42px;
+    }
+
+    /* Rozwijana zawartość nawigacji */
+
+    .navbar-mobile-content {
         display: none;
+
+        flex-direction: column;
+        align-items: stretch;
+
+        width: 100%;
+        flex: 0 0 100%;
+
+        margin: 0;
+        padding-top: 12px;
+
+        gap: 15px;
+
+        overflow: visible;
+    }
+
+    .navbar-mobile-content.mobile-open {
+        display: flex;
+    }
+
+    /* Linki jeden pod drugim */
+
+    .navbar-menu {
+        position: static;
+        transform: none;
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        width: 100%;
+        gap: 8px;
+    }
+
+    .navbar-menu .nav-item {
+        display: flex;
+        width: 100%;
+        padding: 13px 15px;
+    }
+
+    /* Obszar użytkownika */
+
+    .navbar-user {
+        position: relative;
+
+        display: flex;
+        width: 100%;
+
+        justify-content: flex-start;
+        overflow: visible;
+    }
+
+    .account-dropdown {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    .account-trigger {
+        display: flex;
+        width: 100%;
+    }
+
+    .account-info {
+        display: flex;
+    }
+
+    /* MENU KONTA - NAKŁADKA */
+
+    .account-menu {
+        display: none;
+
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: auto;
+
+        width: 260px;
+        max-width: calc(100vw - 40px);
+        max-height: 70vh;
+
+        overflow-y: auto;
+
+        margin: 0;
+        padding: 8px;
+
+        background: #ffffff !important;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+
+        z-index: 99999;
+    }
+
+    .account-dropdown.is-open .account-menu {
+        display: block;
+    }
+
+    /* Nie przycinamy rozwijanego menu */
+
+    #sidebar,
+    .navbar,
+    .navbar-mobile-content,
+    .navbar-user,
+    .account-dropdown {
+        overflow: visible;
+    }
+}
+
+/* =================================
+   BARDZO WĄSKIE TELEFONY
+================================= */
+
+@media (max-width: 400px) {
+
+    .navbar {
+        padding: 12px 15px;
+    }
+
+    .navbar-brand {
+        font-size: 21px;
+    }
+
+    .account-info strong {
+        font-size: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .footer-container {
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     .account-menu {
-        right: 0;
-        width: 230px;
+        max-width: calc(100vw - 30px);
     }
 }

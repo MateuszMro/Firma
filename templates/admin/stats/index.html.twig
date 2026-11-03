@@ -1,0 +1,66 @@
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Statystyki strony{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/stats.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="stats-page">
+
+        <div class="stats-heading">
+            <h1>Statystyki strony</h1>
+            <p>Podsumowanie odwiedzin Twojej strony</p>
+        </div>
+
+        <div class="stats-cards">
+
+            <div class="stats-card">
+                <span>Wszystkie wejścia</span>
+                <strong>{{ totalVisits }}</strong>
+            </div>
+
+            <div class="stats-card">
+                <span>Unikalni odwiedzający</span>
+                <strong>{{ uniqueVisitors }}</strong>
+            </div>
+
+            <div class="stats-card">
+                <span>Odwiedziny dzisiaj</span>
+                <strong>{{ todayVisits }}</strong>
+            </div>
+
+        </div>
+
+        <div class="stats-week">
+            <h2>Odwiedziny w tym tygodniu</h2>
+
+            <div class="weekly-chart">
+                {% for day in weeklyStats %}
+                    <div class="chart-column">
+
+                        <strong>{{ day.visits }}</strong>
+
+                        <div class="chart-bar-wrapper">
+                            <div
+                                class="chart-bar"
+                                style="height: {{ day.visits > 0 ? (day.visits / max(1, max(weeklyStats|map(s => s.visits))) * 100) : 0 }}%;"
+                            ></div>
+                        </div>
+
+                        <span>{{ day.day }}</span>
+
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <a href="/" class="stats-back">
+            Wróć do strony głównej
+        </a>
+
+    </div>
+
+{% endblock %}

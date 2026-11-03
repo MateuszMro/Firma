@@ -66,10 +66,26 @@
             const nextButton = document.querySelector('.lightbox-next');
 
             let currentIndex = 0;
+            let zoom = 1;
+            let translateX = 0;
+            let translateY = 0;
+            let isDragging = false;
+            let startX = 0;
+            let startY = 0;
 
             if (!images.length) return;
+            function resetZoom() {
+                zoom = 1;
+                translateX = 0;
+                translateY = 0;
+
+                lightboxImage.style.transform =
+                    'translate(0px, 0px) scale(1)';
+                lightboxImage.style.cursor = 'zoom-in';
+            }
 
             function showImage(index) {
+                resetZoom();
                 currentIndex = (index + images.length) % images.length;
 
                 lightboxImage.src = images[currentIndex].src;
@@ -118,6 +134,64 @@
                 if (event.key === 'Escape') closeLightbox();
                 if (event.key === 'ArrowLeft') showImage(currentIndex - 1);
                 if (event.key === 'ArrowRight') showImage(currentIndex + 1);
+            });
+            // Powiększanie kółkiem myszy
+            lightbox.addEventListener('wheel', function(event) {
+                if (!lightbox.classList.contains('active')) return;
+
+                event.preventDefault();
+
+                const step = 0.2;
+
+                if (event.deltaY < 0) {
+                    zoom = Math.min(zoom + step, 4);
+                } else {
+                    zoom = Math.max(zoom - step, 1);
+                }
+
+                if (zoom === 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+
+                updateZoom();
+            }, { passive: false });
+
+            function updateZoom() {
+                lightboxImage.style.transform =
+                    `translate(${translateX}px, ${translateY}px) scale(${zoom})`;
+
+                lightboxImage.style.cursor =
+                    zoom > 1 ? 'grab' : 'zoom-in';
+            }
+
+            // Przesuwanie powiększonego zdjęcia
+            lightboxImage.addEventListener('mousedown', function(event) {
+                if (zoom <= 1) return;
+
+                isDragging = true;
+                startX = event.clientX - translateX;
+                startY = event.clientY - translateY;
+
+                lightboxImage.style.cursor = 'grabbing';
+                event.preventDefault();
+            });
+
+            document.addEventListener('mousemove', function(event) {
+                if (!isDragging) return;
+
+                translateX = event.clientX - startX;
+                translateY = event.clientY - startY;
+
+                updateZoom();
+            });
+
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+
+                if (zoom > 1) {
+                    lightboxImage.style.cursor = 'grab';
+                }
             });
         });
     </script>

@@ -10,12 +10,12 @@
         <div class="gallery-heading">
             <div>
                 <h1>Galeria</h1>
-                <p>Sesje zdjęciowe naszych produktów</p>
+                <p>Zdjęcia naszych produktów</p>
             </div>
 
             {% if is_granted('ROLE_OWNER') %}
                 <a href="{{ path('admin_gallery_add') }}" class="gallery-add-button">
-                    + Dodaj sesję
+                    + Dodaj zdjęcia
                 </a>
             {% endif %}
         </div>
@@ -38,6 +38,7 @@
                         <h3>{{ session.title }}</h3>
                         <p>{{ session.description|striptags|slice(0, 110) }}{% if session.description|length > 110 %}...{% endif %}</p>
                         <span>{{ session.images|length }} zdjęć</span>
+                        <div class="add-date">Dodano {{ session.createdAt }}</div>
                     </div>
                 </a>
             {% else %}

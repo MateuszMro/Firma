@@ -6,7 +6,49 @@ body {
     padding: 0;
     background: #f5f6ff;
 }
+/* Błędy walidacji formularza rejestracji */
+.registration-errors {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 
+    padding: 14px 16px;
+    margin: 15px 0 20px;
+
+    background: #fff0f0;
+    border: 1px solid #f3caca;
+    border-radius: 10px;
+
+    color: #b83232;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.6;
+    animation: errorAppear 0.25s ease;
+}
+
+.registration-errors > i {
+    margin-top: 3px;
+    font-size: 18px;
+    color: #d94b4b;
+    flex-shrink: 0;
+}
+
+.registration-errors ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.registration-errors li {
+    margin-bottom: 4px;
+}
+
+.registration-errors li:last-child {
+    margin-bottom: 0;
+}
+
+.registration-errors ul:empty {
+    display: none;
+}
 body {
     min-height: 100vh;
 }

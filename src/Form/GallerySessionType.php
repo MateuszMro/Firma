@@ -38,7 +38,7 @@ class GallerySessionType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => 'Tytuł',
                 'attr' => [
-                    'placeholder' => 'Np. Kolekcja wiosenna',
+                    'placeholder' => 'Tytuł opisujący produkt',
                 ],
             ])
             ->add('description', TextareaType::class, [
