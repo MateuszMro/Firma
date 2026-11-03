@@ -21,7 +21,7 @@ class GalleryAdminController extends AbstractController
     #[Route('', name: 'admin_gallery_admin_panel_gallery', methods: ['GET'])]
     public function index(GallerySessionRepository $repository): Response
     {
-        $sessions = $repository->findBy([], ['createdAt' => 'DESC']);
+        $sessions = $repository->findBy([], ['id' => 'DESC']);
 
         return $this->render('admin/gallery/admin-panel-gallery.html.twig', [
             'sessions' => $sessions,

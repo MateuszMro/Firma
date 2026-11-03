@@ -20,7 +20,7 @@ class GallerySessionType extends AbstractType
         $imageConstraints = [
             new Assert\All([
                 new Assert\Image(
-                    maxSize: '8M',
+                    maxSize: '500M',
                     mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
                     mimeTypesMessage: 'Dozwolone są pliki JPG, PNG i WEBP.'
                 ),
