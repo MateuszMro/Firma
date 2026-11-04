@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
                 $user->setEmail($email);
                 $user->setLogin($login);
                 //$user->setConfirmCode(bin2hex(random_bytes(16)));
-                $user->setConfirmAccount('Aktywne');
+                $user->setConfirmAccount('Nieaktywne');
                 $user->setIP($registerIP);
                 // Encode the plain password
                 $user->setPassword(

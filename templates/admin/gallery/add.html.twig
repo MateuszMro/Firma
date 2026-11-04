@@ -1,52 +1,86 @@
+
 {% extends 'pages/home.html.twig' %}
 
 {% block title %}Dodaj zdjęcia{% endblock %}
+
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
 {% endblock %}
+
 {% block content %}
-    <div class="admin-gallery-page">
+    <div class="admin-gallery-page admin-gallery-add-page">
+
+        <a href="{{ path('admin_gallery_admin_panel_gallery') }}" class="gallery-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Wróć do zarządzania galerią
+        </a>
 
         <div class="admin-gallery-heading">
-            <h1>Dodaj zdjęcia</h1>
-            <p>Dodaj tytuł, opis i zdjęcia produktu.</p>
+            <div>
+                <span class="admin-gallery-eyebrow">PANEL ADMINISTRACYJNY</span>
+                <h1>Dodaj zdjęcia</h1>
+                <p>Utwórz nową sesję i dodaj do niej zdjęcia.</p>
+            </div>
         </div>
 
         {% for message in app.flashes('success') %}
-            <div class="gallery-success">{{ message }}</div>
+            <div class="gallery-success">
+                <i class="fa-solid fa-circle-check"></i>
+                {{ message }}
+            </div>
         {% endfor %}
 
-        {{ form_start(form, {
-            attr: {
-                class: 'admin-gallery-form',
-                enctype: 'multipart/form-data'
-            }
-        }) }}
+        <section class="admin-gallery-form-section admin-gallery-add-section">
 
-        <div class="form-field">
-            {{ form_label(form.title) }}
-            {{ form_widget(form.title) }}
-            {{ form_errors(form.title) }}
-        </div>
+            <div class="admin-section-heading">
+                <div>
+                    <h2>Nowa sesja zdjęciowa</h2>
+                    <p>Uzupełnij informacje i wybierz zdjęcia do galerii.</p>
+                </div>
 
-        <div class="form-field">
-            {{ form_label(form.description) }}
-            {{ form_widget(form.description) }}
-            {{ form_errors(form.description) }}
-        </div>
+            </div>
 
-        <div class="form-field">
-            {{ form_label(form.images) }}
-            {{ form_widget(form.images) }}
-            {{ form_errors(form.images) }}
-            <small>Możesz zaznaczyć kilka zdjęć jednocześnie. JPG, PNG lub WEBP, maksymalnie 8 MB na zdjęcie.</small>
-        </div>
+            {{ form_start(form, {
+                attr: {
+                    class: 'admin-gallery-edit-form',
+                    enctype: 'multipart/form-data'
+                }
+            }) }}
 
-        <button type="submit" class="gallery-submit-button">
-            Zapisz sesję
-        </button>
+            <div class="form-field">
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title) }}
+                {{ form_errors(form.title) }}
+            </div>
 
-        {{ form_end(form) }}
+            <div class="form-field">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+                {{ form_errors(form.description) }}
+            </div>
+
+            <div class="form-field admin-gallery-file-field">
+                {{ form_label(form.images) }}
+                {{ form_widget(form.images) }}
+                {{ form_errors(form.images) }}
+                <small>
+                    Możesz zaznaczyć kilka zdjęć jednocześnie.
+                    Dozwolone formaty: JPG, PNG lub WEBP.
+                    Maksymalny rozmiar jednego zdjęcia: 8 MB.
+                </small>
+            </div>
+
+            <div class="admin-gallery-add-actions">
+                <button type="submit" class="gallery-submit-button">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Zapisz sesję
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+
+        </section>
 
     </div>
 {% endblock %}

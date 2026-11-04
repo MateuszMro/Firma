@@ -3,40 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Application{% endblock %}</title>
+    <meta name="theme-color" content="#090a0b">
+
+    <title>{% block title %}ZUH Grzegorz Mroczkowski{% endblock %}</title>
+
     {% block basestylesheets %}
         <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     {% endblock %}
 
     {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
     {% block basejs %}
-            <script type="module" src={{ asset('js/base.js') }}></script>
+        <script type="module" src="{{ asset('js/base.js') }}"></script>
     {% endblock %}
 
     {% block javascript %}
-
     {% endblock %}
 </head>
 
 <body>
 {% block body %}
-    <div id="sidebar">
-        {% block sidebar %}
-        {% endblock %}
-    </div>
+{% endblock %}
 
-    <div id="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+{% block footer %}
 {% endblock %}
 </body>
-
-<footer>
-    {% block footer %}
-    {% endblock %}
-</footer>
 </html>

@@ -2,32 +2,28 @@
 {% extends 'pages/home.html.twig' %}
 
 {% block title %}Rejestracja{% endblock %}
+
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 {% endblock %}
+
 {% block content %}
+
     <section class="register-wrapper">
+
         <div class="register-container">
 
-            {# Lewa kolumna #}
-            <div class="register-left">
-                <div class="register-brand">MyPanel</div>
-                <h2>Dołącz do nas!</h2>
-                <p>
-                    Utwórz konto i korzystaj ze wszystkich możliwości
-                    naszego panelu.
-                </p>
+            <div class="register-card">
 
-                <div class="register-decoration">
-                    <span>✦</span>
+                <div class="register-icon">
+                    <span>GM</span>
                 </div>
-            </div>
 
-            {# Prawa kolumna #}
-            <div class="register-right">
                 <h1>Utwórz konto</h1>
+
                 <p class="register-subtitle">
-                    Wypełnij formularz, aby się zarejestrować.
+                    Dołącz do nas i korzystaj z możliwości naszego panelu.
                 </p>
 
                 {{ form_start(registrationForm, {
@@ -58,7 +54,7 @@
                 <div class="register-field">
                     {{ form_row(registrationForm.plainPassword, {
                         'attr': {
-                            'placeholder': '*********',
+                            'placeholder': 'Wpisz hasło',
                             'class': 'register-input'
                         },
                         'label': 'Hasło'
@@ -68,7 +64,7 @@
                 <div class="register-field">
                     {{ form_row(registrationForm.confirmPassword, {
                         'attr': {
-                            'placeholder': '*********',
+                            'placeholder': 'Powtórz hasło',
                             'class': 'register-input'
                         },
                         'label': 'Powtórz hasło'
@@ -84,7 +80,6 @@
                 {% if not registrationForm.vars.valid %}
                     <div class="registration-errors">
                         <i class="fa-solid fa-circle-exclamation"></i>
-
                         <div>
                             {{ form_errors(registrationForm) }}
                         </div>
@@ -98,16 +93,22 @@
                 {% endfor %}
 
                 <button type="submit" class="register-button">
-                    Zarejestruj się
+                    <i class="fa-solid fa-user-plus"></i>
+                    Utwórz konto
                 </button>
 
+                {{ form_end(registrationForm) }}
 
                 <div class="register-footer">
                     Masz już konto?
                     <a href="{{ path('app_login') }}">Zaloguj się</a>
                 </div>
+
             </div>
-            {{ form_end(registrationForm) }}
+
         </div>
+
     </section>
+
 {% endblock %}
+

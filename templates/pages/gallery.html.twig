@@ -1,9 +1,11 @@
 {% extends 'pages/home.html.twig' %}
 
 {% block title %}Galeria{% endblock %}
+
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
 {% endblock %}
+
 {% block content %}
     <div class="gallery-page">
 
@@ -29,6 +31,7 @@
                         <img
                             src="{{ asset('uploads/gallery/' ~ session.images|first.filename) }}"
                             alt="{{ session.title }}"
+                            loading="lazy"
                         >
                     {% else %}
                         <div class="gallery-no-image">Brak zdjęcia</div>
@@ -36,9 +39,18 @@
 
                     <div class="gallery-card-info">
                         <h3>{{ session.title }}</h3>
-                        <p>{{ session.description|striptags|slice(0, 110) }}{% if session.description|length > 110 %}...{% endif %}</p>
-                        <span>{{ session.images|length }} zdjęć</span>
-                        <div class="add-date">Dodano {{ session.createdAt }}</div>
+
+                        <p>
+                            {{ session.description|striptags|slice(0, 110) }}{% if session.description|striptags|length > 110 %}...{% endif %}
+                        </p>
+
+                        <span>
+                            {{ session.images|length }} zdjęć
+                        </span>
+
+                        <div class="add-date">
+                            Dodano {{ session.createdAt|date('d.m.Y') }}
+                        </div>
                     </div>
                 </a>
             {% else %}

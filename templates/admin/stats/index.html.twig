@@ -1,8 +1,10 @@
+
 {% extends 'pages/home.html.twig' %}
 
 {% block title %}Statystyki strony{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/stats.css') }}">
 {% endblock %}
 
@@ -10,56 +12,100 @@
 
     <div class="stats-page">
 
-        <div class="stats-heading">
-            <h1>Statystyki strony</h1>
-            <p>Podsumowanie odwiedzin Twojej strony</p>
+        <div class="stats-header">
+            <div class="stats-logo">
+                <span>GM</span>
+            </div>
+
+            <div class="stats-heading">
+                <span class="stats-eyebrow">PANEL WŁAŚCICIELA</span>
+                <h1>Statystyki strony</h1>
+                <p>Monitoruj ruch i aktywność odwiedzających Twoją stronę.</p>
+            </div>
         </div>
 
         <div class="stats-cards">
 
             <div class="stats-card">
-                <span>Wszystkie wejścia</span>
+                <div class="stats-card-top">
+
+                    <span class="stats-card-label">ŁĄCZNIE</span>
+                </div>
+
+                <span class="stats-card-title">Wszystkie wejścia</span>
                 <strong>{{ totalVisits }}</strong>
+                <p>Całkowita liczba odwiedzin strony</p>
             </div>
 
             <div class="stats-card">
-                <span>Unikalni odwiedzający</span>
+                <div class="stats-card-top">
+
+                    <span class="stats-card-label">UŻYTKOWNICY</span>
+                </div>
+
+                <span class="stats-card-title">Unikalni odwiedzający</span>
                 <strong>{{ uniqueVisitors }}</strong>
+                <p>Liczba rozpoznanych odwiedzających</p>
             </div>
 
             <div class="stats-card">
-                <span>Odwiedziny dzisiaj</span>
+                <div class="stats-card-top">
+
+                    <span class="stats-card-label">DZISIAJ</span>
+                </div>
+
+                <span class="stats-card-title">Odwiedziny dzisiaj</span>
                 <strong>{{ todayVisits }}</strong>
+                <p>Liczba wejść w bieżącym dniu</p>
             </div>
 
         </div>
 
         <div class="stats-week">
-            <h2>Odwiedziny w tym tygodniu</h2>
+
+            <div class="stats-section-heading">
+
+
+                <div>
+                    <h2>Odwiedziny w tym tygodniu</h2>
+                    <p>Aktywność odwiedzających w poszczególnych dniach</p>
+                </div>
+            </div>
 
             <div class="weekly-chart">
+
+                {% set maxVisits = 1 %}
+                {% for day in weeklyStats %}
+                    {% set maxVisits = max(maxVisits, day.visits) %}
+                {% endfor %}
+
                 {% for day in weeklyStats %}
                     <div class="chart-column">
 
-                        <strong>{{ day.visits }}</strong>
+                        <strong class="chart-value">{{ day.visits }}</strong>
 
                         <div class="chart-bar-wrapper">
                             <div
                                 class="chart-bar"
-                                style="height: {{ day.visits > 0 ? (day.visits / max(1, max(weeklyStats|map(s => s.visits))) * 100) : 0 }}%;"
+                                style="height: {{ day.visits / maxVisits * 100 }}%;"
                             ></div>
                         </div>
 
-                        <span>{{ day.day }}</span>
+                        <span class="chart-day">{{ day.day }}</span>
 
                     </div>
                 {% endfor %}
+
             </div>
+
         </div>
 
-        <a href="/" class="stats-back">
-            Wróć do strony głównej
-        </a>
+        <div class="stats-back-wrapper">
+            <a href="/" class="stats-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Wróć do strony głównej
+            </a>
+        </div>
 
     </div>
 

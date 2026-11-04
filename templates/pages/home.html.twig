@@ -1,26 +1,22 @@
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Strona główna{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-{% endblock %}
+{% block title %}ZUH Grzegorz Mroczkowski | Strona główna{% endblock %}
 
 {% block body %}
-    <div class="body">
+    <div class="site-shell">
 
-        <div id="sidebar">
-
+        <header id="sidebar" class="site-header">
             {% block sidebar %}
-                <nav class="navbar">
+                <nav class="navbar" aria-label="Nawigacja główna">
 
-                    <div class="navbar-brand">
-                        My<span>Panel</span>
-                    </div>
+                    <a href="/" class="navbar-brand">
+                        <span class="brand-mark">GM</span>
+                        <span class="brand-copy">
+                    <strong>ZUH</strong>
+                    <small>GRZEGORZ MROCZKOWSKI</small>
+                </span>
+                    </a>
 
-                    {# Przycisk hamburgera – widoczny na telefonach #}
                     <button type="button"
                             class="navbar-toggle"
                             id="navbarToggle"
@@ -32,21 +28,14 @@
                         <span></span>
                     </button>
 
-                    {# Zawartość rozwijanego menu #}
                     <div class="navbar-mobile-content" id="navbarMobileContent">
 
                         <div class="navbar-menu">
-
-                            <a href="/"
-                               class="nav-item {{ app.request.attributes.get('_route') == 'homepage' ? 'active' : '' }}">
-                                🏠 Strona główna
-                            </a>
-
-                            <a href="/gallery"
-                               class="nav-item {{ app.request.attributes.get('_route') == 'app_gallery' ? 'active' : '' }}">
-                                🖼️ Galeria
-                            </a>
-
+                            <a href="/" class="nav-item">Strona główna</a>
+                            <a href="/#o-nas" class="nav-item">O nas</a>
+                            <a href="/#oferta"class="nav-item">Oferta</a>
+                            <a href="/#kontakt"class="nav-item">Kontakt</a>
+                            <a href="/gallery" class="nav-item">Galeria</a>
                         </div>
 
                         <div class="navbar-user">
@@ -61,38 +50,35 @@
                                             aria-expanded="false"
                                             aria-controls="accountMenu">
 
-                                        <span class="account-avatar">
-                                            {{ app.user.email|slice(0, 1)|upper }}
-                                        </span>
+                            <span class="account-avatar">
+                                {{ app.user.email|slice(0, 1)|upper }}
+                            </span>
 
                                         <span class="account-info">
-                                            <strong>{{ app.user.email }}</strong>
+                                <strong>{{ app.user.email }}</strong>
 
-                                            <small>
-                                                {% if is_granted('ROLE_OWNER') %}
-                                                    Właściciel
-                                                {% elseif is_granted('ROLE_ADMIN') %}
-                                                    Administrator
-                                                {% else %}
-                                                    Użytkownik
-                                                {% endif %}
-                                            </small>
-                                        </span>
+                                <small>
+                                    {% if is_granted('ROLE_OWNER') %}
+                                        Właściciel
+                                    {% elseif is_granted('ROLE_ADMIN') %}
+                                        Administrator
+                                    {% else %}
+                                        Użytkownik
+                                    {% endif %}
+                                </small>
+                            </span>
 
                                         <span class="account-arrow">⌄</span>
-
                                     </button>
 
                                     <div class="account-menu" id="accountMenu">
 
                                         <a href="{{ path('account_index') }}">
-                                            <span>🔒</span>
-                                            Moje konto
+                                            <span>◈</span> Moje konto
                                         </a>
 
                                         <a href="{{ path('app_change_password') }}">
-                                            <span>🔒</span>
-                                            Zmień hasło
+                                            <span>◈</span> Zmień hasło
                                         </a>
 
                                         {% if is_granted('ROLE_OWNER') %}
@@ -100,121 +86,328 @@
                                             <div class="account-menu-divider"></div>
 
                                             <div class="account-menu-heading">
-                                                Funkcje administracyjne
+                                                Panel zarządzania
                                             </div>
 
                                             <a href="/owner">
-                                                <span>⚙️</span>
-                                                Owner dashboard
+                                                <span>⚙</span> Panel właściciela
                                             </a>
 
                                             <a href="{{ path('admin_stats') }}">
-                                                <span>⚙️</span>
-                                                Statystyki odwiedzin
+                                                <span>⚙</span> Statystyki odwiedzin
                                             </a>
 
                                             <a href="{{ path('admin_gallery_admin_panel_gallery') }}">
-                                                <span>⚙️</span>
-                                                Zarządzaj galerią
+                                                <span>⚙</span> Zarządzaj galerią
                                             </a>
 
                                         {% endif %}
 
                                         <div class="account-menu-divider"></div>
 
-                                        <a href="{{ path('app_logout') }}"
-                                           class="account-logout">
-                                            <span>↪</span>
-                                            Wyloguj się
+                                        <a href="{{ path('app_logout') }}" class="account-logout">
+                                            <span>↗</span> Wyloguj się
                                         </a>
 
                                     </div>
-
                                 </div>
-
-                            {% else %}
-
-                                <a href="{{ path('app_login') }}" class="nav-item">
-                                    ⚙️ Logowanie
-                                </a>
 
                             {% endif %}
 
                         </div>
-
                     </div>
-
                 </nav>
             {% endblock %}
+        </header>
 
-        </div>
 
-        {# Obsługa menu hamburgerowego i menu konta #}
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
+        <main id="content" class="site-content">
 
-                // Menu hamburgerowe
-                const navbarToggle = document.getElementById('navbarToggle');
-                const navbarContent = document.getElementById('navbarMobileContent');
+            {% block content %}
 
-                if (navbarToggle && navbarContent) {
+                    {# =========================SEKCJA GŁÓWNA========================= #}
 
-                    navbarToggle.addEventListener('click', function () {
+                    <section class="hero-section">
+                        <div class="hero-grid"></div>
 
-                        const isOpen = navbarContent.classList.toggle('mobile-open');
+                        <div class="hero-inner">
+                            <div class="hero-copy">
 
-                        navbarToggle.classList.toggle('active', isOpen);
+                                <div class="eyebrow">
+                                    <span></span>
+                                    ZUH · GRZEGORZ MROCZKOWSKI
+                                </div>
 
-                        navbarToggle.setAttribute(
-                            'aria-expanded',
-                            isOpen ? 'true' : 'false'
-                        );
+                                <h1>
+                                    Solidność, której<br>
+                                    <em>możesz zaufać.</em>
+                                </h1>
 
-                        navbarToggle.setAttribute(
-                            'aria-label',
-                            isOpen ? 'Zamknij menu' : 'Otwórz menu'
-                        );
-                    });
+                                <p class="hero-lead">
+                                    Witamy na stronie ZUH Grzegorz Mroczkowski.
+                                    Poznaj naszą działalność, ofertę oraz dotychczasowe realizacje.
+                                </p>
 
-                    // Zamknij menu po kliknięciu linku
-                    navbarContent.querySelectorAll('a').forEach(function (link) {
+                                <div class="hero-actions">
+                                    <a href="/gallery" class="button-gold">
+                                        Zobacz naszą galerię <span>↗</span>
+                                    </a>
 
-                        link.addEventListener('click', function () {
+                                    <a href="#kontakt" class="button-quiet">
+                                        Skontaktuj się <span>↓</span>
+                                    </a>
+                                </div>
 
-                            navbarContent.classList.remove('mobile-open');
-                            navbarToggle.classList.remove('active');
+                            </div>
 
-                            navbarToggle.setAttribute('aria-expanded', 'false');
-                            navbarToggle.setAttribute('aria-label', 'Otwórz menu');
+                            <div class="hero-side">
+                                <div class="hero-monogram">
+                                    G<span>M</span>
+                                </div>
 
-                        });
+                                <div class="hero-side-line"></div>
 
-                    });
+                                <div class="hero-side-caption">
+                                    PROFESJONALIZM<br>
+                                    OD PIERWSZEGO KONTAKTU
+                                </div>
+                            </div>
+                        </div>
 
-                    // Zamknij hamburger klawiszem Escape
-                    document.addEventListener('keydown', function (event) {
+                        <div class="hero-bottom">
+                            <span>
+                                RZETELNOŚĆ <i>·</i>
+                                DOŚWIADCZENIE <i>·</i>
+                                JAKOŚĆ
+                            </span>
 
-                        if (event.key === 'Escape') {
+                            <a href="#o-nas" class="scroll-note">
+                                PRZEWIŃ, ABY ODKRYĆ <b>↓</b>
+                            </a>
+                        </div>
+                    </section>
 
-                            navbarContent.classList.remove('mobile-open');
-                            navbarToggle.classList.remove('active');
 
-                            navbarToggle.setAttribute('aria-expanded', 'false');
-                            navbarToggle.setAttribute('aria-label', 'Otwórz menu');
+                    {# =========================O NAS========================= #}
 
-                        }
+                    <section id="o-nas" class="company-section">
 
-                    });
+                        <div class="section-kicker">O NAS</div>
 
-                }
+                        <div class="intro-grid">
 
-                // Rozwijane menu konta
-                const dropdown = document.getElementById('accountDropdown');
-                const trigger = document.getElementById('accountTrigger');
+                            <h2>
+                                Kim jesteśmy<br>
+                                <em>i co nas wyróżnia.</em>
+                            </h2>
 
-                if (!dropdown || !trigger) {
-                    return;
-                }
+                            <div class="intro-text">
+                                <p>
+                                    ZUH Grzegorz Mroczkowski to firma zajmująca się
+                                    [TUTAJ WPISZ CZYM ZAJMUJE SIĘ TWOJA FIRMA].
+                                    Stawiamy na profesjonalizm, rzetelność oraz
+                                    indywidualne podejście do każdego klienta.
+                                </p>
+
+                                <p>
+                                    Naszą działalność opieramy na doświadczeniu,
+                                    zaangażowaniu i dbałości o jakość wykonywanych usług.
+                                    Zależy nam na długotrwałej współpracy i zadowoleniu klientów.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="company-features">
+
+                            <div class="feature-item">
+                                <span>01</span>
+                                <h3>Doświadczenie</h3>
+                                <p>
+                                    [Wpisz kilka słów o swoim doświadczeniu.]
+                                </p>
+                            </div>
+
+                            <div class="feature-item">
+                                <span>02</span>
+                                <h3>Rzetelność</h3>
+                                <p>
+                                    [Opisz, dlaczego klienci mogą Ci zaufać.]
+                                </p>
+                            </div>
+
+                            <div class="feature-item">
+                                <span>03</span>
+                                <h3>Jakość</h3>
+                                <p>
+                                    [Opisz standard wykonywanych usług.]
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    {# =========================OFERTA========================= #}
+
+                    <section id="oferta" class="company-section offer-section">
+
+                        <div class="section-kicker">OFERTA</div>
+
+                        <h2>
+                            Co możemy<br>
+                            <em>dla Ciebie zrobić.</em>
+                        </h2>
+
+                        <p class="section-intro">
+                            Zapoznaj się z naszą ofertą. Chętnie pomożemy
+                            dobrać rozwiązanie dopasowane do Twoich potrzeb.
+                        </p>
+
+                        <div class="offer-grid">
+
+                            <div class="offer-card">
+                                <span class="offer-number">01</span>
+                                <h3>[Pierwsza usługa]</h3>
+                                <p>
+                                    [Tutaj wpisz opis pierwszej usługi i zakres wykonywanych prac.]
+                                </p>
+                            </div>
+
+                            <div class="offer-card">
+                                <span class="offer-number">02</span>
+                                <h3>[Druga usługa]</h3>
+                                <p>
+                                    [Tutaj wpisz opis drugiej usługi.]
+                                </p>
+                            </div>
+
+                            <div class="offer-card">
+                                <span class="offer-number">03</span>
+                                <h3>[Trzecia usługa]</h3>
+                                <p>
+                                    [Tutaj wpisz opis trzeciej usługi.]
+                                </p>
+                            </div>
+
+                            <div class="offer-card">
+                                <span class="offer-number">04</span>
+                                <h3>[Czwarta usługa]</h3>
+                                <p>
+                                    [Tutaj wpisz opis czwartej usługi.]
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="offer-footer">
+                            <p>Nie znalazłeś tego, czego szukasz?</p>
+                            <a href="#kontakt" class="button-gold">
+                                Zapytaj o ofertę <span>↗</span>
+                            </a>
+                        </div>
+
+                    </section>
+
+
+                    {# =========================KONTAKT========================= #}
+
+                    <section id="kontakt" class="company-section contact-section">
+
+                        <div class="section-kicker">KONTAKT</div>
+
+                        <h2>
+                            Skontaktuj się<br>
+                            <em>z nami.</em>
+                        </h2>
+
+                        <p class="section-intro">
+                            Masz pytania, potrzebujesz wyceny lub chcesz rozpocząć
+                            współpracę? Zapraszamy do kontaktu.
+                        </p>
+
+                        <div class="contact-grid">
+
+                            <div class="contact-item">
+                                <span>TELEFON</span>
+                                <h3>[Numer telefonu]</h3>
+                                <p>[Godziny dostępności]</p>
+                            </div>
+
+                            <div class="contact-item">
+                                <span>E-MAIL</span>
+                                <h3>[Adres e-mail]</h3>
+                                <p>Napisz do nas – odpowiemy na wiadomość.</p>
+                            </div>
+
+                            <div class="contact-item">
+                                <span>ADRES</span>
+                                <h3>[Ulica i numer]</h3>
+                                <p>[Kod pocztowy i miejscowość]</p>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+            {% endblock %}
+
+        </main>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const navbarToggle = document.getElementById('navbarToggle');
+            const navbarContent = document.getElementById('navbarMobileContent');
+
+            function closeMobileMenu() {
+                if (!navbarToggle || !navbarContent) return;
+
+                navbarContent.classList.remove('mobile-open');
+                navbarToggle.classList.remove('active');
+                navbarToggle.setAttribute('aria-expanded', 'false');
+                navbarToggle.setAttribute('aria-label', 'Otwórz menu');
+            }
+
+            if (navbarToggle && navbarContent) {
+
+                navbarToggle.addEventListener('click', function () {
+
+                    const isOpen = navbarContent.classList.toggle('mobile-open');
+
+                    navbarToggle.classList.toggle('active', isOpen);
+
+                    navbarToggle.setAttribute(
+                        'aria-expanded',
+                        isOpen ? 'true' : 'false'
+                    );
+
+                    navbarToggle.setAttribute(
+                        'aria-label',
+                        isOpen ? 'Zamknij menu' : 'Otwórz menu'
+                    );
+                });
+
+                navbarContent.querySelectorAll('a').forEach(function (link) {
+                    link.addEventListener('click', closeMobileMenu);
+                });
+            }
+
+
+            const dropdown = document.getElementById('accountDropdown');
+            const trigger = document.getElementById('accountTrigger');
+
+            function closeAccountMenu() {
+                if (!dropdown || !trigger) return;
+
+                dropdown.classList.remove('is-open');
+                trigger.setAttribute('aria-expanded', 'false');
+            }
+
+            if (dropdown && trigger) {
 
                 trigger.addEventListener('click', function (event) {
 
@@ -226,68 +419,61 @@
                         'aria-expanded',
                         isOpen ? 'true' : 'false'
                     );
-
                 });
 
                 document.addEventListener('click', function (event) {
-
                     if (!dropdown.contains(event.target)) {
-
-                        dropdown.classList.remove('is-open');
-                        trigger.setAttribute('aria-expanded', 'false');
-
+                        closeAccountMenu();
                     }
-
                 });
+            }
 
-                document.addEventListener('keydown', function (event) {
 
-                    if (event.key === 'Escape') {
+            document.addEventListener('keydown', function (event) {
 
-                        dropdown.classList.remove('is-open');
-                        trigger.setAttribute('aria-expanded', 'false');
-
-                    }
-
-                });
+                if (event.key === 'Escape') {
+                    closeMobileMenu();
+                    closeAccountMenu();
+                }
 
             });
-        </script>
 
-        <div id="content">
+        });
+    </script>
 
-            {% block content %}
-                content
-            {% endblock %}
-
-        </div>
-
-    </div>
 {% endblock %}
 
 
 {% block footer %}
 
-    <footer class="main-footer">
+    <footer class="main-footer" id="footer-contact">
 
         <div class="footer-container">
 
             <div class="footer-top">
 
                 <div class="footer-brand">
-                    <h2>My<span>Panel</span></h2>
+
+                    <a href="/" class="footer-logo">
+                        <span>GM</span>ZUH
+                    </a>
 
                     <p>
-                        Zarządzaj swoim kontem i wszystkim, co ważne,
-                        w jednym miejscu.
+                        Grzegorz Mroczkowski<br>
+                        <small>Rzetelność. Jakość. Zaufanie.</small>
                     </p>
+
                 </div>
+
 
                 <div class="footer-links">
 
                     <h3>Nawigacja</h3>
 
-                    <a href="/">Dashboard</a>
+                    <a href="/">Strona główna</a>
+                    <a href="/#o-nas">O nas</a>
+                    <a href="/#oferta">Oferta</a>
+                    <a href="/#kontakt">Kontakt</a>
                     <a href="/gallery">Galeria</a>
 
                     {% if is_granted('ROLE_OWNER') %}
@@ -296,58 +482,49 @@
 
                 </div>
 
-                <div class="footer-links">
 
-                    <h3>Konto</h3>
 
-                    {% if app.user %}
 
-                        <a href="{{ path('app_change_password') }}">
-                            Zmień hasło
-                        </a>
+                {% if app.user %}
+                    <div class="footer-links">
 
-                        <a href="{{ path('app_logout') }}">
-                            Wyloguj się
-                        </a>
+                    <h3>Twoje konto</h3>
+                        <a href="{{ path('account_index') }}">Moje konto</a>
+                        <a href="{{ path('app_change_password') }}">Zmień hasło</a>
+                        <a href="{{ path('app_logout') }}">Wyloguj się</a>
+                    </div>
+                {% endif %}
 
-                    {% else %}
 
-                        <a href="{{ path('app_login') }}">
-                            Logowanie
-                        </a>
 
-                        <a href="{{ path('app_register') }}">
-                            Rejestracja
-                        </a>
-
-                    {% endif %}
-
-                </div>
 
                 <div class="footer-contact">
 
                     <h3>Kontakt</h3>
 
-                    <p>Masz pytania lub potrzebujesz pomocy?</p>
+                    <p>Zapraszamy do kontaktu.</p>
 
-                    <a href="mailto:support@mypanel.pl">
-                        support@mypanel.pl
-                    </a>
+                    <span class="contact-note">
+                    Dane kontaktowe można uzupełnić w tym miejscu.
+                </span>
 
                 </div>
 
             </div>
 
+
             <div class="footer-bottom">
 
                 <p>
-                    © {{ "now"|date("Y") }} MyPanel. Wszelkie prawa zastrzeżone.
+                    © {{ "now"|date("Y") }}
+                    ZUH Grzegorz Mroczkowski.
+                    Wszelkie prawa zastrzeżone.
                 </p>
 
                 <span class="footer-status">
-                    <span class="status-dot"></span>
-                    System działa poprawnie
-                </span>
+                <span class="status-dot"></span>
+                Strona internetowa
+            </span>
 
             </div>
 

@@ -1,166 +1,396 @@
+
+    /* =====================================
+       MOJE KONTO – CZARNO-ZŁOTY STYL GM
+    ===================================== */
+
 .account-container {
-    max-width: 850px;
-    margin: 40px auto;
-    padding: 20px;
-    color: #29283a;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 65px 25px;
+    box-sizing: border-box;
+    color: #f5f5f5;
 }
 
-.account-header {
+/* Nagłówek */
+
+.account-heading {
     display: flex;
     align-items: center;
-    gap: 18px;
-    margin-bottom: 30px;
-}
-
-.account-header h1 {
-    margin: 0 0 5px;
-    font-size: 28px;
-}
-
-.account-header p {
-    margin: 0;
-    color: #888;
+    gap: 22px;
+    margin-bottom: 35px;
 }
 
 .account-icon {
-    width: 58px;
-    height: 58px;
+    width: 76px;
+    height: 76px;
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #e9e7ff;
-    color: #6558d3;
-    border-radius: 16px;
+
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #1b1b1b, #080808);
+
+    color: #d4af37;
+    font-family: Georgia, serif;
     font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    box-shadow: 0 0 18px rgba(212, 175, 55, 0.12);
 }
+
+.account-icon span {
+    transform: translateX(1px);
+}
+
+.account-eyebrow {
+    color: #d4af37;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.account-heading h1 {
+    margin: 5px 0;
+    color: #d4af37;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.account-heading p {
+    margin: 0;
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* Karty */
 
 .account-card {
-    background: white;
-    padding: 28px;
-    border-radius: 16px;
     margin-bottom: 25px;
-    box-shadow: 0 4px 18px rgba(40, 35, 90, 0.06);
+    padding: 30px;
+
+    background: linear-gradient(145deg, #151515, #090909);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 14px;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
 }
 
-.account-card h2 {
+/* Nagłówek karty */
+
+.account-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.account-card-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 10px;
+
+    background: rgba(212, 175, 55, 0.08);
+    color: #d4af37;
+    font-size: 19px;
+}
+
+.account-card-heading h2 {
+    margin: 0 0 5px;
+    color: #d4af37;
     font-size: 20px;
-    margin: 0 0 22px;
+}
+
+.account-card-heading p {
+    margin: 0;
+    color: #888;
+    font-size: 12px;
+}
+
+/* Dane użytkownika */
+
+.account-details {
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .account-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 20px;
-    padding: 15px 0;
-    border-bottom: 1px solid #eeeef5;
+
+    padding: 17px 5px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .account-row span {
-    color: #777;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #aaa;
+    font-size: 14px;
+}
+
+.account-row span i {
+    width: 17px;
+    color: #d4af37;
+    text-align: center;
 }
 
 .account-row strong {
+    color: #f5f5f5;
+    font-size: 14px;
+    font-weight: 600;
     text-align: right;
     overflow-wrap: anywhere;
 }
 
+/* Zmiana hasła */
+
 .account-password-link {
-    display: inline-flex;
+    min-height: 48px;
+    display: flex;
     align-items: center;
-    gap: 9px;
-    margin-top: 22px;
-    color: #6558d3;
-    font-weight: 600;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 25px;
+    padding: 0 18px;
+
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+
+    background: linear-gradient(135deg, #d4af37, #b58b20);
+    color: #090909;
+
+    font-size: 14px;
+    font-weight: 700;
     text-decoration: none;
+
+    transition: all .25s ease;
 }
 
 .account-password-link:hover {
-    color: #4940a5;
+    background: linear-gradient(135deg, #edcf68, #d4af37);
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.18);
+    transform: translateY(-2px);
 }
+
+.account-link-arrow {
+    margin-left: auto;
+}
+
+/* Usuwanie konta */
 
 .danger-card {
-    border: 1px solid #f1dada;
+    border-color: rgba(190, 65, 65, 0.4);
 }
 
-.danger-card h2 {
-    color: #c03939;
+.danger-icon {
+    border-color: rgba(220, 70, 70, 0.5);
+    background: rgba(180, 35, 35, 0.1);
+    color: #e36b6b;
 }
 
-.danger-card p {
-    color: #777;
-    line-height: 1.6;
-    margin-bottom: 22px;
+.danger-card .account-card-heading h2 {
+    color: #e36b6b;
 }
 
-.danger-card label {
+.danger-description {
+    margin: 0 0 22px;
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.danger-card form label {
     display: block;
     margin-bottom: 9px;
+    color: #ddd;
+    font-size: 13px;
     font-weight: 600;
 }
 
-.danger-card input {
+.danger-card form input[type="password"] {
     display: block;
     width: 100%;
+    height: 49px;
+    padding: 0 15px;
     box-sizing: border-box;
-    padding: 13px 14px;
-    border: 1px solid #ddd;
-    border-radius: 9px;
-    margin-bottom: 17px;
+
+    background: #090909;
+    border: 1px solid #444;
+    border-radius: 8px;
+
+    color: #fff;
     font-size: 14px;
+    outline: none;
+
+    transition: border-color .25s, box-shadow .25s;
 }
 
-.danger-card input:focus {
-    outline: none;
-    border-color: #6558d3;
+.danger-card form input[type="password"]::placeholder {
+    color: #777;
 }
+
+.danger-card form input[type="password"]:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+/* Przycisk usuwania */
 
 .delete-account-button {
-    background: #c94343;
-    color: white;
-    border: none;
-    border-radius: 9px;
-    padding: 13px 20px;
+    width: 100%;
+    min-height: 49px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 17px;
+    padding: 10px 18px;
+
+    background: rgba(170, 35, 35, 0.12);
+    border: 1px solid #a83b3b;
+    border-radius: 8px;
+
+    color: #e87575;
+    font-size: 14px;
+    font-weight: 700;
+
     cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s;
+    transition: all .25s ease;
 }
 
 .delete-account-button:hover {
-    background: #a92f2f;
+    background: #a83232;
+    border-color: #d94b4b;
+    color: #fff;
+    box-shadow: 0 5px 18px rgba(180, 35, 35, 0.2);
 }
+
+/* Komunikaty */
 
 .account-alert {
-    padding: 13px 16px;
-    border-radius: 9px;
-    margin-bottom: 20px;
-}
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-.account-alert.success {
-    background: #e5f6eb;
-    color: #247342;
+    margin-bottom: 22px;
+    padding: 14px 17px;
+
+    border-radius: 8px;
+    font-size: 13px;
 }
 
 .account-alert.danger {
-    background: #fdeaea;
-    color: #a92f2f;
+    background: rgba(180, 35, 35, 0.12);
+    border: 1px solid rgba(220, 70, 70, 0.5);
+    color: #ff8585;
 }
 
-@media (max-width: 600px) {
+/* Telefon */
+
+@media (max-width: 650px) {
     .account-container {
-        margin: 20px auto;
-        padding: 12px;
+        padding: 40px 15px;
+    }
+
+    .account-heading {
+        gap: 15px;
+    }
+
+    .account-icon {
+        width: 62px;
+        height: 62px;
+        font-size: 21px;
+    }
+
+    .account-heading h1 {
+        font-size: 26px;
     }
 
     .account-card {
-        padding: 20px;
+        padding: 22px 17px;
     }
 
     .account-row {
-        flex-direction: column;
-        gap: 6px;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .account-row span {
+        font-size: 12px;
     }
 
     .account-row strong {
-        text-align: left;
+        max-width: 55%;
+        font-size: 12px;
     }
 }
+
+@media (max-width: 400px) {
+    .account-row {
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .account-row strong {
+        max-width: 100%;
+        text-align: left;
+        padding-left: 27px;
+    }
+}
+    .account-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 25px;
+    }
+
+    .account-card-heading h2 {
+        margin: 0 0 5px;
+    }
+
+    .account-card-heading p {
+        margin: 0;
+        color: #999;
+        font-size: 13px;
+    }
+
+    .account-card-icon {
+        width: 58px;
+        height: 58px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(212, 175, 55, 0.55);
+        border-radius: 12px;
+        background: linear-gradient(145deg, #242016, #100f0c);
+        color: #d4af37;
+        font-size: 23px;
+        box-shadow: 0 0 18px rgba(212, 175, 55, 0.08);
+    }
+
+    .account-card-icon.danger-icon {
+        color: #e05252;
+        border-color: rgba(224, 82, 82, 0.5);
+        background: linear-gradient(145deg, #291515, #100c0c);
+        box-shadow: 0 0 18px rgba(224, 82, 82, 0.08);
+    }

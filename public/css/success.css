@@ -1,127 +1,176 @@
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-    background: #f5f6ff;
-}
 
-body {
-    min-height: 100vh;
-}
+/* =========================================
+   POTWIERDZENIE REJESTRACJI
+========================================= */
+
 .success-wrapper {
-    min-height: 80vh;
     width: 100%;
+    min-height: 75vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 40px 20px;
-    background: #f4f5fb;
+    justify-content: center;
+    padding: 55px 20px;
+    box-sizing: border-box;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(201, 164, 92, .07) 0%,
+        transparent 65%
+    );
 }
 
 .success-card {
     width: 100%;
-    max-width: 520px;
-    background: white;
-    padding: 50px 45px;
-    border-radius: 18px;
+    max-width: 490px;
+    padding: 45px 40px;
+    box-sizing: border-box;
+    color: #eee;
+    background: linear-gradient(145deg, #151719, #0c0d0e);
+    border: 1px solid rgba(201, 164, 92, .35);
+    border-radius: 5px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, .35);
     text-align: center;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
 }
 
-.success-icon {
-    width: 90px;
-    height: 90px;
-    margin: 0 auto 25px;
+.success-logo {
+    width: 68px;
+    height: 68px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #e9f8ef;
-    color: #35a66b;
+    margin: 0 auto 17px;
+    color: #c9a45c;
+    border: 1px solid #c9a45c;
     border-radius: 50%;
+    font-family: Georgia, serif;
+    font-size: 25px;
+    letter-spacing: 2px;
 }
 
-.success-brand {
+.success-eyebrow {
     display: block;
-    color: #6558d3;
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    color: #c9a45c;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.success-card .success-icon {
+    width: 66px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 23px;
+    color: #c9a45c;
+    background: rgba(201, 164, 92, .08);
+    border: 1px solid rgba(201, 164, 92, .5);
+    border-radius: 50%;
+    font-size: 27px;
 }
 
 .success-card h1 {
-    color: #20243a;
-    font-size: 27px;
-    margin: 0 0 15px;
+    margin: 0 0 17px;
+    color: #e5c783;
+    font-family: Georgia, serif;
+    font-size: clamp(25px, 4vw, 31px);
+    font-weight: 400;
 }
 
-.success-description {
-    color: #85899b;
-    font-size: 15px;
-    line-height: 1.7;
-    margin-bottom: 25px;
-}
-
-.success-info {
-    text-align: left;
-    background: #f6f5ff;
-    border-left: 4px solid #6558d3;
-    padding: 18px;
-    border-radius: 8px;
-    margin-bottom: 28px;
-}
-
-.success-info strong {
-    color: #34384e;
-    font-size: 14px;
-}
-
-.success-info p {
-    color: #777b8c;
+.success-card .success-description {
+    margin: 0 auto 25px;
+    color: #aaa;
     font-size: 13px;
-    line-height: 1.6;
-    margin: 8px 0 0;
+    line-height: 1.8;
 }
 
-.success-button {
-    display: block;
+.success-card .success-info {
+    margin-bottom: 25px;
+    padding: 17px;
+    color: #c7c2b7;
+    background: rgba(201, 164, 92, .06);
+    border: 1px solid rgba(201, 164, 92, .2);
+    border-radius: 3px;
+    text-align: left;
+}
+
+.success-card .success-info strong {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 9px;
+    color: #e5c783;
+    font-size: 13px;
+}
+
+.success-card .success-info strong i {
+    color: #c9a45c;
+}
+
+.success-card .success-info p {
+    margin: 0;
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.success-card .success-button {
     width: 100%;
-    padding: 14px;
-    background: #6558d3;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    transition: 0.2s;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 20px;
     box-sizing: border-box;
-}
-
-.success-button:hover {
-    background: #5145bd;
-    transform: translateY(-1px);
-}
-
-.success-home {
-    display: inline-block;
-    margin-top: 22px;
-    color: #6558d3;
-    font-size: 14px;
-    font-weight: 600;
+    color: #090a0b;
+    background: #c9a45c;
+    border: 1px solid #c9a45c;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 700;
     text-decoration: none;
+    transition: .25s ease;
 }
 
-.success-home:hover {
-    text-decoration: underline;
+.success-card .success-button:hover {
+    color: #090a0b;
+    background: #e5c783;
+    border-color: #e5c783;
+    box-shadow: 0 5px 18px rgba(201, 164, 92, .2);
+}
+
+.success-card .success-home {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 22px;
+    color: #c9a45c;
+    font-size: 12px;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.success-card .success-home:hover {
+    color: #e5c783;
 }
 
 @media (max-width: 500px) {
+    .success-wrapper {
+        min-height: 70vh;
+        padding: 35px 14px;
+    }
+
     .success-card {
         padding: 35px 22px;
     }
 
     .success-card h1 {
-        font-size: 23px;
+        font-size: 25px;
+    }
+
+    .success-card .success-description {
+        font-size: 12px;
     }
 }

@@ -1,269 +1,280 @@
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-    background: #f5f6ff;
-}
-/* Błędy walidacji formularza rejestracji */
-.registration-errors {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
 
-    padding: 14px 16px;
-    margin: 15px 0 20px;
+    /* =====================================
+       REJESTRACJA – CZARNO-ZŁOTY STYL GM
+    ===================================== */
 
-    background: #fff0f0;
-    border: 1px solid #f3caca;
-    border-radius: 10px;
-
-    color: #b83232;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.6;
-    animation: errorAppear 0.25s ease;
-}
-
-.registration-errors > i {
-    margin-top: 3px;
-    font-size: 18px;
-    color: #d94b4b;
-    flex-shrink: 0;
-}
-
-.registration-errors ul {
-    margin: 0;
-    padding-left: 18px;
-}
-
-.registration-errors li {
-    margin-bottom: 4px;
-}
-
-.registration-errors li:last-child {
-    margin-bottom: 0;
-}
-
-.registration-errors ul:empty {
-    display: none;
-}
-body {
-    min-height: 100vh;
-}
 .register-wrapper {
     width: 100%;
-    min-height: 80vh;
+    min-height: 75vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 40px 20px;
-    background: #f4f5fb;
+    justify-content: center;
+    padding: 55px 20px;
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(212, 175, 55, 0.07),
+            transparent 65%
+        );
 }
 
 .register-container {
     width: 100%;
-    max-width: 1000px;
-    min-height: 650px;
-    display: grid;
-    grid-template-columns: 0.85fr 1.15fr;
-    background: #fff;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-}
-
-/* Lewa kolumna */
-
-.register-left {
-    background: linear-gradient(145deg, #6558d3, #4537a8);
-    color: white;
-    padding: 55px 40px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    position: relative;
-    overflow: hidden;
 }
 
-.register-brand {
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 70px;
+.register-card {
+    width: 100%;
+    max-width: 490px;
+    padding: 40px 42px;
+    box-sizing: border-box;
+
+    background: linear-gradient(145deg, #151515, #090909);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 16px;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.65),
+        0 0 25px rgba(212, 175, 55, 0.06);
+
+    color: #f5f5f5;
+    text-align: center;
 }
 
-.register-left h2 {
-    font-size: 32px;
-    margin-bottom: 15px;
-}
+/* Monogram GM */
 
-.register-left p {
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.7;
-    font-size: 15px;
-}
+.register-icon {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 20px;
 
-.register-decoration {
-    position: absolute;
-    bottom: -70px;
-    right: -40px;
-    width: 230px;
-    height: 230px;
-    border: 35px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid #d4af37;
     border-radius: 50%;
+
+    background: linear-gradient(145deg, #1b1b1b, #080808);
+
+    color: #d4af37;
+    font-family: Georgia, serif;
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    box-shadow:
+        0 0 15px rgba(212, 175, 55, 0.15),
+        inset 0 0 12px rgba(212, 175, 55, 0.06);
 }
 
-.register-decoration span {
-    position: absolute;
-    top: -35px;
-    left: 30px;
-    font-size: 65px;
-    color: rgba(255, 255, 255, 0.3);
+.register-icon span {
+    transform: translateX(1px);
 }
 
-/* Prawa kolumna */
+/* Nagłówek */
 
-.register-right {
-    padding: 45px 55px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.register-right h1 {
-    color: #20243a;
-    font-size: 30px;
-    margin: 0 0 8px;
+.register-card h1 {
+    margin: 0 0 10px;
+    color: #d4af37;
+    font-size: 29px;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 .register-subtitle {
-    color: #85899b;
-    margin-bottom: 30px;
+    margin: 0 0 28px;
+    color: #aaa;
     font-size: 14px;
+    line-height: 1.6;
 }
 
-/* Pola formularza */
+/* Formularz */
 
-.register-form .register-field {
+.register-form {
+    width: 100%;
+    text-align: left;
+}
+
+.register-field {
     margin-bottom: 17px;
 }
 
 .register-field label {
     display: block;
-    color: #34384e;
-    font-weight: 600;
-    font-size: 14px;
     margin-bottom: 8px;
+    color: #d4af37;
+    font-size: 13px;
+    font-weight: 600;
 }
 
-.register-field input {
+.register-field .register-input {
     display: block;
     width: 100%;
-    padding: 13px 15px;
-    border: 1px solid #e0e2eb;
-    border-radius: 8px;
-    font-size: 14px;
-    outline: none;
-    transition: 0.2s;
+    height: 49px;
+    padding: 0 15px;
     box-sizing: border-box;
+
+    background: #090909;
+    border: 1px solid #333;
+    border-radius: 8px;
+
+    color: #fff;
+    font-size: 14px;
+
+    outline: none;
+    transition: border-color .25s, box-shadow .25s;
 }
 
-.register-field input:focus {
-    border-color: #6558d3;
-    box-shadow: 0 0 0 3px rgba(101, 88, 211, 0.1);
+.register-field .register-input::placeholder {
+    color: #777;
 }
 
-/* Zgody */
+.register-field .register-input:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+/* Błędy pól formularza */
+
+.register-field ul,
+.registration-errors ul {
+    margin: 7px 0 0;
+    padding-left: 18px;
+    color: #ff8585;
+    font-size: 12px;
+}
+
+/* Zgoda */
 
 .register-terms {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 9px;
     margin: 20px 0;
-    font-size: 13px;
-    color: #55596b;
+
+    color: #bbb;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
 }
 
-.register-terms input {
-    accent-color: #6558d3;
-    width: 16px;
-    height: 16px;
+.register-terms input[type="checkbox"] {
+    flex-shrink: 0;
+    margin-top: 3px;
+    accent-color: #d4af37;
+    cursor: pointer;
+}
+
+.register-terms label {
+    cursor: pointer;
+}
+
+/* Błędy rejestracji */
+
+.registration-errors,
+.register-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    margin: 15px 0;
+    padding: 12px 14px;
+
+    background: rgba(180, 35, 35, 0.12);
+    border: 1px solid rgba(220, 70, 70, 0.5);
+    border-radius: 8px;
+
+    color: #ff8585;
+    font-size: 13px;
+    text-align: left;
+}
+
+.registration-errors i {
+    flex-shrink: 0;
+    margin-top: 2px;
 }
 
 /* Przycisk */
 
 .register-button {
     width: 100%;
-    padding: 14px;
-    border: none;
+    min-height: 51px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border: 1px solid #d4af37;
     border-radius: 8px;
-    background: #6558d3;
-    color: white;
+
+    background: linear-gradient(135deg, #d4af37, #b58b20);
+    color: #090909;
+
     font-size: 15px;
     font-weight: 700;
+    letter-spacing: .5px;
+
     cursor: pointer;
-    transition: 0.2s;
+    transition: all .25s ease;
 }
 
 .register-button:hover {
-    background: #5145bd;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #edcf68, #d4af37);
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+    transform: translateY(-2px);
 }
 
-/* Błędy */
-
-.register-error,
-.register-field ul {
-    color: #bd3030;
-    font-size: 13px;
-    margin-bottom: 12px;
+.register-button:active {
+    transform: translateY(0);
 }
 
-.register-field ul {
-    padding-left: 18px;
-}
-
-/* Stopka */
+/* Stopka formularza */
 
 .register-footer {
-    text-align: center;
     margin-top: 25px;
-    color: #777b8c;
-    font-size: 14px;
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(212, 175, 55, 0.18);
+
+    color: #999;
+    font-size: 13px;
 }
 
 .register-footer a {
-    color: #6558d3;
-    font-weight: 700;
+    color: #d4af37;
     text-decoration: none;
+    transition: color .2s;
 }
 
 .register-footer a:hover {
+    color: #fff;
     text-decoration: underline;
 }
 
-/* Responsywność */
+/* Telefon */
 
-@media (max-width: 750px) {
-    .register-container {
-        grid-template-columns: 1fr;
+@media (max-width: 550px) {
+    .register-wrapper {
+        min-height: 70vh;
+        padding: 35px 15px;
     }
 
-    .register-left {
-        padding: 30px;
-        min-height: 220px;
+    .register-card {
+        padding: 32px 22px;
     }
 
-    .register-brand {
-        margin-bottom: 25px;
-    }
-
-    .register-left h2 {
+    .register-card h1 {
         font-size: 25px;
     }
 
-    .register-right {
-        padding: 35px 25px;
+    .register-icon {
+        width: 68px;
+        height: 68px;
+        font-size: 23px;
     }
 }

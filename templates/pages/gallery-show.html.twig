@@ -1,9 +1,9 @@
-
 {% extends 'pages/home.html.twig' %}
 
 {% block title %}{{ session.title }}{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
 {% endblock %}
 
@@ -11,45 +11,75 @@
     <div class="gallery-session-page">
 
         <a href="{{ path('app_gallery') }}" class="gallery-back">
-            ← Wróć do galerii
+            <span aria-hidden="true">←</span> Wróć do galerii
         </a>
 
         <div class="gallery-session-heading">
+            <span class="gallery-eyebrow">NASZA GALERIA</span>
             <h1>{{ session.title }}</h1>
-            <p>{{ session.description }}</p>
+
+            {% if session.description %}
+                <p>{{ session.description }}</p>
+            {% endif %}
         </div>
 
-        <div class="gallery-photos">
-            {% for photo in session.images %}
-                <div class="gallery-photo">
-                    <img
-                        src="{{ asset('uploads/gallery/' ~ photo.filename) }}"
-                        alt="{{ session.title }}"
-                        loading="lazy"
-                        class="gallery-slider-image"
+        {% if session.images|length > 0 %}
+            <div class="gallery-photos">
+                {% for photo in session.images %}
+                    <button
+                        type="button"
+                        class="gallery-photo"
                         data-index="{{ loop.index0 }}"
+                        aria-label="Otwórz zdjęcie {{ loop.index }} z {{ session.images|length }}"
                     >
-                </div>
-            {% endfor %}
-        </div>
+                        <img
+                            src="{{ asset('uploads/gallery/' ~ photo.filename) }}"
+                            alt="{{ session.title }} – zdjęcie {{ loop.index }}"
+                            class="gallery-slider-image"
+                            loading="lazy"
+                        >
+                        <span class="gallery-photo-overlay" aria-hidden="true">
+                            <span>+</span>
+                        </span>
+                    </button>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="gallery-empty">
+                Ten album nie zawiera jeszcze zdjęć.
+            </div>
+        {% endif %}
 
     </div>
 
-    {# Podgląd zdjęć #}
-    <div id="galleryLightbox" class="gallery-lightbox">
+    {% if session.images|length > 0 %}
+        <div id="galleryLightbox" class="gallery-lightbox" aria-hidden="true">
 
-        <button type="button" class="lightbox-close">&times;</button>
+            <button
+                type="button"
+                class="lightbox-close"
+                aria-label="Zamknij podgląd"
+            >&times;</button>
 
-        <button type="button" class="lightbox-prev">&#10094;</button>
+            <button
+                type="button"
+                class="lightbox-prev"
+                aria-label="Poprzednie zdjęcie"
+            >&#10094;</button>
 
-        <div class="lightbox-content">
-            <img id="lightboxImage" src="" alt="">
-            <div id="lightboxCounter" class="lightbox-counter"></div>
+            <div class="lightbox-content">
+                <img id="lightboxImage" src="" alt="">
+                <div id="lightboxCounter" class="lightbox-counter"></div>
+            </div>
+
+            <button
+                type="button"
+                class="lightbox-next"
+                aria-label="Następne zdjęcie"
+            >&#10095;</button>
+
         </div>
-
-        <button type="button" class="lightbox-next">&#10095;</button>
-
-    </div>
+    {% endif %}
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -69,11 +99,16 @@
             let zoom = 1;
             let translateX = 0;
             let translateY = 0;
+
             let isDragging = false;
             let startX = 0;
             let startY = 0;
+            let touchStartX = 0;
 
-            if (!images.length) return;
+            if (!images.length || !lightbox || !lightboxImage || !counter) {
+                return;
+            }
+
             function resetZoom() {
                 zoom = 1;
                 translateX = 0;
@@ -81,14 +116,26 @@
 
                 lightboxImage.style.transform =
                     'translate(0px, 0px) scale(1)';
+
                 lightboxImage.style.cursor = 'zoom-in';
+            }
+
+            function updateZoom() {
+                lightboxImage.style.transform =
+                    `translate(${translateX}px, ${translateY}px) scale(${zoom})`;
+
+                lightboxImage.style.cursor =
+                    zoom > 1 ? 'grab' : 'zoom-in';
             }
 
             function showImage(index) {
                 resetZoom();
+
                 currentIndex = (index + images.length) % images.length;
 
-                lightboxImage.src = images[currentIndex].src;
+                lightboxImage.src =
+                    images[currentIndex].currentSrc || images[currentIndex].src;
+
                 lightboxImage.alt = images[currentIndex].alt;
 
                 counter.textContent =
@@ -97,46 +144,78 @@
 
             function openLightbox(index) {
                 showImage(index);
+
                 lightbox.classList.add('active');
+                lightbox.setAttribute('aria-hidden', 'false');
+
                 document.body.style.overflow = 'hidden';
             }
 
             function closeLightbox() {
                 lightbox.classList.remove('active');
+                lightbox.setAttribute('aria-hidden', 'true');
+
                 document.body.style.overflow = '';
+
+                resetZoom();
             }
 
-            images.forEach(function (image, index) {
-                image.addEventListener('click', function () {
-                    openLightbox(index);
+            // Otwieranie zdjęć z przycisków galerii
+            document.querySelectorAll('.gallery-photo').forEach(function (photo) {
+                photo.addEventListener('click', function () {
+                    const index = Number(photo.dataset.index);
+
+                    if (Number.isInteger(index) && index >= 0 && index < images.length) {
+                        openLightbox(index);
+                    }
                 });
             });
 
-            closeButton.addEventListener('click', closeLightbox);
+            // Zamykanie podglądu
+            if (closeButton) {
+                closeButton.addEventListener('click', closeLightbox);
+            }
 
-            prevButton.addEventListener('click', function () {
-                showImage(currentIndex - 1);
-            });
+            // Poprzednie zdjęcie
+            if (prevButton) {
+                prevButton.addEventListener('click', function () {
+                    showImage(currentIndex - 1);
+                });
+            }
 
-            nextButton.addEventListener('click', function () {
-                showImage(currentIndex + 1);
-            });
+            // Następne zdjęcie
+            if (nextButton) {
+                nextButton.addEventListener('click', function () {
+                    showImage(currentIndex + 1);
+                });
+            }
 
+            // Kliknięcie poza zdjęciem zamyka podgląd
             lightbox.addEventListener('click', function (event) {
                 if (event.target === lightbox) {
                     closeLightbox();
                 }
             });
 
+            // Obsługa klawiatury
             document.addEventListener('keydown', function (event) {
                 if (!lightbox.classList.contains('active')) return;
 
-                if (event.key === 'Escape') closeLightbox();
-                if (event.key === 'ArrowLeft') showImage(currentIndex - 1);
-                if (event.key === 'ArrowRight') showImage(currentIndex + 1);
+                if (event.key === 'Escape') {
+                    closeLightbox();
+                }
+
+                if (event.key === 'ArrowLeft') {
+                    showImage(currentIndex - 1);
+                }
+
+                if (event.key === 'ArrowRight') {
+                    showImage(currentIndex + 1);
+                }
             });
-            // Powiększanie kółkiem myszy
-            lightbox.addEventListener('wheel', function(event) {
+
+            // Powiększanie i pomniejszanie kółkiem myszy
+            lightbox.addEventListener('wheel', function (event) {
                 if (!lightbox.classList.contains('active')) return;
 
                 event.preventDefault();
@@ -157,27 +236,21 @@
                 updateZoom();
             }, { passive: false });
 
-            function updateZoom() {
-                lightboxImage.style.transform =
-                    `translate(${translateX}px, ${translateY}px) scale(${zoom})`;
-
-                lightboxImage.style.cursor =
-                    zoom > 1 ? 'grab' : 'zoom-in';
-            }
-
-            // Przesuwanie powiększonego zdjęcia
-            lightboxImage.addEventListener('mousedown', function(event) {
+            // Przesuwanie powiększonego zdjęcia myszką
+            lightboxImage.addEventListener('mousedown', function (event) {
                 if (zoom <= 1) return;
 
                 isDragging = true;
+
                 startX = event.clientX - translateX;
                 startY = event.clientY - translateY;
 
                 lightboxImage.style.cursor = 'grabbing';
+
                 event.preventDefault();
             });
 
-            document.addEventListener('mousemove', function(event) {
+            document.addEventListener('mousemove', function (event) {
                 if (!isDragging) return;
 
                 translateX = event.clientX - startX;
@@ -186,13 +259,39 @@
                 updateZoom();
             });
 
-            document.addEventListener('mouseup', function() {
+            document.addEventListener('mouseup', function () {
+                if (!isDragging) return;
+
                 isDragging = false;
 
                 if (zoom > 1) {
                     lightboxImage.style.cursor = 'grab';
                 }
             });
+
+            // Obsługa przesuwania zdjęć palcem na telefonie
+            lightbox.addEventListener('touchstart', function (event) {
+                if (zoom > 1) return;
+
+                touchStartX = event.touches[0].clientX;
+            }, { passive: true });
+
+            lightbox.addEventListener('touchend', function (event) {
+                if (!lightbox.classList.contains('active') || zoom > 1) return;
+
+                const difference =
+                    event.changedTouches[0].clientX - touchStartX;
+
+                if (Math.abs(difference) > 50) {
+                    if (difference > 0) {
+                        showImage(currentIndex - 1);
+                    } else {
+                        showImage(currentIndex + 1);
+                    }
+                }
+            }, { passive: true });
+
+            console.log('Galeria została uruchomiona. Liczba zdjęć:', images.length);
         });
     </script>
 {% endblock %}
