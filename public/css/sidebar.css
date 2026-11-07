@@ -1372,3 +1372,79 @@ button {
         padding: 22px;
     }
 }
+.footer-facebook {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    color: #c9a45c !important;
+    background: transparent !important;
+    border: 1px solid #c9a45c;
+    border-radius: 50%;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.footer-facebook svg {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+    fill: #c9a45c !important;
+    color: #c9a45c !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.footer-facebook:hover {
+    background: #c9a45c !important;
+    color: #090a0b !important;
+}
+
+.footer-facebook:hover svg {
+    fill: #090a0b !important;
+}
+.footer-contact .footer-facebook {
+    width: 42px !important;
+    height: 42px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #111315 !important;
+    border: 1px solid #c9a45c !important;
+    border-radius: 50% !important;
+    text-decoration: none !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.footer-contact .footer-facebook svg {
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    flex-shrink: 0 !important;
+}
+
+.footer-contact .footer-facebook:hover {
+    background: #c9a45c !important;
+}
+
+.footer-contact .footer-facebook:hover svg path {
+    fill: #090a0b !important;
+}
+.footer-contact .footer-facebook {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+}
+
+.footer-contact .footer-facebook svg {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+    transform: translate(0, 0) !important;
+}
+

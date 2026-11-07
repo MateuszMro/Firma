@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ZUH Grzegorz Mroczkowski | Strona główna{% endblock %}
+{% block title %}Meble Grzegorz Mroczkowski{% endblock %}
 
 {% block body %}
     <div class="site-shell">
@@ -136,6 +136,7 @@
                                 <div class="eyebrow">
                                     <span></span>
                                     ZUH · GRZEGORZ MROCZKOWSKI
+                                    <span></span>
                                 </div>
 
                                 <h1>
@@ -487,11 +488,10 @@
 
                 {% if app.user %}
                     <div class="footer-links">
-
-                    <h3>Twoje konto</h3>
-                        <a href="{{ path('account_index') }}">Moje konto</a>
-                        <a href="{{ path('app_change_password') }}">Zmień hasło</a>
-                        <a href="{{ path('app_logout') }}">Wyloguj się</a>
+                        <h3>Twoje konto</h3>
+                            <a href="{{ path('account_index') }}">Moje konto</a>
+                            <a href="{{ path('app_change_password') }}">Zmień hasło</a>
+                            <a href="{{ path('app_logout') }}">Wyloguj się</a>
                     </div>
                 {% endif %}
 
@@ -506,8 +506,28 @@
 
                     <span class="contact-note">
                     Dane kontaktowe można uzupełnić w tym miejscu.
-                </span>
+                    </span>
+                </div>
 
+                <div class="footer-contact">
+                    <h3>ŚLEDŹ NAS</h3>
+
+                    <a href="https://www.facebook.com/TWOJ_PROFIL"
+                       class="footer-facebook"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="Odwiedź nas na Facebooku">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 24 24"
+                             width="24"
+                             height="24"
+                             aria-hidden="true">
+                            <path fill="#c9a45c"
+                                  d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.413c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.973h-1.513c-1.49 0-1.956.93-1.956 1.884v2.263h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                        </svg>
+
+                    </a>
                 </div>
 
             </div>
@@ -523,7 +543,7 @@
 
                 <span class="footer-status">
                 <span class="status-dot"></span>
-                Strona internetowa
+                    Jesteś zainteresowany stroną internetową?<a href="mailto:matemrocz@gmail.com">Odezwij się!</a>
             </span>
 
             </div>
