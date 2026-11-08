@@ -1,7 +1,5 @@
 {% extends 'pages/home.html.twig' %}
 
-{% block title %}Meble Grzegorz Mroczkowski{% endblock %}
-
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
 {% endblock %}
@@ -12,7 +10,7 @@
         <div class="gallery-heading">
             <div>
                 <h1>Galeria</h1>
-                <p>Zdjęcia naszych produktów</p>
+                <p>Zobacz nasze projekty oraz realizacje.</p>
             </div>
 
             {% if is_granted('ROLE_OWNER') %}
@@ -57,6 +55,75 @@
                 <p>Galeria jest jeszcze pusta.</p>
             {% endfor %}
         </div>
+
+        {% if totalPages > 1 %}
+            <nav class="gallery-pagination" aria-label="Nawigacja stron galerii">
+
+                {# Poprzednia strona #}
+                {% if currentPage > 1 %}
+                    <a href="{{ path('app_gallery', {page: currentPage - 1}) }}"
+                       class="gallery-page-arrow"
+                       aria-label="Poprzednia strona">
+                        <span aria-hidden="true">‹</span>
+                    </a>
+                {% else %}
+                    <span class="gallery-page-arrow disabled" aria-label="Poprzednia strona">
+                <span aria-hidden="true">‹</span>
+            </span>
+                {% endif %}
+
+                {# Pierwsza strona #}
+                {% if paginationPages|first > 1 %}
+                    <a href="{{ path('app_gallery', {page: 1}) }}"
+                       class="gallery-page-number">1</a>
+
+                    {% if paginationPages|first > 2 %}
+                        <span class="gallery-page-dots">...</span>
+                    {% endif %}
+                {% endif %}
+
+                {# Numery stron #}
+                {% for page in paginationPages %}
+                    <a href="{{ path('app_gallery', {page: page}) }}"
+                       class="gallery-page-number {{ page == currentPage ? 'active' : '' }}"
+                       {% if page == currentPage %}aria-current="page"{% endif %}>
+                        {{ page }}
+                    </a>
+                {% endfor %}
+
+                {# Ostatnia strona #}
+                {% if paginationPages|last < totalPages %}
+                    {% if paginationPages|last < totalPages - 1 %}
+                        <span class="gallery-page-dots">...</span>
+                    {% endif %}
+
+                    <a href="{{ path('app_gallery', {page: totalPages}) }}"
+                       class="gallery-page-number">
+                        {{ totalPages }}
+                    </a>
+                {% endif %}
+
+                {# Następna strona #}
+                {% if currentPage < totalPages %}
+                    <a href="{{ path('app_gallery', {page: currentPage + 1}) }}"
+                       class="gallery-page-arrow"
+                       aria-label="Następna strona">
+                        <span aria-hidden="true">›</span>
+                    </a>
+                {% else %}
+                    <span class="gallery-page-arrow disabled" aria-label="Następna strona">
+                <span aria-hidden="true">›</span>
+            </span>
+                {% endif %}
+
+            </nav>
+
+            <div class="gallery-pagination-info">
+                Strona {{ currentPage }} z {{ totalPages }}
+                <span>·</span>
+                Łącznie {{ totalSessions }} sesji
+            </div>
+        {% endif %}
 
     </div>
 {% endblock %}

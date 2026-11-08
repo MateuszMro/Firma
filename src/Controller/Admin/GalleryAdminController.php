@@ -18,13 +18,41 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[IsGranted('ROLE_OWNER')]
 class GalleryAdminController extends AbstractController
 {
+
     #[Route('', name: 'admin_gallery_admin_panel_gallery', methods: ['GET'])]
-    public function index(GallerySessionRepository $repository): Response
-    {
-        $sessions = $repository->findBy([], ['id' => 'DESC']);
+    public function index(
+        GallerySessionRepository $repository,
+        Request $request
+    ): Response {
+        $sessionsPerPage = 24;
+        $currentPage = max(1, $request->query->getInt('page', 1));
+
+        $query = $repository->createQueryBuilder('s')
+            ->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->setFirstResult(($currentPage - 1) * $sessionsPerPage)
+            ->setMaxResults($sessionsPerPage);
+
+        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query, true);
+
+        $totalSessions = count($paginator);
+        $totalPages = max(1, (int) ceil($totalSessions / $sessionsPerPage));
+
+        if ($currentPage > $totalPages) {
+            return $this->redirectToRoute('admin_gallery_admin_panel_gallery', [
+                'page' => $totalPages,
+            ]);
+        }
+
+        $paginationStart = max(1, $currentPage - 2);
+        $paginationEnd = min($totalPages, $currentPage + 2);
 
         return $this->render('admin/gallery/admin-panel-gallery.html.twig', [
-            'sessions' => $sessions,
+            'sessions' => $paginator,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+            'totalSessions' => $totalSessions,
+            'paginationPages' => range($paginationStart, $paginationEnd),
         ]);
     }
     #[Route('/add', name: 'admin_gallery_add')]

@@ -4,7 +4,6 @@
 {% block title %}Zarządzanie galerią{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
 {% endblock %}
 
@@ -38,8 +37,8 @@
             </div>
 
             <span class="admin-image-count">
-            {{ sessions|length }} sesji
-        </span>
+                {{ totalSessions }} sesji
+            </span>
         </div>
 
         <div class="gallery-grid">
@@ -51,11 +50,12 @@
                             <img
                                 src="{{ asset('uploads/gallery/' ~ session.images|first.filename) }}"
                                 alt="{{ session.title }}"
+                                loading="lazy"
                             >
                             <span class="admin-panel-photo-count">
-                            <i class="fa-regular fa-images"></i>
-                            {{ session.images|length }} zdjęć
-                        </span>
+                                <i class="fa-regular fa-images"></i>
+                                {{ session.images|length }} zdjęć
+                            </span>
                         </div>
                     {% else %}
                         <div class="gallery-no-image">
@@ -104,6 +104,71 @@
                 </div>
             {% endfor %}
         </div>
+
+        {# PAGINACJA #}
+        {% if totalPages > 1 %}
+            <nav class="gallery-pagination" aria-label="Nawigacja stron galerii">
+
+                {% if currentPage > 1 %}
+                    <a href="{{ path('admin_gallery_admin_panel_gallery', {page: currentPage - 1}) }}"
+                       class="gallery-page-arrow"
+                       aria-label="Poprzednia strona">
+                        <span aria-hidden="true">‹</span>
+                    </a>
+                {% else %}
+                    <span class="gallery-page-arrow disabled" aria-label="Poprzednia strona">
+                        <span aria-hidden="true">‹</span>
+                    </span>
+                {% endif %}
+
+                {% if paginationPages|first > 1 %}
+                    <a href="{{ path('admin_gallery_admin_panel_gallery', {page: 1}) }}"
+                       class="gallery-page-number">1</a>
+
+                    {% if paginationPages|first > 2 %}
+                        <span class="gallery-page-dots">...</span>
+                    {% endif %}
+                {% endif %}
+
+                {% for page in paginationPages %}
+                    <a href="{{ path('admin_gallery_admin_panel_gallery', {page: page}) }}"
+                       class="gallery-page-number {{ page == currentPage ? 'active' : '' }}"
+                       {% if page == currentPage %}aria-current="page"{% endif %}>
+                        {{ page }}
+                    </a>
+                {% endfor %}
+
+                {% if paginationPages|last < totalPages %}
+                    {% if paginationPages|last < totalPages - 1 %}
+                        <span class="gallery-page-dots">...</span>
+                    {% endif %}
+
+                    <a href="{{ path('admin_gallery_admin_panel_gallery', {page: totalPages}) }}"
+                       class="gallery-page-number">
+                        {{ totalPages }}
+                    </a>
+                {% endif %}
+
+                {% if currentPage < totalPages %}
+                    <a href="{{ path('admin_gallery_admin_panel_gallery', {page: currentPage + 1}) }}"
+                       class="gallery-page-arrow"
+                       aria-label="Następna strona">
+                        <span aria-hidden="true">›</span>
+                    </a>
+                {% else %}
+                    <span class="gallery-page-arrow disabled" aria-label="Następna strona">
+                        <span aria-hidden="true">›</span>
+                    </span>
+                {% endif %}
+
+            </nav>
+
+            <div class="gallery-pagination-info">
+                Strona {{ currentPage }} z {{ totalPages }}
+                <span>·</span>
+                Łącznie {{ totalSessions }} sesji
+            </div>
+        {% endif %}
 
     </div>
 {% endblock %}

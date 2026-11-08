@@ -1377,5 +1377,140 @@ body.gallery-lightbox-open {
         padding: 15px 12px;
     }
 }
+/* ========================================
+   PAGINACJA GALERII
+======================================== */
+
+.gallery-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 45px auto 12px;
+}
+
+.gallery-page-number,
+.gallery-page-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    box-sizing: border-box;
+    border: 1px solid rgba(201, 164, 92, 0.4);
+    border-radius: 3px;
+    color: #c9a45c;
+    background: #111315;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.gallery-page-number:hover,
+.gallery-page-arrow:not(.disabled):hover {
+    color: #090a0b;
+    background: #c9a45c;
+    border-color: #c9a45c;
+}
+
+.gallery-page-number.active {
+    color: #090a0b;
+    background: #c9a45c;
+    border-color: #c9a45c;
+    cursor: default;
+    pointer-events: none;
+}
+
+.gallery-page-arrow.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.gallery-page-dots {
+    color: #c9a45c;
+    padding: 0 3px;
+    font-size: 14px;
+}
+
+.gallery-pagination-info {
+    text-align: center;
+    color: #a5a39d;
+    font-size: 12px;
+    margin-bottom: 30px;
+}
+
+.gallery-pagination-info span {
+    color: #c9a45c;
+    margin: 0 5px;
+}
+
+@media (max-width: 500px) {
+    .gallery-pagination {
+        gap: 5px;
+        margin-top: 30px;
+    }
+
+    .gallery-page-number,
+    .gallery-page-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+    }
+}
+
+/* STRZALKI PAGINACJI */
+.gallery-page-arrow {
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.gallery-page-arrow span {
+    display: block;
+    transform: translateY(-2px);
+}
+
+.gallery-page-arrow.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* OPTYCZNE WYŚRODKOWANIE PLUSIKA NA ZDJĘCIACH */
+.gallery-photo-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-photo-overlay > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    margin: 0;
+
+    box-sizing: border-box;
+    line-height: 1;
+    font-family: Arial, sans-serif;
+    font-size: 27px;
+    font-weight: 400;
+
+    text-align: center;
+    transform: none;
+}
+
+/* Delikatna korekta położenia samego znaku + */
+.gallery-photo-overlay > span {
+    padding-bottom: 0;
+    position: relative;
+    top: 7px;
+}
+
 
 
