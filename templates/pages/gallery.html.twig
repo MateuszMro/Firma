@@ -161,31 +161,38 @@
 
             const loaderText = loader.querySelector('p');
 
-            const links = document.querySelectorAll(
-                '.gallery-filter, .gallery-pagination a, .gallery-card'
-            );
+            document.addEventListener('click', function (event) {
+                const link = event.target.closest(
+                    '.gallery-filter, .gallery-pagination a, .gallery-card'
+                );
 
-            links.forEach(function (link) {
-                link.addEventListener('click', function (event) {
-                    if (
-                        event.ctrlKey ||
-                        event.metaKey ||
-                        event.shiftKey ||
-                        event.altKey ||
-                        event.button !== 0
-                    ) {
-                        return;
-                    }
+                if (!link) {
+                    return;
+                }
 
-                    if (link.classList.contains('gallery-card')) {
-                        loaderText.textContent = 'Wczytywanie zdjęć...';
-                    } else {
-                        loaderText.textContent = 'Wczytywanie galerii...';
-                    }
+                if (
+                    event.ctrlKey ||
+                    event.metaKey ||
+                    event.shiftKey ||
+                    event.altKey
+                ) {
+                    return;
+                }
 
-                    loader.classList.add('active');
-                });
+                loaderText.textContent = link.classList.contains('gallery-card')
+                    ? 'Wczytywanie zdjęć...'
+                    : 'Wczytywanie galerii...';
+
+                loader.classList.add('active');
             });
+        });
+
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('gallery-loader');
+
+            if (loader) {
+                loader.classList.remove('active');
+            }
         });
     </script>
 {% endblock %}

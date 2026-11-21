@@ -10,6 +10,11 @@
 {% block content %}
     <div class="gallery-session-page">
 
+        <div id="gallery-session-loader" class="gallery-loader active">
+            <div class="gallery-loader-spinner"></div>
+            <p>Wczytywanie zdjęć...</p>
+        </div>
+
         <a href="{{ path('app_gallery') }}" class="gallery-back">
             <span aria-hidden="true">←</span> Wróć do galerii
         </a>
@@ -36,7 +41,7 @@
                             src="{{ asset('uploads/gallery/' ~ photo.filename) }}"
                             alt="{{ session.title }} – zdjęcie {{ loop.index }}"
                             class="gallery-slider-image"
-                            loading="lazy"
+                            loading="eager"
                         >
                         <span class="gallery-photo-overlay" aria-hidden="true">
                             <span>+</span>
@@ -290,6 +295,26 @@
                     }
                 }
             }, { passive: true });
+
+            // Ukrywanie loadera dopiero po załadowaniu wszystkich zdjęć
+            const sessionLoader = document.getElementById('gallery-session-loader');
+
+            if (sessionLoader) {
+                Promise.all(
+                    images.map(function (img) {
+                        if (img.complete) {
+                            return Promise.resolve();
+                        }
+
+                        return new Promise(function (resolve) {
+                            img.addEventListener('load', resolve, { once: true });
+                            img.addEventListener('error', resolve, { once: true });
+                        });
+                    })
+                ).then(function () {
+                    sessionLoader.classList.remove('active');
+                });
+            }
 
             console.log('Galeria została uruchomiona. Liczba zdjęć:', images.length);
         });
