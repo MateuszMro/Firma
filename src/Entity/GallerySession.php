@@ -36,9 +36,16 @@ class GallerySession
     )]
     private Collection $images;
 
+    /**
+     * @var Collection<int, GalleryCategory>
+     */
+    #[ORM\ManyToMany(targetEntity: GalleryCategory::class, inversedBy: 'sessions')]
+    private Collection $categories;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,6 +115,30 @@ class GallerySession
                 $image->setGallerySession(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GalleryCategory>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(GalleryCategory $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(GalleryCategory $category): static
+    {
+        $this->categories->removeElement($category);
 
         return $this;
     }

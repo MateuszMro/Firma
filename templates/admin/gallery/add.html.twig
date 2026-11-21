@@ -43,6 +43,7 @@
 
             {{ form_start(form, {
                 attr: {
+                    id: 'gallery-add-form',
                     class: 'admin-gallery-edit-form',
                     enctype: 'multipart/form-data'
                 }
@@ -71,6 +72,17 @@
                 </small>
             </div>
 
+            <div class="form-field gallery-categories-field">
+                {{ form_label(form.categories) }}
+                {{ form_widget(form.categories) }}
+                {{ form_errors(form.categories) }}
+            </div>
+
+            <div id="gallery-add-loader" class="gallery-loader">
+                <div class="gallery-loader-spinner"></div>
+                <p>Dodawanie sesji i przesyłanie zdjęć...</p>
+            </div>
+
             <div class="admin-gallery-add-actions">
                 <button type="submit" class="gallery-submit-button">
                     <i class="fa-solid fa-floppy-disk"></i>
@@ -83,4 +95,26 @@
         </section>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('gallery-add-form');
+            const loader = document.getElementById('gallery-add-loader');
+
+            if (!form || !loader) return;
+
+            form.addEventListener('submit', function () {
+                if (!form.checkValidity()) return;
+
+                loader.classList.add('active');
+
+                const button = form.querySelector('button[type="submit"]');
+
+                if (button) {
+                    button.disabled = true;
+                    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dodawanie sesji...';
+                }
+            });
+        });
+    </script>
 {% endblock %}

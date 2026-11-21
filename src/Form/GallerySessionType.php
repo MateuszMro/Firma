@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\GallerySession;
+use App\Entity\GalleryCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -47,6 +49,14 @@ class GallerySessionType extends AbstractType
                     'placeholder' => 'Opisz prezentowany produkt...',
                     'rows' => 5,
                 ],
+            ])
+            ->add('categories', EntityType::class, [
+                'class' => GalleryCategory::class,
+                'choice_label' => 'name',
+                'label' => 'Kategorie',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
             ])
             ->add('images', FileType::class, [
                 'label' => $editMode ? 'Dodaj kolejne zdjęcia' : 'Zdjęcia',

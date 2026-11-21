@@ -7,6 +7,11 @@
 {% block content %}
     <div class="gallery-page">
 
+        <div id="gallery-loader" class="gallery-loader">
+            <div class="gallery-loader-spinner"></div>
+            <p>Wczytywanie galerii...</p>
+        </div>
+
         <div class="gallery-heading">
             <div>
                 <h1>Galeria</h1>
@@ -18,6 +23,20 @@
                     + Dodaj zdjęcia
                 </a>
             {% endif %}
+        </div>
+
+        <div class="gallery-filters">
+            <a href="{{ path('app_gallery') }}"
+               class="gallery-filter {{ selectedCategory is null ? 'active' : '' }}">
+                Wszystkie
+            </a>
+
+            {% for category in categories %}
+                <a href="{{ path('app_gallery', {category: category.id}) }}"
+                   class="gallery-filter {{ selectedCategory and selectedCategory.id == category.id ? 'active' : '' }}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
         </div>
 
         <div class="gallery-grid">
@@ -52,7 +71,11 @@
                     </div>
                 </a>
             {% else %}
-                <p>Galeria jest jeszcze pusta.</p>
+                {% if selectedCategory %}
+                    <p>Brak sesji w kategorii „{{ selectedCategory.name }}”.</p>
+                {% else %}
+                    <p>Galeria jest jeszcze pusta.</p>
+                {% endif %}
             {% endfor %}
         </div>
 
@@ -61,7 +84,7 @@
 
                 {# Poprzednia strona #}
                 {% if currentPage > 1 %}
-                    <a href="{{ path('app_gallery', {page: currentPage - 1}) }}"
+                    <a href="{{ path('app_gallery', {page: currentPage - 1, category: selectedCategoryId}) }}"
                        class="gallery-page-arrow"
                        aria-label="Poprzednia strona">
                         <span aria-hidden="true">‹</span>
@@ -74,7 +97,7 @@
 
                 {# Pierwsza strona #}
                 {% if paginationPages|first > 1 %}
-                    <a href="{{ path('app_gallery', {page: 1}) }}"
+                    <a href="{{ path('app_gallery', {page: 1, category: selectedCategoryId}) }}"
                        class="gallery-page-number">1</a>
 
                     {% if paginationPages|first > 2 %}
@@ -84,7 +107,7 @@
 
                 {# Numery stron #}
                 {% for page in paginationPages %}
-                    <a href="{{ path('app_gallery', {page: page}) }}"
+                    <a href="{{ path('app_gallery', {page: page, category: selectedCategoryId}) }}"
                        class="gallery-page-number {{ page == currentPage ? 'active' : '' }}"
                        {% if page == currentPage %}aria-current="page"{% endif %}>
                         {{ page }}
@@ -97,7 +120,7 @@
                         <span class="gallery-page-dots">...</span>
                     {% endif %}
 
-                    <a href="{{ path('app_gallery', {page: totalPages}) }}"
+                    <a href="{{ path('app_gallery', {page: totalPages, category: selectedCategoryId}) }}"
                        class="gallery-page-number">
                         {{ totalPages }}
                     </a>
@@ -105,7 +128,7 @@
 
                 {# Następna strona #}
                 {% if currentPage < totalPages %}
-                    <a href="{{ path('app_gallery', {page: currentPage + 1}) }}"
+                    <a href="{{ path('app_gallery', {page: currentPage + 1, category: selectedCategoryId}) }}"
                        class="gallery-page-arrow"
                        aria-label="Następna strona">
                         <span aria-hidden="true">›</span>
@@ -126,4 +149,43 @@
         {% endif %}
 
     </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loader = document.getElementById('gallery-loader');
+
+            if (!loader) {
+                return;
+            }
+
+            const loaderText = loader.querySelector('p');
+
+            const links = document.querySelectorAll(
+                '.gallery-filter, .gallery-pagination a, .gallery-card'
+            );
+
+            links.forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    if (
+                        event.ctrlKey ||
+                        event.metaKey ||
+                        event.shiftKey ||
+                        event.altKey ||
+                        event.button !== 0
+                    ) {
+                        return;
+                    }
+
+                    if (link.classList.contains('gallery-card')) {
+                        loaderText.textContent = 'Wczytywanie zdjęć...';
+                    } else {
+                        loaderText.textContent = 'Wczytywanie galerii...';
+                    }
+
+                    loader.classList.add('active');
+                });
+            });
+        });
+    </script>
 {% endblock %}

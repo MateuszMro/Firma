@@ -4,6 +4,7 @@ namespace App\Controller\OwnerDashboard;
 
 
 use App\Controller\OwnerDashboard\UserCrudController;
+use App\Controller\OwnerDashboard\GalleryCategoryCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,6 @@ class OwnerDashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl('Strona główna', 'fa fa-home', '/');
         yield MenuItem::linkTo(UserCrudController::class, 'Użytkownicy', 'fa fa-images');
         yield MenuItem::linkTo(VisitCrudController::class, 'Odwiedzający', 'fa fa-images');
-
+        yield MenuItem::linkTo(GalleryCategoryCrudController::class, 'Kategorie galerii', 'fa fa-tags');
     }
 }

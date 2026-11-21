@@ -35,7 +35,7 @@
                             <a href="/#o-nas" class="nav-item">O nas</a>
                             <a href="/#oferta"class="nav-item">Oferta</a>
                             <a href="/#kontakt"class="nav-item">Kontakt</a>
-                            <a href="/gallery" class="nav-item">Galeria</a>
+                            <a href="/gallery" class="nav-item gallery-nav-link">Galeria</a>
                         </div>
 
                         <div class="navbar-user">
@@ -204,8 +204,8 @@
 
                             <div class="intro-text">
                                 <p>
-                                    ZUH Grzegorz Mroczkowski to firma zajmująca się
-                                    [TUTAJ WPISZ CZYM ZAJMUJE SIĘ TWOJA FIRMA].
+                                    ZUH Grzegorz Mroczkowski to firma specjalizująca się
+                                    w branży meblarskiej.
                                     Stawiamy na profesjonalizm, rzetelność oraz
                                     indywidualne podejście do każdego klienta.
                                 </p>
@@ -225,7 +225,8 @@
                                 <span>01</span>
                                 <h3>Doświadczenie</h3>
                                 <p>
-                                    [Wpisz kilka słów o swoim doświadczeniu.]
+                                    Ponad 20 lat doświadczenia w branży meblarskiej. Specjalizujemy się w
+                                    produkcji mebli z drewna m.in. buk, dąb, sosna, świerk, płyty meblowe MDF, laminowane oraz sklejki.
                                 </p>
                             </div>
 
@@ -233,7 +234,8 @@
                                 <span>02</span>
                                 <h3>Rzetelność</h3>
                                 <p>
-                                    [Opisz, dlaczego klienci mogą Ci zaufać.]
+                                    Naszym najważniejszym celem jest zadowolenie klienta, a na ten cel składają się materiały
+                                    oraz wykonanie najwyższej jakości w jak najkrótszym czasie.
                                 </p>
                             </div>
 
@@ -270,33 +272,51 @@
 
                             <div class="offer-card">
                                 <span class="offer-number">01</span>
-                                <h3>[Pierwsza usługa]</h3>
+                                <h3>Kuchnie na wymiar</h3>
                                 <p>
-                                    [Tutaj wpisz opis pierwszej usługi i zakres wykonywanych prac.]
+                                    Przy wyborze naszych mebli zapewniamy wszystkie pomiary oraz projekt
+                                    tworzony w profesjonalnym programie.
                                 </p>
                             </div>
 
                             <div class="offer-card">
                                 <span class="offer-number">02</span>
-                                <h3>[Druga usługa]</h3>
+                                <h3>Wyposażenie salonu</h3>
                                 <p>
-                                    [Tutaj wpisz opis drugiej usługi.]
+                                    Zajmujemy się również projektowaniem oraz realizacją wposażenia salonu tj.
+                                    witryny, komody, stoły, szafki TV, konsole czy toaletki.
                                 </p>
                             </div>
 
                             <div class="offer-card">
                                 <span class="offer-number">03</span>
-                                <h3>[Trzecia usługa]</h3>
+                                <h3>Meble dla dzieci</h3>
                                 <p>
-                                    [Tutaj wpisz opis trzeciej usługi.]
+                                    Biurka, szafki, komody, łóżeczka, łóżka, łóżka piętrowe z aranżacją dołu.
                                 </p>
                             </div>
 
                             <div class="offer-card">
                                 <span class="offer-number">04</span>
-                                <h3>[Czwarta usługa]</h3>
+                                <h3>Elementy meblowe</h3>
                                 <p>
-                                    [Tutaj wpisz opis czwartej usługi.]
+                                    Elementy meblowe surowe, lakierowane, wiercone, frezowane oklejane ABS oraz olejowane.
+                                </p>
+                            </div>
+
+                            <div class="offer-card">
+                                <span class="offer-number">05</span>
+                                <h3>Meble seryjne</h3>
+                                <p>
+                                    Wyposażenie biur, akademików czy hoteli.
+                                </p>
+                            </div>
+
+                            <div class="offer-card">
+                                <span class="offer-number">06</span>
+                                <h3>Projekty</h3>
+                                <p>
+                                    Projektowanie oraz aranżacja wnętrz, które są robione w profesjonalnym programie.
                                 </p>
                             </div>
 
@@ -437,6 +457,71 @@
                     closeAccountMenu();
                 }
 
+            });
+            // Loader przy przechodzeniu do galerii
+            document.querySelectorAll('.gallery-nav-link').forEach(function (link) {
+
+                link.addEventListener('click', function (event) {
+
+                    if (
+                        event.ctrlKey ||
+                        event.metaKey ||
+                        event.shiftKey ||
+                        event.altKey ||
+                        event.button !== 0
+                    ) {
+                        return;
+                    }
+
+                    event.preventDefault();
+
+                    const loader = document.createElement('div');
+
+                    loader.innerHTML = `
+                        <div class="gallery-loader-spinner"></div>
+                        <p>Wczytywanie galerii...</p>
+                    `;
+
+                    loader.style.cssText = `
+                        position: fixed;
+                        inset: 0;
+                        z-index: 99999;
+                        background: rgba(9, 10, 11, .92);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        gap: 18px;
+                        color: #e5c783;
+                        font-size: 13px;
+                        letter-spacing: 1px;
+                        font-weight: 600;
+                    `;
+
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .gallery-loader-spinner {
+                            width: 52px;
+                            height: 52px;
+                            border: 3px solid rgba(201, 164, 92, .2);
+                            border-top-color: #c9a45c;
+                            border-right-color: #e5c783;
+                            border-radius: 50%;
+                            animation: gallery-spin .8s linear infinite;
+                        }
+
+                        @keyframes gallery-spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    `;
+
+                    document.head.appendChild(style);
+                    document.body.appendChild(loader);
+
+                    setTimeout(function () {
+                        window.location.href = link.href;
+                    }, 100);
+                });
             });
 
         });

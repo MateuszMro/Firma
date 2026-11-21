@@ -3,6 +3,7 @@
 namespace App\Controller\Home;
 
 use App\Repository\GallerySessionRepository;
+use App\Repository\GalleryCategoryRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,12 +16,34 @@ class GalleryPageController extends AbstractController
 
     #[Route('/gallery', name: 'app_gallery')]
     public function index(
+        GalleryCategoryRepository $categoryRepository,
         GallerySessionRepository $repository,
         Request $request
     ): Response {
         $currentPage = max(1, $request->query->getInt('page', 1));
+        $categories = $categoryRepository->findBy([], ['name' => 'ASC']);
 
-        $query = $repository->createQueryBuilder('s')
+        $selectedCategoryId = $request->query->getInt('category', 0);
+
+        $selectedCategory = $selectedCategoryId > 0
+            ? $categoryRepository->find($selectedCategoryId)
+            : null;
+
+        if ($selectedCategoryId > 0 && !$selectedCategory) {
+            return $this->redirectToRoute('app_gallery');
+        }
+
+        $queryBuilder = $repository->createQueryBuilder('s');
+
+        if ($selectedCategory !== null) {
+            $queryBuilder
+                ->innerJoin('s.categories', 'c')
+                ->andWhere('c.id = :categoryId')
+                ->setParameter('categoryId', $selectedCategory->getId())
+                ->distinct();
+        }
+
+        $query = $queryBuilder
             ->orderBy('s.id', 'DESC')
             ->getQuery()
             ->setFirstResult(($currentPage - 1) * self::SESSIONS_PER_PAGE)
@@ -48,6 +71,9 @@ class GalleryPageController extends AbstractController
             'totalPages' => $totalPages,
             'totalSessions' => $totalSessions,
             'paginationPages' => range($paginationStart, $paginationEnd),
+            'categories' => $categories,
+            'selectedCategory' => $selectedCategory,
+            'selectedCategoryId' => $selectedCategory?->getId(),
         ]);
     }
 

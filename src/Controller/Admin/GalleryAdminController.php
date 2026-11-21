@@ -158,7 +158,7 @@ class GalleryAdminController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Zdjęcia zostały zaktualizowane.');
+            $this->addFlash('success', 'Zmiany zostały zapisane.');
 
             return $this->redirectToRoute('admin_gallery_edit', [
                 'id' => $session->getId(),
