@@ -195,11 +195,54 @@ class GalleryAdminController extends AbstractController
 
                 $safeName = $slugger->slug($originalName);
 
-                $newFilename = $safeName . '-' . bin2hex(random_bytes(6))
-                    . '.' . $uploadedFile->guessExtension();
+                $newFilename = $safeName . '-' . bin2hex(random_bytes(6)) . '.jpg';
 
-                $uploadedFile->move($uploadDirectory, $newFilename);
+                $sourceImage = imagecreatefromstring(
+                    file_get_contents($uploadedFile->getPathname())
+                );
 
+                if (!$sourceImage) {
+                    throw new \RuntimeException('Nie udało się odczytać zdjęcia.');
+                }
+
+                $watermarkPath = $this->getParameter('kernel.project_dir')
+                    . '/public/images/watermark.png';
+
+                $watermark = imagecreatefrompng($watermarkPath);
+
+                if (!$watermark) {
+                    imagedestroy($sourceImage);
+                    throw new \RuntimeException('Nie udało się wczytać znaku wodnego.');
+                }
+
+                $imageWidth = imagesx($sourceImage);
+                $imageHeight = imagesy($sourceImage);
+
+                $watermarkWidth = (int) ($imageWidth * 0.40);
+                $watermarkHeight = (int) (
+                    imagesy($watermark) * ($watermarkWidth / imagesx($watermark))
+                );
+
+                $margin = (int) ($imageWidth * 0.015);
+
+                imagecopyresampled(
+                    $sourceImage,
+                    $watermark,
+                    $imageWidth - $watermarkWidth - $margin,
+                    $imageHeight - $watermarkHeight - $margin,
+                    0,
+                    0,
+                    $watermarkWidth,
+                    $watermarkHeight,
+                    imagesx($watermark),
+                    imagesy($watermark)
+                );
+
+                imagejpeg($sourceImage, $uploadDirectory . '/' . $newFilename, 90);
+
+                imagedestroy($sourceImage);
+                imagedestroy($watermark);
+                
                 $image = new GalleryImage();
                 $image->setFilename($newFilename);
 
