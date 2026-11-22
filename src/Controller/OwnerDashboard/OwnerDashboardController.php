@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Controller\OwnerDashboard\MessageCrudController;
 
 #[AdminDashboard(routePath: '/owner', routeName: 'owner')]
 #[IsGranted('ROLE_OWNER')]
@@ -40,6 +41,7 @@ class OwnerDashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl('Strona główna', 'fa fa-home', '/');
         yield MenuItem::linkTo(UserCrudController::class, 'Użytkownicy', 'fa fa-images');
         yield MenuItem::linkTo(VisitCrudController::class, 'Odwiedzający', 'fa fa-images');
+        yield MenuItem::linkTo(MessageCrudController::class, 'Wiadomości', 'fa fa-envelope');
         yield MenuItem::linkTo(GalleryCategoryCrudController::class, 'Kategorie galerii', 'fa fa-tags');
     }
 }

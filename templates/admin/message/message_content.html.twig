@@ -1,0 +1,42 @@
+
+<h2>{{ selectedMessage.name }}</h2>
+
+<div class="mail-details">
+    Data: {{ selectedMessage.createdAt|date('d.m.Y H:i') }}<br>
+
+    E-mail:
+    <a href="mailto:{{ selectedMessage.email }}">
+        {{ selectedMessage.email }}
+    </a>
+    <br>
+
+    Telefon:
+    <a href="tel:{{ selectedMessage.phone }}">
+        {{ selectedMessage.phone }}
+    </a>
+    <br>
+
+    Status: {{ selectedMessage.status }}
+</div>
+
+<div class="mail-actions">
+    <form
+        class="mail-delete"
+        method="post"
+        action="{{ path('admin_message_delete', {id: selectedMessage.id}) }}"
+        onsubmit="return confirm('Czy na pewno chcesz usunąć tę wiadomość?');"
+    >
+        <input
+            type="hidden"
+            name="_token"
+            value="{{ csrf_token('delete_message_' ~ selectedMessage.id) }}"
+        >
+        <button type="submit">Usuń wiadomość</button>
+    </form>
+
+    <a class="mail-reply" href="mailto:{{ selectedMessage.email }}">
+        Odpowiedz
+    </a>
+</div>
+
+<div class="mail-message">{{ selectedMessage.message }}</div>

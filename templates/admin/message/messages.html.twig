@@ -1,0 +1,168 @@
+{% extends 'pages/home.html.twig' %}
+
+{% block title %}Wiadomości{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/message.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="mail-page">
+
+        <div class="mail-header">
+            <div class="mail-header-left">
+                <a href="{{ path('homepage') }}">← Powrót do strony głównej</a>
+                <h1>Wiadomości</h1>
+            </div>
+        </div>
+
+        {% for flash in app.flashes('success') %}
+            <div class="mail-alert">{{ flash }}</div>
+        {% endfor %}
+
+        <div class="mail-layout">
+
+            <aside class="mail-list">
+
+                <div class="mail-list-heading">
+                    <span>Odebrane</span>
+                    <span id="unread-count">{{ unreadCount }} nowych</span>
+                </div>
+
+                <div class="mail-list-items" id="mail-list-items">
+                    {% for message in messages %}
+                        <button
+                            type="button"
+                            class="mail-item {% if selectedMessage and selectedMessage.id == message.id %}active{% endif %}"
+                            data-message-id="{{ message.id }}"
+                            data-message-url="{{ path('admin_message_show', {id: message.id}) }}"
+                        >
+                            <div class="mail-item-top">
+                                <strong>{{ message.name }}</strong>
+                                <span class="mail-date">
+                                    {{ message.createdAt|date('d.m.Y H:i') }}
+                                </span>
+                            </div>
+
+                            <div class="mail-subject">
+                                {{ message.message|slice(0, 65) }}{% if message.message|length > 65 %}...{% endif %}
+                            </div>
+
+                            <span class="mail-status {% if message.status != constant('App\\Entity\\ContactMessage::STATUS_NEW') %}read{% endif %}">
+                                {% if message.status == constant('App\\Entity\\ContactMessage::STATUS_NEW') %}
+                                    ● Nowa
+                                {% else %}
+                                    Odczytana
+                                {% endif %}
+                            </span>
+                        </button>
+                    {% else %}
+                        <div class="mail-empty">
+                            Nie masz jeszcze żadnych wiadomości.
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </aside>
+
+            <section class="mail-content" id="mail-content">
+
+                {% if selectedMessage %}
+                    <h2>{{ selectedMessage.name }}</h2>
+
+                    <div class="mail-details">
+                        Data: {{ selectedMessage.createdAt|date('d.m.Y H:i') }}<br>
+                        E-mail:
+                        <a href="mailto:{{ selectedMessage.email }}">
+                            {{ selectedMessage.email }}
+                        </a>
+                        <br>
+                        Telefon:
+                        <a href="tel:{{ selectedMessage.phone }}">
+                            {{ selectedMessage.phone }}
+                        </a>
+                        <br>
+                        Status: {{ selectedMessage.status }}
+                    </div>
+
+                    <div class="mail-message">{{ selectedMessage.message }}</div>
+                {% else %}
+                    <div class="mail-placeholder">
+                        <h2>Wybierz wiadomość</h2>
+                        <p>Kliknij wiadomość z listy po lewej stronie, aby zobaczyć jej treść.</p>
+                    </div>
+                {% endif %}
+
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const list = document.getElementById('mail-list-items');
+            const content = document.getElementById('mail-content');
+
+            if (!list || !content) {
+                return;
+            }
+
+            list.addEventListener('click', async function (event) {
+                const item = event.target.closest('.mail-item');
+
+                if (!item) {
+                    return;
+                }
+
+                const url = item.dataset.messageUrl;
+
+                if (!url) {
+                    return;
+                }
+
+                content.innerHTML = '<div class="mail-placeholder"><p>Wczytywanie wiadomości...</p></div>';
+
+                try {
+                    const response = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Nie udało się pobrać wiadomości.');
+                    }
+
+                    const data = await response.json();
+
+                    content.innerHTML = data.html;
+
+                    list.querySelectorAll('.mail-item').forEach(function (element) {
+                        element.classList.remove('active');
+                    });
+
+                    item.classList.add('active');
+
+                    if (data.unreadCount !== undefined) {
+                        document.getElementById('unread-count').textContent =
+                            data.unreadCount + ' nowych';
+                    }
+
+                    const status = item.querySelector('.mail-status');
+
+                    if (status) {
+                        status.textContent = 'Odczytana';
+                        status.classList.add('read');
+                    }
+
+                    window.history.replaceState({}, '', '?id=' + item.dataset.messageId);
+
+                } catch (error) {
+                    content.innerHTML = '<div class="mail-placeholder"><p>Wystąpił błąd podczas wczytywania wiadomości.</p></div>';
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -93,6 +93,11 @@
                                                 <span>⚙</span> Panel właściciela
                                             </a>
 
+
+                                            <a href="{{ path('admin_messages') }}">
+                                                    <span>✉</span> Wiadomości
+                                            </a>
+
                                             <a href="{{ path('admin_stats') }}">
                                                 <span>⚙</span> Statystyki odwiedzin
                                             </a>
@@ -370,6 +375,96 @@
 
                         </div>
 
+                        {% for message in app.flashes('success') %}
+                            <div class="success-modal" id="successModal">
+                                <div class="success-modal-content">
+                                    <div class="success-icon">✓</div>
+                                    <h2>Wiadomość wysłana!</h2>
+                                    <p>{{ message }}</p>
+                                    <button type="button" onclick="closeSuccessModal()">
+                                        Zamknij
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
+                        <div class="contact-form-wrapper">
+
+                            <div class="contact-form-heading">
+                                <span class="section-kicker">FORMULARZ KONTAKTOWY</span>
+                                <h3>Napisz <em>do nas.</em></h3>
+                                <p>
+                                    Wypełnij formularz, a skontaktujemy się z Tobą
+                                    w sprawie Twojego zapytania.
+                                </p>
+                            </div>
+
+                            <form class="contact-form" action="{{ path('contact_send') }}" method="post">
+                                <input type="hidden" name="_token" value="{{ csrf_token('contact_form') }}">
+
+                                <div class="contact-form-row">
+
+                                    <div class="contact-form-field">
+                                        <label for="contact-name">Imię i nazwisko</label>
+                                        <input
+                                            type="text"
+                                            id="contact-name"
+                                            name="name"
+                                            placeholder="Wpisz imię i nazwisko"
+                                            required
+                                        >
+                                    </div>
+
+                                    <div class="contact-form-field">
+                                        <label for="contact-phone">Numer telefonu</label>
+                                        <input
+                                            type="tel"
+                                            id="contact-phone"
+                                            inputmode="numeric"
+                                            name="phone"
+                                            placeholder="Wpisz numer telefonu"
+                                            required
+                                        >
+                                    </div>
+
+                                    <div class="contact-form-field">
+                                        <label for="contact-email">E-mail</label>
+                                        <input
+                                            type="email"
+                                            id="contact-email"
+                                            name="email"
+                                            placeholder="Wpisz adres e-mail"
+                                            required
+                                        >
+                                    </div>
+
+                                </div>
+
+                                <div class="contact-form-field">
+                                    <label for="contact-message">Wiadomość</label>
+                                    <textarea
+                                        id="contact-message"
+                                        name="message"
+                                        rows="6"
+                                        placeholder="Napisz, w czym możemy Ci pomóc..."
+                                        required
+                                    ></textarea>
+                                </div>
+
+                                <button type="submit" class="contact-form-submit">
+                                    Wyślij wiadomość <span>→</span>
+                                </button>
+
+                            </form>
+
+                        </div>
+
                     </section>
 
             {% endblock %}
@@ -492,75 +587,15 @@
                 }
 
             });
-            // // Loader przy przechodzeniu do galerii
-            // document.querySelectorAll('.gallery-nav-link').forEach(function (link) {
-            //
-            //     link.addEventListener('click', function (event) {
-            //
-            //         if (
-            //             event.ctrlKey ||
-            //             event.metaKey ||
-            //             event.shiftKey ||
-            //             event.altKey ||
-            //             event.button !== 0
-            //         ) {
-            //             return;
-            //         }
-            //
-            //         event.preventDefault();
-            //
-            //         const loader = document.createElement('div');
-            //
-            //         loader.innerHTML = `
-            //             <div class="gallery-loader-spinner"></div>
-            //             <p>Wczytywanie galerii...</p>
-            //         `;
-            //
-            //         loader.style.cssText = `
-            //             position: fixed;
-            //             inset: 0;
-            //             z-index: 99999;
-            //             background: rgba(9, 10, 11, .92);
-            //             display: flex;
-            //             align-items: center;
-            //             justify-content: center;
-            //             flex-direction: column;
-            //             gap: 18px;
-            //             color: #e5c783;
-            //             font-size: 13px;
-            //             letter-spacing: 1px;
-            //             font-weight: 600;
-            //         `;
-            //
-            //         const style = document.createElement('style');
-            //         style.textContent = `
-            //             .gallery-loader-spinner {
-            //                 width: 52px;
-            //                 height: 52px;
-            //                 border: 3px solid rgba(201, 164, 92, .2);
-            //                 border-top-color: #c9a45c;
-            //                 border-right-color: #e5c783;
-            //                 border-radius: 50%;
-            //                 animation: gallery-spin .8s linear infinite;
-            //             }
-            //
-            //             @keyframes gallery-spin {
-            //                 to { transform: rotate(360deg); }
-            //             }
-            //         `;
-            //
-            //         document.head.appendChild(style);
-            //         document.body.appendChild(loader);
-            //
-            //         setTimeout(function () {
-            //             window.location.href = link.href;
-            //         }, 100);
-            //     });
-            // });
-
-
 
         });
+            function closeSuccessModal() {
+                const modal = document.getElementById('successModal');
+
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
     </script>
 
 {% endblock %}
