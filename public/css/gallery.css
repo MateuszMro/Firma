@@ -1692,5 +1692,28 @@ body.gallery-lightbox-open {
     margin-top: auto;
     align-self: flex-start;
 }
+/* Równe położenie przycisków w panelu administratora */
+.admin-gallery-panel .gallery-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.admin-gallery-panel .gallery-card-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.admin-gallery-panel .gallery-admin-actions {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-gallery-panel .gallery-admin-actions form {
+    margin: 0;
+}
 
 
