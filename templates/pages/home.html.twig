@@ -376,9 +376,43 @@
 
         </main>
     </div>
+    <div id="cookie-banner" class="cookie-banner" style="display: none;">
+        <div class="cookie-banner-content">
+            <div>
+                <strong>Informacja o plikach cookies</strong>
+                <p>
+                    Nasza strona wykorzystuje niezbędne pliki cookies,
+                    które zapewniają jej prawidłowe działanie.
+                    Więcej informacji znajdziesz w
+                    <a href="{{ path('app_privacy_policy') }}">Polityce prywatności</a>.
+                </p>
+            </div>
+
+            <button type="button" id="cookie-accept" class="cookie-accept">
+                Rozumiem
+            </button>
+        </div>
+    </div>
 
 
     <script>
+
+            document.addEventListener('DOMContentLoaded', function () {
+            const banner = document.getElementById('cookie-banner');
+            const acceptButton = document.getElementById('cookie-accept');
+
+            if (!banner || !acceptButton) return;
+
+            if (!localStorage.getItem('cookies-accepted')) {
+            banner.style.display = 'block';
+        }
+
+            acceptButton.addEventListener('click', function () {
+            localStorage.setItem('cookies-accepted', 'true');
+            banner.style.display = 'none';
+        });
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
 
             const navbarToggle = document.getElementById('navbarToggle');
@@ -524,6 +558,8 @@
             //     });
             // });
 
+
+
         });
     </script>
 
@@ -561,6 +597,7 @@
                     <a href="/#oferta">Oferta</a>
                     <a href="/#kontakt">Kontakt</a>
                     <a href="/gallery">Galeria</a>
+                    <a href="/polityka-prywatnosci">Polityka prywatności</a>
 
                     {% if is_granted('ROLE_OWNER') %}
                         <a href="{{ path('admin_stats') }}">Statystyki</a>

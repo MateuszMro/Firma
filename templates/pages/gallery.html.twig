@@ -39,139 +39,140 @@
             {% endfor %}
         </div>
 
-        <div class="gallery-grid">
-            {% for session in sessions %}
-                <a href="{{ path('app_gallery_show', {id: session.id}) }}"
-                   class="gallery-card">
-
-                    {% if session.images|length > 0 %}
-                        <img
-                            src="{{ asset('uploads/gallery/' ~ session.images|first.filename) }}"
-                            alt="{{ session.title }}"
-                            loading="lazy"
-                        >
-                    {% else %}
-                        <div class="gallery-no-image">Brak zdjęcia</div>
-                    {% endif %}
-
-                    <div class="gallery-card-info">
-                        <h3>{{ session.title }}</h3>
-
-                        <p>
-                            {{ session.description|striptags|slice(0, 110) }}{% if session.description|striptags|length > 110 %}...{% endif %}
-                        </p>
-
-                        <span>
-                            {{ session.images|length }} zdjęć
-                        </span>
-
-                        <div class="add-date">
-                            Dodano {{ session.createdAt|date('d.m.Y') }}
-                        </div>
-                    </div>
-                </a>
-            {% else %}
-                {% if selectedCategory %}
-                    <p>Brak sesji w kategorii „{{ selectedCategory.name }}”.</p>
-                {% else %}
-                    <p>Galeria jest jeszcze pusta.</p>
-                {% endif %}
-            {% endfor %}
+        <div id="gallery-results">
+            {% include 'pages/gallery_results.html.twig' %}
         </div>
 
-        {% if totalPages > 1 %}
-            <nav class="gallery-pagination" aria-label="Nawigacja stron galerii">
 
-                {# Poprzednia strona #}
-                {% if currentPage > 1 %}
-                    <a href="{{ path('app_gallery', {page: currentPage - 1, category: selectedCategoryId}) }}"
-                       class="gallery-page-arrow"
-                       aria-label="Poprzednia strona">
-                        <span aria-hidden="true">‹</span>
-                    </a>
-                {% else %}
-                    <span class="gallery-page-arrow disabled" aria-label="Poprzednia strona">
-                <span aria-hidden="true">‹</span>
-            </span>
-                {% endif %}
-
-                {# Pierwsza strona #}
-                {% if paginationPages|first > 1 %}
-                    <a href="{{ path('app_gallery', {page: 1, category: selectedCategoryId}) }}"
-                       class="gallery-page-number">1</a>
-
-                    {% if paginationPages|first > 2 %}
-                        <span class="gallery-page-dots">...</span>
-                    {% endif %}
-                {% endif %}
-
-                {# Numery stron #}
-                {% for page in paginationPages %}
-                    <a href="{{ path('app_gallery', {page: page, category: selectedCategoryId}) }}"
-                       class="gallery-page-number {{ page == currentPage ? 'active' : '' }}"
-                       {% if page == currentPage %}aria-current="page"{% endif %}>
-                        {{ page }}
-                    </a>
-                {% endfor %}
-
-                {# Ostatnia strona #}
-                {% if paginationPages|last < totalPages %}
-                    {% if paginationPages|last < totalPages - 1 %}
-                        <span class="gallery-page-dots">...</span>
-                    {% endif %}
-
-                    <a href="{{ path('app_gallery', {page: totalPages, category: selectedCategoryId}) }}"
-                       class="gallery-page-number">
-                        {{ totalPages }}
-                    </a>
-                {% endif %}
-
-                {# Następna strona #}
-                {% if currentPage < totalPages %}
-                    <a href="{{ path('app_gallery', {page: currentPage + 1, category: selectedCategoryId}) }}"
-                       class="gallery-page-arrow"
-                       aria-label="Następna strona">
-                        <span aria-hidden="true">›</span>
-                    </a>
-                {% else %}
-                    <span class="gallery-page-arrow disabled" aria-label="Następna strona">
-                <span aria-hidden="true">›</span>
-            </span>
-                {% endif %}
-
-            </nav>
-
-            <div class="gallery-pagination-info">
-                Strona {{ currentPage }} z {{ totalPages }}
-                <span>·</span>
-                Łącznie {{ totalSessions }} sesji
-            </div>
-        {% endif %}
 
     </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const loader = document.getElementById('gallery-loader');
+            const results = document.getElementById('gallery-results');
 
-            if (!loader) {
+            if (!results) {
                 return;
             }
 
-            const loaderText = loader.querySelector('p');
+            let controller = null;
 
-            function showLoader(link) {
-                if (link.classList.contains('gallery-card')) {
-                    loaderText.textContent = 'Wczytywanie zdjęć...';
-                } else {
-                    loaderText.textContent = 'Wczytywanie galerii...';
-                }
+            function updateActiveFilter(url) {
+                const selectedCategory = new URL(url, window.location.origin)
+                    .searchParams.get('category') || '';
 
-                loader.classList.add('active');
+                document.querySelectorAll('.gallery-filter').forEach(function (link) {
+                    const linkCategory = new URL(link.href, window.location.origin)
+                        .searchParams.get('category') || '';
+
+                    link.classList.toggle('active', linkCategory === selectedCategory);
+                });
             }
 
-            function handleLink(event) {
+            function updateResults(html) {
+                const template = document.createElement('template');
+                template.innerHTML = html;
+
+                const incomingGrid = template.content.querySelector('.gallery-grid');
+                const currentGrid = results.querySelector('.gallery-grid');
+
+                if (!incomingGrid || !currentGrid) {
+                    throw new Error('Nie znaleziono siatki galerii.');
+                }
+
+                // Zapamiętujemy obecne kafelki według ID sesji.
+                const existingCards = new Map();
+
+                currentGrid.querySelectorAll('.gallery-card[data-session-id]')
+                    .forEach(function (card) {
+                        existingCards.set(card.dataset.sessionId, card);
+                    });
+
+                // Przygotowujemy listę docelową, zachowując wspólne kafelki.
+                const newChildren = Array.from(incomingGrid.children).map(function (item) {
+                    const id = item.dataset.sessionId;
+
+                    if (id && existingCards.has(id)) {
+                        return existingCards.get(id);
+                    }
+
+                    return item;
+                });
+
+                // Wstawiamy nowe kafelki i zachowujemy istniejące elementy DOM.
+                newChildren.forEach(function (item, index) {
+                    const currentItem = currentGrid.children[index];
+
+                    if (currentItem !== item) {
+                        currentGrid.insertBefore(item, currentItem || null);
+                    }
+                });
+
+                // Usuwamy kafelki, których nie ma w nowej kategorii.
+                while (currentGrid.children.length > newChildren.length) {
+                    currentGrid.lastElementChild.remove();
+                }
+
+                // Aktualizujemy paginację i informację o liczbie sesji.
+                [
+                    '.gallery-pagination',
+                    '.gallery-pagination-info'
+                ].forEach(function (selector) {
+                    const current = results.querySelector(selector);
+                    const incoming = template.content.querySelector(selector);
+
+                    if (current && incoming) {
+                        current.replaceWith(incoming);
+                    } else if (current) {
+                        current.remove();
+                    } else if (incoming) {
+                        results.appendChild(incoming);
+                    }
+                });
+            }
+
+            async function loadGallery(url, updateHistory = true) {
+                if (controller) {
+                    controller.abort();
+                }
+
+                controller = new AbortController();
+
+                try {
+                    const response = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        signal: controller.signal
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Nie udało się pobrać galerii.');
+                    }
+
+                    const html = await response.text();
+
+                    updateResults(html);
+                    updateActiveFilter(url);
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+
+
+                    if (updateHistory) {
+                        history.pushState({}, '', url);
+                    }
+
+                } catch (error) {
+                    if (error.name !== 'AbortError') {
+                        window.location.href = url;
+                    }
+                }
+            }
+
+            document.addEventListener('click', function (event) {
                 const link = event.target.closest(
                     '.gallery-filter, .gallery-pagination a'
                 );
@@ -184,32 +185,20 @@
                     event.ctrlKey ||
                     event.metaKey ||
                     event.shiftKey ||
-                    event.altKey
+                    event.altKey ||
+                    event.button !== 0
                 ) {
                     return;
                 }
 
-                showLoader(link);
-            }
+                event.preventDefault();
 
-            document.addEventListener('click', handleLink);
+                loadGallery(link.href);
+            });
 
-        });
-
-        window.addEventListener('pageshow', function () {
-            const loader = document.getElementById('gallery-loader');
-
-            if (loader) {
-                loader.classList.remove('active');
-            }
-        });
-
-        window.addEventListener('load', function () {
-            const loader = document.getElementById('gallery-loader');
-
-            if (loader) {
-                loader.classList.remove('active');
-            }
+            window.addEventListener('popstate', function () {
+                loadGallery(window.location.href, false);
+            });
         });
     </script>
 {% endblock %}

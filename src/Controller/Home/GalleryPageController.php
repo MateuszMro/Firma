@@ -54,18 +54,21 @@ class GalleryPageController extends AbstractController
         $totalSessions = count($paginator);
         $totalPages = max(1, (int) ceil($totalSessions / self::SESSIONS_PER_PAGE));
 
-        // Jeśli ktoś otworzy stronę, która już nie istnieje,
-        // przekieruj go na ostatnią dostępną stronę.
         if ($currentPage > $totalPages) {
             return $this->redirectToRoute('app_gallery', [
                 'page' => $totalPages,
+                'category' => $selectedCategoryId ?: null,
             ]);
         }
 
         $paginationStart = max(1, $currentPage - 2);
         $paginationEnd = min($totalPages, $currentPage + 2);
 
-        return $this->render('pages/gallery.html.twig', [
+        $template = $request->isXmlHttpRequest()
+            ? 'pages/gallery_results.html.twig'
+            : 'pages/gallery.html.twig';
+
+        return $this->render($template, [
             'sessions' => $paginator,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,

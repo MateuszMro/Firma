@@ -72,6 +72,16 @@
                             {% if session.description|striptags|length > 100 %}...{% endif %}
                         </p>
 
+                        {% if session.categories|length > 0 %}
+                            <div class="gallery-categories">
+                                {% for category in session.categories %}
+                                    <span class="gallery-category">
+                                        {{ category.name }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
                         <div class="gallery-admin-actions">
                             <a href="{{ path('admin_gallery_edit', {id: session.id}) }}"
                                class="gallery-edit-button">

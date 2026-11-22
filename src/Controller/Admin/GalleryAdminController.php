@@ -242,7 +242,7 @@ class GalleryAdminController extends AbstractController
 
                 imagedestroy($sourceImage);
                 imagedestroy($watermark);
-                
+
                 $image = new GalleryImage();
                 $image->setFilename($newFilename);
 

@@ -1,0 +1,92 @@
+<div class="gallery-grid">
+    {% for session in sessions %}
+        <a href="{{ path('app_gallery_show', {id: session.id}) }}"
+           class="gallery-card"
+           data-session-id="{{ session.id }}">
+
+            {% if session.images|length > 0 %}
+                <img
+                    src="{{ asset('uploads/gallery/' ~ session.images|first.filename) }}"
+                    alt="{{ session.title }}"
+                    loading="lazy"
+                >
+            {% else %}
+                <div class="gallery-no-image">Brak zdjęcia</div>
+            {% endif %}
+
+            <div class="gallery-card-info">
+                <h3>{{ session.title }}</h3>
+
+                <p>
+                    {{ session.description|striptags|slice(0, 110) }}{% if session.description|striptags|length > 110 %}...{% endif %}
+                </p>
+
+                <span>{{ session.images|length }} zdjęć</span>
+
+                <div class="add-date">
+                    Dodano {{ session.createdAt|date('d.m.Y') }}
+                </div>
+            </div>
+        </a>
+    {% else %}
+        {% if selectedCategory %}
+            <p>Brak sesji w kategorii „{{ selectedCategory.name }}”.</p>
+        {% else %}
+            <p>Galeria jest jeszcze pusta.</p>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% if totalPages > 1 %}
+    <nav class="gallery-pagination" aria-label="Nawigacja stron galerii">
+
+        {% if currentPage > 1 %}
+            <a href="{{ path('app_gallery', {page: currentPage - 1, category: selectedCategoryId}) }}"
+               class="gallery-page-arrow"
+               aria-label="Poprzednia strona">‹</a>
+        {% else %}
+            <span class="gallery-page-arrow disabled">‹</span>
+        {% endif %}
+
+        {% if paginationPages|first > 1 %}
+            <a href="{{ path('app_gallery', {page: 1, category: selectedCategoryId}) }}"
+               class="gallery-page-number">1</a>
+
+            {% if paginationPages|first > 2 %}
+                <span class="gallery-page-dots">...</span>
+            {% endif %}
+        {% endif %}
+
+        {% for page in paginationPages %}
+            <a href="{{ path('app_gallery', {page: page, category: selectedCategoryId}) }}"
+               class="gallery-page-number {{ page == currentPage ? 'active' : '' }}"
+               {% if page == currentPage %}aria-current="page"{% endif %}>
+                {{ page }}
+            </a>
+        {% endfor %}
+
+        {% if paginationPages|last < totalPages %}
+            {% if paginationPages|last < totalPages - 1 %}
+                <span class="gallery-page-dots">...</span>
+            {% endif %}
+
+            <a href="{{ path('app_gallery', {page: totalPages, category: selectedCategoryId}) }}"
+               class="gallery-page-number">{{ totalPages }}</a>
+        {% endif %}
+
+        {% if currentPage < totalPages %}
+            <a href="{{ path('app_gallery', {page: currentPage + 1, category: selectedCategoryId}) }}"
+               class="gallery-page-arrow"
+               aria-label="Następna strona">›</a>
+        {% else %}
+            <span class="gallery-page-arrow disabled">›</span>
+        {% endif %}
+
+    </nav>
+
+    <div class="gallery-pagination-info">
+        Strona {{ currentPage }} z {{ totalPages }}
+        <span>·</span>
+        Łącznie {{ totalSessions }} sesji
+    </div>
+{% endif %}
