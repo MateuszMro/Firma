@@ -458,71 +458,71 @@
                 }
 
             });
-            // Loader przy przechodzeniu do galerii
-            document.querySelectorAll('.gallery-nav-link').forEach(function (link) {
-
-                link.addEventListener('click', function (event) {
-
-                    if (
-                        event.ctrlKey ||
-                        event.metaKey ||
-                        event.shiftKey ||
-                        event.altKey ||
-                        event.button !== 0
-                    ) {
-                        return;
-                    }
-
-                    event.preventDefault();
-
-                    const loader = document.createElement('div');
-
-                    loader.innerHTML = `
-                        <div class="gallery-loader-spinner"></div>
-                        <p>Wczytywanie galerii...</p>
-                    `;
-
-                    loader.style.cssText = `
-                        position: fixed;
-                        inset: 0;
-                        z-index: 99999;
-                        background: rgba(9, 10, 11, .92);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-direction: column;
-                        gap: 18px;
-                        color: #e5c783;
-                        font-size: 13px;
-                        letter-spacing: 1px;
-                        font-weight: 600;
-                    `;
-
-                    const style = document.createElement('style');
-                    style.textContent = `
-                        .gallery-loader-spinner {
-                            width: 52px;
-                            height: 52px;
-                            border: 3px solid rgba(201, 164, 92, .2);
-                            border-top-color: #c9a45c;
-                            border-right-color: #e5c783;
-                            border-radius: 50%;
-                            animation: gallery-spin .8s linear infinite;
-                        }
-
-                        @keyframes gallery-spin {
-                            to { transform: rotate(360deg); }
-                        }
-                    `;
-
-                    document.head.appendChild(style);
-                    document.body.appendChild(loader);
-
-                    setTimeout(function () {
-                        window.location.href = link.href;
-                    }, 100);
-                });
-            });
+            // // Loader przy przechodzeniu do galerii
+            // document.querySelectorAll('.gallery-nav-link').forEach(function (link) {
+            //
+            //     link.addEventListener('click', function (event) {
+            //
+            //         if (
+            //             event.ctrlKey ||
+            //             event.metaKey ||
+            //             event.shiftKey ||
+            //             event.altKey ||
+            //             event.button !== 0
+            //         ) {
+            //             return;
+            //         }
+            //
+            //         event.preventDefault();
+            //
+            //         const loader = document.createElement('div');
+            //
+            //         loader.innerHTML = `
+            //             <div class="gallery-loader-spinner"></div>
+            //             <p>Wczytywanie galerii...</p>
+            //         `;
+            //
+            //         loader.style.cssText = `
+            //             position: fixed;
+            //             inset: 0;
+            //             z-index: 99999;
+            //             background: rgba(9, 10, 11, .92);
+            //             display: flex;
+            //             align-items: center;
+            //             justify-content: center;
+            //             flex-direction: column;
+            //             gap: 18px;
+            //             color: #e5c783;
+            //             font-size: 13px;
+            //             letter-spacing: 1px;
+            //             font-weight: 600;
+            //         `;
+            //
+            //         const style = document.createElement('style');
+            //         style.textContent = `
+            //             .gallery-loader-spinner {
+            //                 width: 52px;
+            //                 height: 52px;
+            //                 border: 3px solid rgba(201, 164, 92, .2);
+            //                 border-top-color: #c9a45c;
+            //                 border-right-color: #e5c783;
+            //                 border-radius: 50%;
+            //                 animation: gallery-spin .8s linear infinite;
+            //             }
+            //
+            //             @keyframes gallery-spin {
+            //                 to { transform: rotate(360deg); }
+            //             }
+            //         `;
+            //
+            //         document.head.appendChild(style);
+            //         document.body.appendChild(loader);
+            //
+            //         setTimeout(function () {
+            //             window.location.href = link.href;
+            //         }, 100);
+            //     });
+            // });
 
         });
     </script>

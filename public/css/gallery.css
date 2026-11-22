@@ -1675,5 +1675,22 @@ body.gallery-lightbox-open {
         transform: rotate(360deg);
     }
 }
+/* Wyrównanie dołu kart galerii */
+.gallery-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.gallery-card-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.gallery-card-info > span {
+    margin-top: auto;
+    align-self: flex-start;
+}
 
 
