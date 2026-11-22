@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/owner/gallery')]
 #[IsGranted('ROLE_OWNER')]
@@ -83,10 +84,59 @@ class GalleryAdminController extends AbstractController
                 );
 
                 $safeName = $slugger->slug($originalName);
-                $newFilename = $safeName . '-' . bin2hex(random_bytes(6))
-                    . '.' . $uploadedFile->guessExtension();
+                $newFilename = $safeName . '-' . bin2hex(random_bytes(6)) . '.jpg';
 
-                $uploadedFile->move($uploadDirectory, $newFilename);
+                $sourceImage = imagecreatefromstring(
+                    file_get_contents($uploadedFile->getPathname())
+                );
+
+                if (!$sourceImage) {
+                    throw new \RuntimeException('Nie udało się odczytać zdjęcia.');
+                }
+
+                $watermarkPath = $this->getParameter('kernel.project_dir')
+                    . '/public/images/watermark.png';
+
+                $watermark = imagecreatefrompng($watermarkPath);
+
+                if (!$watermark) {
+                    throw new \RuntimeException('Nie udało się wczytać znaku wodnego.');
+                }
+
+                $imageWidth = imagesx($sourceImage);
+                $imageHeight = imagesy($sourceImage);
+
+                $watermarkWidth = (int) ($imageWidth * 0.40);
+                $watermarkHeight = (int) (
+                    imagesy($watermark) * ($watermarkWidth / imagesx($watermark))
+                );
+
+                $margin = (int) ($imageWidth * 0.0015);
+
+                $positionX = $imageWidth - $watermarkWidth - $margin;
+                $positionY = $imageHeight - $watermarkHeight - $margin;
+
+                imagecopyresampled(
+                    $sourceImage,
+                    $watermark,
+                    $positionX,
+                    $positionY,
+                    0,
+                    0,
+                    $watermarkWidth,
+                    $watermarkHeight,
+                    imagesx($watermark),
+                    imagesy($watermark)
+                );
+
+                imagejpeg(
+                    $sourceImage,
+                    $uploadDirectory . '/' . $newFilename,
+                    90
+                );
+
+                imagedestroy($sourceImage);
+                imagedestroy($watermark);
 
                 $image = new GalleryImage();
                 $image->setFilename($newFilename);
@@ -171,7 +221,7 @@ class GalleryAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/image/delete/{id}',
+    #[Route('/images/delete/{id}',
         name: 'admin_gallery_image_delete',
         requirements: ['id' => '\d+'],
         methods: ['POST']
