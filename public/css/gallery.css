@@ -1,3 +1,4 @@
+
 /* =========================================
    GALERIA – STYL BLACK & GOLD
 ========================================= */
@@ -189,23 +190,6 @@
 /* =========================================
    RESPONSYWNOŚĆ
 ========================================= */
-@media (max-width: 1200px) {
-    .gallery-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 900px) {
-    .gallery-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 620px) {
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
-}
 @media (max-width: 1000px) {
     .gallery-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -393,6 +377,7 @@
    PODGLĄD ZDJĘĆ – LIGHTBOX
 ========================================= */
 
+/* Pełnoekranowy podgląd zdjęć */
 .gallery-lightbox {
     position: fixed;
     inset: 0;
@@ -400,7 +385,7 @@
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 25px 45px;
+    padding: 18px 76px;
     box-sizing: border-box;
     background: rgba(0, 0, 0, .96);
 }
@@ -413,7 +398,7 @@ body.gallery-lightbox-open {
     overflow: hidden;
 }
 
-.lightbox-content {
+.gallery-lightbox .lightbox-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -422,15 +407,18 @@ body.gallery-lightbox-open {
     height: 100%;
     min-width: 0;
     min-height: 0;
+    padding: 0;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
-#lightboxImage {
+.gallery-lightbox #lightboxImage {
     display: block;
+    width: 100%;
+    height: calc(100% - 58px);
+    min-height: 0;
     max-width: 100%;
-    max-height: calc(100vh - 145px);
-    width: auto;
-    height: auto;
+    max-height: calc(100% - 58px);
     object-fit: contain;
     user-select: none;
     -webkit-user-drag: none;
@@ -439,9 +427,13 @@ body.gallery-lightbox-open {
     transform-origin: center center;
 }
 
-.lightbox-counter {
-    margin-top: 18px;
-    color: var(--gold-light, #e5c783);
+.gallery-lightbox .lightbox-counter {
+    flex: 0 0 auto;
+    margin-top: 12px;
+    padding: 9px 20px;
+    border: 2px solid #d4af37;
+    background: #090a0b;
+    color: #fff;
     font-size: 13px;
     letter-spacing: 2px;
 }
@@ -518,7 +510,7 @@ body.gallery-lightbox-open {
     }
 
     .gallery-lightbox {
-        padding: 65px 60px;
+        padding: 18px 56px;
     }
 
     .lightbox-prev {
@@ -544,7 +536,8 @@ body.gallery-lightbox-open {
         gap: 20px;
     }
 
-    .gallery-photo {
+    .gallery-photo,
+    .gallery-photo:nth-child(even) {
         height: auto;
         margin-top: 0;
     }
@@ -556,12 +549,12 @@ body.gallery-lightbox-open {
     }
 
     .gallery-lightbox {
-        padding: 65px 12px 45px;
+        padding: 55px 10px 70px;
     }
 
-    #lightboxImage {
-        max-width: 100%;
-        max-height: calc(100vh - 150px);
+    .gallery-lightbox #lightboxImage {
+        height: calc(100% - 52px);
+        max-height: calc(100% - 52px);
     }
 
     .lightbox-close {
@@ -591,49 +584,6 @@ body.gallery-lightbox-open {
     .lightbox-counter {
         margin-top: 10px;
     }
-}
-/* Przycisk zamykania – lekkie obniżenie X */
-.gallery-lightbox .lightbox-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 0 0 0;
-    line-height: 1;
-    font-family: Arial, sans-serif;
-    font-size: 28px;
-}
-
-/* Poprawienie położenia licznika zdjęć */
-.gallery-lightbox .lightbox-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    max-height: calc(100vh - 120px);
-    overflow: visible;
-    padding-bottom: 35px;
-    box-sizing: border-box;
-}
-
-.gallery-lightbox #lightboxImage {
-    max-width: 96vw;
-    max-height: 88vh;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-}
-
-.gallery-lightbox .lightbox-counter {
-    position: relative;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    z-index: 100010;
-    background: #090a0b;
-    color: #fff;
-    border: 2px solid #d4af37;
-    padding: 9px 20px;
 }
 /* =========================================
    PANEL ZARZĄDZANIA GALERIĄ – EDYCJA ZDJĘĆ
@@ -1111,17 +1061,23 @@ body.gallery-lightbox-open {
     color: #e5c783;
 }
 
+
+/* Przyciski edycji i usuwania nie wychodzą poza kartę */
 .admin-gallery-panel .gallery-admin-actions {
-    display: flex;
-    align-items: stretch;
-    gap: 10px;
-    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.admin-gallery-panel .gallery-admin-actions form {
-    flex: 1;
+.admin-gallery-panel .gallery-admin-actions > a,
+.admin-gallery-panel .gallery-admin-actions > form {
+    width: 100%;
     min-width: 0;
+    max-width: 100%;
     margin: 0;
+    box-sizing: border-box;
 }
 
 .admin-gallery-panel .gallery-edit-button,
@@ -1133,7 +1089,10 @@ body.gallery-lightbox-open {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 12px;
+    padding: 10px 5px;
+    min-width: 0;
+    max-width: 100%;
+    white-space: nowrap;
     border-radius: 3px;
     font-size: 11px;
     font-weight: 700;
@@ -1229,7 +1188,7 @@ body.gallery-lightbox-open {
 
 @media (max-width: 500px) {
     .admin-gallery-panel .gallery-admin-actions {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
 
     .admin-gallery-panel .gallery-admin-actions form {
@@ -1246,46 +1205,6 @@ body.gallery-lightbox-open {
         height: 200px;
     }
 }
-/* Poprawka – przyciski nie wychodzą poza kartę */
-
-.admin-gallery-panel .gallery-admin-actions {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 8px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.admin-gallery-panel .gallery-admin-actions > a,
-.admin-gallery-panel .gallery-admin-actions > form {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.admin-gallery-panel .gallery-admin-actions form {
-    flex: initial;
-    margin: 0;
-}
-
-.admin-gallery-panel .gallery-edit-button,
-.admin-gallery-panel .gallery-delete-button {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    padding: 10px 5px;
-    box-sizing: border-box;
-    white-space: nowrap;
-    font-size: 11px;
-}
-
-@media (max-width: 500px) {
-    .admin-gallery-panel .gallery-admin-actions {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* =========================================
    PANEL GALERII – DODAWANIE ZDJĘĆ
 ========================================= */
@@ -1489,44 +1408,7 @@ body.gallery-lightbox-open {
     transform: translateY(-2px);
 }
 
-.gallery-page-arrow.disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
 
-/* OPTYCZNE WYŚRODKOWANIE PLUSIKA NA ZDJĘCIACH */
-.gallery-photo-overlay {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.gallery-photo-overlay > span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 45px;
-    height: 45px;
-    padding: 0;
-    margin: 0;
-
-    box-sizing: border-box;
-    line-height: 1;
-    font-family: Arial, sans-serif;
-    font-size: 27px;
-    font-weight: 400;
-
-    text-align: center;
-    transform: none;
-}
-
-/* Delikatna korekta położenia samego znaku + */
-.gallery-photo-overlay > span {
-    padding-bottom: 0;
-    position: relative;
-    top: 7px;
-}
 /* =========================================
    FILTROWANIE GALERII – KATEGORIE
 ========================================= */
@@ -1691,10 +1573,8 @@ body.gallery-lightbox-open {
         transform: rotate(360deg);
     }
 }
-/* Wyrównanie dołu kart galerii */
+/* Równa wysokość kart i wyrównanie ich zawartości */
 .gallery-card {
-    display: flex;
-    flex-direction: column;
     height: 100%;
 }
 
@@ -1708,29 +1588,11 @@ body.gallery-lightbox-open {
     margin-top: auto;
     align-self: flex-start;
 }
-/* Równe położenie przycisków w panelu administratora */
-.admin-gallery-panel .gallery-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.admin-gallery-panel .gallery-card-info {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
 
 .admin-gallery-panel .gallery-admin-actions {
     margin-top: auto;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
-.admin-gallery-panel .gallery-admin-actions form {
-    margin: 0;
-}
 /* Animacja kafelków po filtrowaniu AJAX */
 @keyframes galleryCardEnter {
     from {
@@ -1761,29 +1623,86 @@ body.gallery-lightbox-open {
         animation: none;
     }
 }
-@media (max-width: 620px) {
-    .gallery-lightbox {
-        padding: 10px;
-    }
-
-    .gallery-lightbox .lightbox-content {
-        width: 100%;
-        max-height: 100dvh;
-        padding-bottom: 25px;
-    }
-
-    .gallery-lightbox #lightboxImage {
-        max-width: 98vw;
-        max-height: 90dvh;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-    }
-}
 .admin-gallery-panel .gallery-categories {
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 15px;
     justify-content: flex-start;
 }
+/* Precyzyjne wyśrodkowanie X */
+.gallery-lightbox .lightbox-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    text-indent: 0;
+    box-sizing: border-box;
+}
+/* LIGHTBOX – telefon obrócony poziomo */
+@media (orientation: landscape) and (max-height: 600px) {
 
+    .gallery-lightbox {
+        padding: 5px;
+    }
+
+    .gallery-lightbox .lightbox-content {
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        padding: 0;
+    }
+
+    .gallery-lightbox #lightboxImage {
+        width: 100%;
+        height: calc(100dvh - 15px);
+        max-width: 100%;
+        max-height: calc(100dvh - 15px);
+        object-fit: contain;
+    }
+
+    .gallery-lightbox .lightbox-counter {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+    }
+}/* LIGHTBOX – jednakowy obszar dla wszystkich zdjęć */
+.gallery-lightbox .lightbox-content {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    padding: 0;
+}
+
+.gallery-lightbox #lightboxImage {
+    display: block;
+    width: 90vw;
+    height: 85dvh;
+    max-width: 90vw;
+    max-height: 85dvh;
+    object-fit: contain;
+}
+
+/* Telefon pionowo */
+@media (max-width: 620px) and (orientation: portrait) {
+    .gallery-lightbox #lightboxImage {
+        width: 100%;
+        height: 78dvh;
+        max-width: 100%;
+        max-height: 78dvh;
+    }
+}
+
+/* Telefon poziomo */
+@media (orientation: landscape) and (max-height: 600px) {
+    .gallery-lightbox #lightboxImage {
+        width: 100%;
+        height: 90dvh;
+        max-width: 100%;
+        max-height: 90dvh;
+    }
+}
