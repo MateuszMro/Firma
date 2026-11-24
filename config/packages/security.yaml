@@ -31,6 +31,14 @@ security:
             pattern: ^/
             provider: app_user_provider
             custom_authenticator: App\Security\AppAuthenticator
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 2592000
+                path: /
+                secure: auto
+                httponly: true
+                samesite: lax
+                always_remember_me: false
             logout:
                 path: app_logout
                 target: homepage  # Tutaj ustawiasz ścieżkę, na którą chcesz przekierować użytkownika po wylogowaniu
