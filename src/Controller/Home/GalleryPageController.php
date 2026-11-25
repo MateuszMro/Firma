@@ -88,7 +88,9 @@ class GalleryPageController extends AbstractController
         $session = $repository->find($id);
 
         if (!$session) {
-            throw $this->createNotFoundException('Nie znaleziono sesji zdjęciowej.');
+            throw $this->createNotFoundException(
+                'Nie znaleziono sesji zdjęciowej.'
+            );
         }
 
         return $this->render('pages/gallery-show.html.twig', [

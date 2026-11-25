@@ -10,10 +10,10 @@
 {% block content %}
     <div class="gallery-session-page">
 
-{#        <div id="gallery-session-loader" class="gallery-loader active">#}
-{#            <div class="gallery-loader-spinner"></div>#}
-{#            <p>Wczytywanie zdjęć...</p>#}
-{#        </div>#}
+        {# <div id="gallery-session-loader" class="gallery-loader active"> #}
+        {#     <div class="gallery-loader-spinner"></div> #}
+        {#     <p>Wczytywanie zdjęć...</p> #}
+        {# </div> #}
 
         <a href="{{ path('app_gallery') }}" class="gallery-back">
             <span aria-hidden="true">←</span> Wróć do galerii
@@ -43,6 +43,7 @@
                             class="gallery-slider-image"
                             loading="eager"
                         >
+
                         <span class="gallery-photo-overlay" aria-hidden="true">
                             <span>+</span>
                         </span>
@@ -114,6 +115,7 @@
                 return;
             }
 
+            // Przywrócenie początkowego powiększenia.
             function resetZoom() {
                 zoom = 1;
                 translateX = 0;
@@ -125,6 +127,7 @@
                 lightboxImage.style.cursor = 'zoom-in';
             }
 
+            // Aktualizacja powiększenia i położenia zdjęcia.
             function updateZoom() {
                 lightboxImage.style.transform =
                     `translate(${translateX}px, ${translateY}px) scale(${zoom})`;
@@ -133,20 +136,20 @@
                     zoom > 1 ? 'grab' : 'zoom-in';
             }
 
+            // Wyświetlanie zdjęcia.
             function showImage(index) {
                 resetZoom();
 
                 currentIndex = (index + images.length) % images.length;
 
-                lightboxImage.src =
-                    images[currentIndex].currentSrc || images[currentIndex].src;
-
+                lightboxImage.src = images[currentIndex].src;
                 lightboxImage.alt = images[currentIndex].alt;
 
                 counter.textContent =
                     (currentIndex + 1) + ' / ' + images.length;
             }
 
+            // Otwieranie Lightboxa.
             function openLightbox(index) {
                 showImage(index);
 
@@ -156,6 +159,7 @@
                 document.body.style.overflow = 'hidden';
             }
 
+            // Zamykanie Lightboxa.
             function closeLightbox() {
                 lightbox.classList.remove('active');
                 lightbox.setAttribute('aria-hidden', 'true');
@@ -165,44 +169,48 @@
                 resetZoom();
             }
 
-            // Otwieranie zdjęć z przycisków galerii
+            // Otwieranie zdjęć z przycisków galerii.
             document.querySelectorAll('.gallery-photo').forEach(function (photo) {
                 photo.addEventListener('click', function () {
                     const index = Number(photo.dataset.index);
 
-                    if (Number.isInteger(index) && index >= 0 && index < images.length) {
+                    if (
+                        Number.isInteger(index) &&
+                        index >= 0 &&
+                        index < images.length
+                    ) {
                         openLightbox(index);
                     }
                 });
             });
 
-            // Zamykanie podglądu
+            // Przycisk zamykania.
             if (closeButton) {
                 closeButton.addEventListener('click', closeLightbox);
             }
 
-            // Poprzednie zdjęcie
+            // Poprzednie zdjęcie.
             if (prevButton) {
                 prevButton.addEventListener('click', function () {
                     showImage(currentIndex - 1);
                 });
             }
 
-            // Następne zdjęcie
+            // Następne zdjęcie.
             if (nextButton) {
                 nextButton.addEventListener('click', function () {
                     showImage(currentIndex + 1);
                 });
             }
 
-            // Kliknięcie poza zdjęciem zamyka podgląd
+            // Kliknięcie poza zdjęciem.
             lightbox.addEventListener('click', function (event) {
                 if (event.target === lightbox) {
                     closeLightbox();
                 }
             });
 
-            // Obsługa klawiatury
+            // Obsługa klawiatury.
             document.addEventListener('keydown', function (event) {
                 if (!lightbox.classList.contains('active')) return;
 
@@ -219,7 +227,7 @@
                 }
             });
 
-            // Powiększanie i pomniejszanie kółkiem myszy
+            // Powiększanie i pomniejszanie kółkiem myszy.
             lightbox.addEventListener('wheel', function (event) {
                 if (!lightbox.classList.contains('active')) return;
 
@@ -241,7 +249,7 @@
                 updateZoom();
             }, { passive: false });
 
-            // Przesuwanie powiększonego zdjęcia myszką
+            // Przesuwanie powiększonego zdjęcia myszką.
             lightboxImage.addEventListener('mousedown', function (event) {
                 if (zoom <= 1) return;
 
@@ -274,7 +282,7 @@
                 }
             });
 
-            // Obsługa przesuwania zdjęć palcem na telefonie
+            // Przesuwanie zdjęć palcem na telefonie.
             lightbox.addEventListener('touchstart', function (event) {
                 if (zoom > 1) return;
 
@@ -296,7 +304,7 @@
                 }
             }, { passive: true });
 
-            // Ukrywanie loadera dopiero po załadowaniu wszystkich zdjęć
+            // Ukrywanie loadera po załadowaniu zdjęć.
             const sessionLoader = document.getElementById('gallery-session-loader');
 
             if (sessionLoader) {
@@ -316,7 +324,10 @@
                 });
             }
 
-            console.log('Galeria została uruchomiona. Liczba zdjęć:', images.length);
+            console.log(
+                'Galeria została uruchomiona. Liczba zdjęć:',
+                images.length
+            );
         });
     </script>
 {% endblock %}

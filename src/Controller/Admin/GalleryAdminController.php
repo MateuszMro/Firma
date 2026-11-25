@@ -13,13 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/owner/gallery')]
 #[IsGranted('ROLE_OWNER')]
 class GalleryAdminController extends AbstractController
 {
-
     #[Route('', name: 'admin_gallery_admin_panel_gallery', methods: ['GET'])]
     public function index(
         GallerySessionRepository $repository,
@@ -56,6 +54,7 @@ class GalleryAdminController extends AbstractController
             'paginationPages' => range($paginationStart, $paginationEnd),
         ]);
     }
+
     #[Route('/add', name: 'admin_gallery_add')]
     public function add(
         Request $request,
@@ -64,6 +63,7 @@ class GalleryAdminController extends AbstractController
     ): Response {
         $session = new GallerySession();
         $session->setCreatedAt(date('d-m-Y'));
+
         $form = $this->createForm(GallerySessionType::class, $session);
         $form->handleRequest($request);
 
@@ -77,7 +77,7 @@ class GalleryAdminController extends AbstractController
                 mkdir($uploadDirectory, 0775, true);
             }
 
-            foreach ($uploadedFiles as $uploadedFile) {
+            foreach ($uploadedFiles ?? [] as $uploadedFile) {
                 $originalName = pathinfo(
                     $uploadedFile->getClientOriginalName(),
                     PATHINFO_FILENAME
@@ -94,39 +94,9 @@ class GalleryAdminController extends AbstractController
                     throw new \RuntimeException('Nie udało się odczytać zdjęcia.');
                 }
 
-                $watermarkPath = $this->getParameter('kernel.project_dir')
-                    . '/public/images/watermark.png';
-
-                $watermark = imagecreatefrompng($watermarkPath);
-
-                if (!$watermark) {
-                    throw new \RuntimeException('Nie udało się wczytać znaku wodnego.');
-                }
-
-                $imageWidth = imagesx($sourceImage);
-                $imageHeight = imagesy($sourceImage);
-
-                $watermarkWidth = (int) ($imageWidth * 0.40);
-                $watermarkHeight = (int) (
-                    imagesy($watermark) * ($watermarkWidth / imagesx($watermark))
-                );
-
-                $margin = (int) ($imageWidth * 0.0015);
-
-                $positionX = $imageWidth - $watermarkWidth - $margin;
-                $positionY = $imageHeight - $watermarkHeight - $margin;
-
-                imagecopyresampled(
+                $sourceImage = $this->fixImageOrientation(
                     $sourceImage,
-                    $watermark,
-                    $positionX,
-                    $positionY,
-                    0,
-                    0,
-                    $watermarkWidth,
-                    $watermarkHeight,
-                    imagesx($watermark),
-                    imagesy($watermark)
+                    $uploadedFile->getPathname()
                 );
 
                 imagejpeg(
@@ -136,7 +106,6 @@ class GalleryAdminController extends AbstractController
                 );
 
                 imagedestroy($sourceImage);
-                imagedestroy($watermark);
 
                 $image = new GalleryImage();
                 $image->setFilename($newFilename);
@@ -194,7 +163,6 @@ class GalleryAdminController extends AbstractController
                 );
 
                 $safeName = $slugger->slug($originalName);
-
                 $newFilename = $safeName . '-' . bin2hex(random_bytes(6)) . '.jpg';
 
                 $sourceImage = imagecreatefromstring(
@@ -205,43 +173,18 @@ class GalleryAdminController extends AbstractController
                     throw new \RuntimeException('Nie udało się odczytać zdjęcia.');
                 }
 
-                $watermarkPath = $this->getParameter('kernel.project_dir')
-                    . '/public/images/watermark.png';
-
-                $watermark = imagecreatefrompng($watermarkPath);
-
-                if (!$watermark) {
-                    imagedestroy($sourceImage);
-                    throw new \RuntimeException('Nie udało się wczytać znaku wodnego.');
-                }
-
-                $imageWidth = imagesx($sourceImage);
-                $imageHeight = imagesy($sourceImage);
-
-                $watermarkWidth = (int) ($imageWidth * 0.40);
-                $watermarkHeight = (int) (
-                    imagesy($watermark) * ($watermarkWidth / imagesx($watermark))
-                );
-
-                $margin = (int) ($imageWidth * 0.015);
-
-                imagecopyresampled(
+                $sourceImage = $this->fixImageOrientation(
                     $sourceImage,
-                    $watermark,
-                    $imageWidth - $watermarkWidth - $margin,
-                    $imageHeight - $watermarkHeight - $margin,
-                    0,
-                    0,
-                    $watermarkWidth,
-                    $watermarkHeight,
-                    imagesx($watermark),
-                    imagesy($watermark)
+                    $uploadedFile->getPathname()
                 );
 
-                imagejpeg($sourceImage, $uploadDirectory . '/' . $newFilename, 90);
+                imagejpeg(
+                    $sourceImage,
+                    $uploadDirectory . '/' . $newFilename,
+                    90
+                );
 
                 imagedestroy($sourceImage);
-                imagedestroy($watermark);
 
                 $image = new GalleryImage();
                 $image->setFilename($newFilename);
@@ -289,9 +232,7 @@ class GalleryAdminController extends AbstractController
         }
 
         $filename = $image->getFilename();
-
         $sessionId = $image->getGallerySession()->getId();
-        $filename = $image->getFilename();
 
         $entityManager->remove($image);
         $entityManager->flush();
@@ -309,6 +250,7 @@ class GalleryAdminController extends AbstractController
             'id' => $sessionId,
         ]);
     }
+
     #[Route('/delete/{id}',
         name: 'admin_gallery_delete',
         requirements: ['id' => '\d+'],
@@ -350,5 +292,51 @@ class GalleryAdminController extends AbstractController
         $this->addFlash('success', 'Wszystkie zdjęcia zostały usunięte.');
 
         return $this->redirectToRoute('admin_gallery_admin_panel_gallery');
+    }
+
+    private function fixImageOrientation(
+        \GdImage $image,
+        string $filePath
+    ): \GdImage {
+        if (!function_exists('exif_read_data')) {
+            return $image;
+        }
+
+        $exif = @exif_read_data($filePath);
+        $orientation = (int) ($exif['Orientation'] ?? 1);
+
+        switch ($orientation) {
+            case 2:
+                imageflip($image, IMG_FLIP_HORIZONTAL);
+                break;
+
+            case 3:
+                $image = imagerotate($image, 180, 0) ?: $image;
+                break;
+
+            case 4:
+                imageflip($image, IMG_FLIP_VERTICAL);
+                break;
+
+            case 5:
+                imageflip($image, IMG_FLIP_HORIZONTAL);
+                $image = imagerotate($image, 90, 0) ?: $image;
+                break;
+
+            case 6:
+                $image = imagerotate($image, -90, 0) ?: $image;
+                break;
+
+            case 7:
+                imageflip($image, IMG_FLIP_HORIZONTAL);
+                $image = imagerotate($image, -90, 0) ?: $image;
+                break;
+
+            case 8:
+                $image = imagerotate($image, 90, 0) ?: $image;
+                break;
+        }
+
+        return $image;
     }
 }
