@@ -1,0 +1,14 @@
+{% extends 'bundles/TwigBundle/Exception/base_error.html.twig' %}
+
+{% block title %}Błąd serwera{% endblock %}
+
+{% block error_code %}500{% endblock %}
+
+{% block error_title %}
+    Wystąpił błąd serwera
+{% endblock %}
+
+{% block error_message %}
+    Przepraszamy za utrudnienia.
+    Spróbuj ponownie za chwilę.
+{% endblock %}

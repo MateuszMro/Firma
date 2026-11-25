@@ -1,0 +1,14 @@
+{% extends 'bundles/TwigBundle/Exception/base_error.html.twig' %}
+
+{% block title %}Brak dostępu{% endblock %}
+
+{% block error_code %}403{% endblock %}
+
+{% block error_title %}
+    Brak dostępu
+{% endblock %}
+
+{% block error_message %}
+    Nie posiadasz wymaganych uprawnień,
+    aby uzyskać dostęp do tej strony.
+{% endblock %}

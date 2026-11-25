@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>{% block title %}Błąd{% endblock %} | ZUH Grzegorz Mroczkowski</title>
+
+    <link rel="stylesheet" href="/css/error.css">
+</head>
+<body>
+
+<main class="error-container">
+
+    <div class="error-brand">
+        ZUH Grzegorz Mroczkowski
+    </div>
+
+    <div class="error-code">
+        {% block error_code %}{% endblock %}
+    </div>
+
+    <h1>
+        {% block error_title %}{% endblock %}
+    </h1>
+
+    <p>
+        {% block error_message %}{% endblock %}
+    </p>
+
+    <a href="/" class="error-button">
+        Wróć na stronę główną
+    </a>
+
+</main>
+
+</body>
+</html>

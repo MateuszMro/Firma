@@ -1,0 +1,14 @@
+{% extends 'bundles/TwigBundle/Exception/base_error.html.twig' %}
+
+{% block title %}Wystąpił błąd{% endblock %}
+
+{% block error_code %}{{ status_code }}{% endblock %}
+
+{% block error_title %}
+    Wystąpił nieoczekiwany błąd
+{% endblock %}
+
+{% block error_message %}
+    Nie udało się poprawnie wyświetlić strony.
+    Spróbuj ponownie później.
+{% endblock %}

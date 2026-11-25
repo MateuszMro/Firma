@@ -1,0 +1,14 @@
+{% extends 'bundles/TwigBundle/Exception/base_error.html.twig' %}
+
+{% block title %}Strona chwilowo niedostępna{% endblock %}
+
+{% block error_code %}503{% endblock %}
+
+{% block error_title %}
+    Strona chwilowo niedostępna
+{% endblock %}
+
+{% block error_message %}
+    Trwają prace techniczne lub strona jest
+    chwilowo niedostępna. Zapraszamy ponownie później.
+{% endblock %}
