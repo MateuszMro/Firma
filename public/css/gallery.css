@@ -1647,3 +1647,209 @@ body.gallery-lightbox-open {
         margin-top: 5px;
     }
 }
+/* =========================================
+   KAFELKI ALBUMÓW – ROZWIJANE OPISY
+========================================= */
+
+.gallery-page .gallery-card {
+    position: relative;
+    min-width: 0;
+    cursor: pointer;
+}
+
+/* Klikalna powierzchnia całego albumu */
+
+.gallery-card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+/* Zawijanie długich tekstów */
+
+.gallery-page .gallery-card-info {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.gallery-page .gallery-card-info h3,
+.gallery-page .gallery-card-info p,
+.gallery-page .gallery-description {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+/* Opis albumu */
+
+.gallery-description {
+    position: relative;
+    z-index: 3;
+    min-width: 0;
+    margin: 0 0 18px;
+    color: #aaa9a3;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.gallery-description summary {
+    display: block;
+    list-style: none;
+    cursor: pointer;
+}
+
+.gallery-description summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Reset stylu znacznika span wewnątrz opisu */
+
+.gallery-card-info .gallery-description span {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    color: inherit;
+    font-size: inherit;
+    letter-spacing: normal;
+}
+
+/* Widoczność krótkiego i pełnego opisu */
+
+.gallery-description:not([open]) .gallery-description-full,
+.gallery-description:not([open]) .gallery-show-less,
+.gallery-description[open] .gallery-description-short,
+.gallery-description[open] .gallery-show-more {
+    display: none;
+}
+
+/* Przyciski rozwijania opisu */
+
+.gallery-card-info .gallery-description .gallery-show-more,
+.gallery-card-info .gallery-description .gallery-show-less {
+    display: block;
+    width: fit-content;
+    margin-top: 7px;
+    color: var(--gold, #c9a45c);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.gallery-description:not([open]) .gallery-show-less,
+.gallery-description[open] .gallery-show-more {
+    display: none;
+}
+
+.gallery-show-more:hover,
+.gallery-show-less:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   TELEFON – PROPORCJE OKOŁO 60:40
+========================================= */
+
+@media (max-width: 620px) {
+
+    .gallery-page .gallery-card > img,
+    .gallery-page .gallery-no-image {
+        width: 100%;
+        height: 280px;
+        flex-shrink: 0;
+    }
+
+    .gallery-page .gallery-card > img {
+        display: block;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .gallery-page .gallery-card-info {
+        padding: 16px 18px;
+    }
+
+    .gallery-page .gallery-card-info h3 {
+        font-size: 21px;
+        margin-bottom: 10px;
+    }
+
+    .gallery-page .gallery-card-info p,
+    .gallery-page .gallery-description {
+        min-height: 0;
+        margin-bottom: 12px;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .gallery-page .gallery-card-info .add-date {
+        margin-top: 12px;
+        padding-top: 10px;
+    }
+}/* =========================================
+   OPIS POJEDYNCZEJ SESJI GALERII
+========================================= */
+
+.session-description,
+.gallery-session-heading .session-description-text {
+    width: 100%;
+    max-width: 850px;
+    min-width: 0;
+    margin: 0;
+    color: var(--muted, #a5a39d);
+    font-size: 15px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.session-description summary {
+    display: block;
+    list-style: none;
+    cursor: pointer;
+}
+
+.session-description summary::-webkit-details-marker {
+    display: none;
+}
+
+.session-description-short,
+.session-description-full,
+.gallery-session-heading .session-description-text {
+    white-space: pre-line;
+}
+
+.session-show-more,
+.session-show-less {
+    display: block;
+    width: fit-content;
+    margin-top: 12px;
+    color: var(--gold, #c9a45c);
+    font-size: 13px;
+    font-weight: 600;
+    transition: color .25s ease;
+}
+
+.session-show-more:hover,
+.session-show-less:hover {
+    color: var(--gold-light, #e5c783);
+}
+
+.session-description:not([open]) .session-description-full,
+.session-description:not([open]) .session-show-less,
+.session-description[open] .session-description-short,
+.session-description[open] .session-show-more {
+    display: none;
+}
+
+/* Telefon */
+
+@media (max-width: 620px) {
+    .session-description,
+    .gallery-session-heading .session-description-text {
+        max-width: 100%;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+}

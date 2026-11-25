@@ -24,7 +24,33 @@
             <h1>{{ session.title }}</h1>
 
             {% if session.description %}
-                <p>{{ session.description }}</p>
+                {% set description = session.description %}
+
+                {% if description|length > 300 %}
+                    <details class="session-description">
+                        <summary>
+                <span class="session-description-short">
+                    {{ description|slice(0, 300) }}...
+                </span>
+
+                            <span class="session-description-full">
+                    {{ description }}
+                </span>
+
+                            <span class="session-show-more">
+                    Pokaż więcej ↓
+                </span>
+
+                            <span class="session-show-less">
+                    Pokaż mniej ↑
+                </span>
+                        </summary>
+                    </details>
+                {% else %}
+                    <p class="session-description-text">
+                        {{ description }}
+                    </p>
+                {% endif %}
             {% endif %}
         </div>
 
