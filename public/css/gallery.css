@@ -1,3 +1,4 @@
+
 /* =========================================
    GALERIA – STYL BLACK & GOLD
 ========================================= */
@@ -90,6 +91,8 @@
     transition: transform .3s ease,
     border-color .3s ease,
     box-shadow .3s ease;
+    isolation: isolate;
+    height: 100%;
 }
 
 .gallery-card:hover {
@@ -104,17 +107,17 @@
     display: block;
     width: 100%;
     height: 350px;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
     background: #08090a;
-    transition: transform .5s ease;
+    transition: transform .4s ease;
 }
 
-.gallery-card:hover > img {
-    transform: none;
-}
-
-.gallery-card {
-    isolation: isolate;
+@media (hover: hover) and (pointer: fine) {
+    .gallery-card:hover > img {
+        transform: scale(1.05);
+    }
 }
 
 .gallery-card-info {
@@ -122,6 +125,9 @@
     z-index: 1;
     padding: 23px 22px 20px;
     background: #111315;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .gallery-card-info h3 {
@@ -306,7 +312,9 @@
     position: relative;
     display: block;
     width: 100%;
-    height: 500px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    box-sizing: border-box;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(201, 164, 92, .2);
@@ -316,14 +324,15 @@
 }
 
 .gallery-photo:nth-child(even) {
-    margin-top: 0;
+    margin-top: 45px;
 }
 
 .gallery-photo img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
     transition: transform .4s ease, opacity .4s ease;
 }
 
@@ -331,9 +340,11 @@
     border-color: var(--gold, #c9a45c);
 }
 
-.gallery-photo:hover img {
-    transform: none;
-    opacity: .75;
+@media (hover: hover) and (pointer: fine) {
+    .gallery-photo:hover img {
+        transform: scale(1.05);
+        opacity: .75;
+    }
 }
 
 .gallery-photo-overlay {
@@ -347,8 +358,10 @@
     transition: opacity .3s ease;
 }
 
-.gallery-photo:hover .gallery-photo-overlay {
-    opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+    .gallery-photo:hover .gallery-photo-overlay {
+        opacity: 1;
+    }
 }
 
 .gallery-photo-overlay span {
@@ -414,10 +427,11 @@ body.gallery-lightbox-open {
 .gallery-lightbox #lightboxImage {
     display: block;
     width: 100%;
-    height: calc(100% - 58px);
+    flex: 1 1 0;
+    height: 0;
     min-height: 0;
     max-width: 100%;
-    max-height: calc(100% - 58px);
+    max-height: none;
     object-fit: contain;
     user-select: none;
     -webkit-user-drag: none;
@@ -497,15 +511,10 @@ body.gallery-lightbox-open {
     }
 }
 
-
 @media (max-width: 800px) {
     .gallery-photos {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 15px;
-    }
-
-    .gallery-photo {
-        height: 210px;
     }
 
     .gallery-lightbox {
@@ -538,22 +547,24 @@ body.gallery-lightbox-open {
     .gallery-photo,
     .gallery-photo:nth-child(even) {
         height: auto;
+        min-height: 0;
+        max-height: none;
+        aspect-ratio: auto;
         margin-top: 0;
+        background: transparent;
     }
 
     .gallery-photo img {
         width: 100%;
         height: auto;
-        object-fit: contain;
+        min-height: 0;
+        max-height: none;
+        aspect-ratio: auto;
+        object-fit: cover;
     }
 
     .gallery-lightbox {
         padding: 55px 10px 70px;
-    }
-
-    .gallery-lightbox #lightboxImage {
-        height: calc(100% - 52px);
-        max-height: calc(100% - 52px);
     }
 
     .lightbox-close {
@@ -1060,7 +1071,6 @@ body.gallery-lightbox-open {
     color: #e5c783;
 }
 
-
 /* Przyciski edycji i usuwania nie wychodzą poza kartę */
 .admin-gallery-panel .gallery-admin-actions {
     display: grid;
@@ -1068,6 +1078,7 @@ body.gallery-lightbox-open {
     gap: 8px;
     width: 100%;
     box-sizing: border-box;
+    margin-top: auto;
 }
 
 .admin-gallery-panel .gallery-admin-actions > a,
@@ -1407,7 +1418,6 @@ body.gallery-lightbox-open {
     transform: translateY(-2px);
 }
 
-
 /* =========================================
    FILTROWANIE GALERII – KATEGORIE
 ========================================= */
@@ -1573,23 +1583,10 @@ body.gallery-lightbox-open {
     }
 }
 /* Równa wysokość kart i wyrównanie ich zawartości */
-.gallery-card {
-    height: 100%;
-}
-
-.gallery-card-info {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
 
 .gallery-card-info > span {
     margin-top: auto;
     align-self: flex-start;
-}
-
-.admin-gallery-panel .gallery-admin-actions {
-    margin-top: auto;
 }
 
 /* Animacja kafelków po filtrowaniu AJAX */
@@ -1642,148 +1639,11 @@ body.gallery-lightbox-open {
 }
 /* LIGHTBOX – telefon obrócony poziomo */
 @media (orientation: landscape) and (max-height: 600px) {
-
     .gallery-lightbox {
-        padding: 5px;
-    }
-
-    .gallery-lightbox .lightbox-content {
-        width: 100%;
-        height: 100%;
-        max-height: none;
-        padding: 0;
-    }
-
-    .gallery-lightbox #lightboxImage {
-        width: 100%;
-        height: calc(100dvh - 15px);
-        max-width: 100%;
-        max-height: calc(100dvh - 15px);
-        object-fit: contain;
+        padding: 5px 56px;
     }
 
     .gallery-lightbox .lightbox-counter {
-        position: absolute;
-        bottom: 5px;
-        left: 50%;
-        transform: translateX(-50%);
-        margin: 0;
-    }
-}
-/* Jednakowy obszar zdjęć, bez przycinania */
-.gallery-photo {
-    height: auto;
-    aspect-ratio: 4 / 3;
-    box-sizing: border-box;
-    background: #08090a;
-}
-.gallery-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-.gallery-lightbox .lightbox-content {
-    width: 100%;
-    height: 100%;
-    max-height: none;
-    padding: 0;
-}
-.gallery-lightbox #lightboxImage {
-    flex: 1 1 0;
-    width: 100%;
-    height: 0;
-    min-height: 0;
-    max-width: 100%;
-    max-height: none;
-    object-fit: contain;
-}
-@media (orientation: landscape) and (max-height: 600px) {
-    .gallery-lightbox .lightbox-counter {
-        position: static;
-        transform: none;
         margin-top: 5px;
-    }
-}
-/* Naprzemienne ułożenie zdjęć w albumie */
-.gallery-photo:nth-child(odd) {
-    margin-top: 0;
-}
-
-.gallery-photo:nth-child(even) {
-    margin-top: 45px;
-}
-
-/* Na telefonie zdjęcia bez przesunięcia */
-@media (max-width: 620px) {
-    .gallery-photo:nth-child(even) {
-        margin-top: 0;
-    }
-}/* Strona główna galerii – kafelki bez czarnych pasów */
-@media (min-width: 621px) {
-    .gallery-page .gallery-card > img {
-        display: block;
-        width: 100%;
-        height: 350px;
-        object-fit: cover;
-        object-position: center;
-    }
-}/* Delikatne powiększenie zdjęcia po najechaniu */
-.gallery-card {
-    overflow: hidden;
-}
-
-.gallery-card > img {
-    transition: transform 0.4s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .gallery-card:hover > img {
-        transform: scale(1.05);
-    }
-}/* Zdjęcia wewnątrz albumu – bez czarnych pasów */
-.gallery-photo {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-}
-
-.gallery-photo img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 0.4s ease;
-}
-
-/* Naprzemienne przesunięcie */
-.gallery-photo:nth-child(odd) {
-    margin-top: 0;
-}
-
-.gallery-photo:nth-child(even) {
-    margin-top: 45px;
-}
-
-/* Delikatne powiększenie po najechaniu */
-@media (hover: hover) and (pointer: fine) {
-    .gallery-photo:hover img {
-        transform: scale(1.05);
-    }
-}
-
-/* Telefony */
-@media (max-width: 620px) {
-    .gallery-photo:nth-child(even) {
-        margin-top: 0;
-    }
-
-    .gallery-photo {
-        aspect-ratio: auto;
-    }
-
-    .gallery-photo img {
-        height: auto;
     }
 }
